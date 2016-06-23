@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tipos_documento',
+    'personas',
 ]
 
 MIDDLEWARE_CLASSES = [
