@@ -20,10 +20,3 @@ class PersonaAdmin(admin.ModelAdmin):
         'fecha_nacimiento',
         'tipo_documento')
     date_hierarchy = 'fecha_nacimiento'
-    exclude = (
-        'borrado',
-        'historico',
-        'usuario_creador',
-        'fecha_creacion',
-        'usuario_modificador',
-        'fecha_modificacion')
