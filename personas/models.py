@@ -5,7 +5,8 @@ from tipos_documento.models import TipoDocumento
 from datetime import date
 from .choices import (
     GRUPO_SANGUINEO,
-    FACTOR_SANGUINEO)
+    FACTOR_SANGUINEO,
+    ESTADO_CIVIL)
 
 
 class Persona(models.Model):
@@ -60,3 +61,18 @@ class Persona(models.Model):
         ordering = ['apellido', 'nombre']
         verbose_name = _('Persona')
         verbose_name_plural = _('Personas')
+
+
+class Bombero(Persona):
+    foto = models.ImageField(
+        upload_to=".",
+        null=True,
+        blank=True,
+        verbose_name=_("Foto Carnet"))
+    numero_credencial = models.CharField(
+        max_length=255,
+        verbose_name=_("Número de Credencial"))
+    estado_civil = models.CharField(
+        max_length=255,
+        choices=ESTADO_CIVIL,
+        verbose_name=_("Estado Civil"))
