@@ -5,11 +5,20 @@ GRUPO_SANGUINEO = (
     ('AB', _('Grupo AB')),
     ('A', _('Grupo A')),
     ('B', _('Grupo B')),
-    ('O', _('Grupo O'))
+    ('O', _('Grupo O')),
 )
 
 FACTOR_SANGUINEO = (
     ('', _('Factor Saguineo')),
     ('+', _('RH+')),
-    ('-', _('RH-'))
+    ('-', _('RH-')),
+)
+
+ESTADO_CIVIL = (
+    ('', _('Estado Civil')),
+    ('Casado', _('Casado/a')),
+    ('Soltero', _('Soltero/a')),
+    ('Divorciado', _('Divorciado/a')),
+    ('Viudo', _('Viudo/a')),
+    ('Concubino', _('Concubino/a')),
 )
