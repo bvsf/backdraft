@@ -2,6 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from tipos_documento.models import TipoDocumento
+from localidades.models import Localidad
 from datetime import date
 from .choices import (
     GRUPO_SANGUINEO,
@@ -65,7 +66,7 @@ class Persona(models.Model):
 
 class Bombero(Persona):
     foto = models.ImageField(
-        upload_to=".",
+        upload_to="avatars/",
         null=True,
         blank=True,
         verbose_name=_("Foto Carnet"))
@@ -76,3 +77,6 @@ class Bombero(Persona):
         max_length=255,
         choices=ESTADO_CIVIL,
         verbose_name=_("Estado Civil"))
+    lugar_nacimiento = models.ForeignKey(
+        Localidad,
+        verbose_name=_("Lugar de Nacimiento"))
