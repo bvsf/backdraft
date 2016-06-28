@@ -26,6 +26,7 @@ class Migration(migrations.Migration):
                 ('grupo_sanguineo', models.CharField(choices=[('', 'Grupo Saguineo'), ('AB', 'Grupo AB'), ('A', 'Grupo A'), ('B', 'Grupo B'), ('O', 'Grupo O')], max_length=255, verbose_name='Grupo Sanguíneo')),
                 ('factor_sanguineo', models.CharField(choices=[('', 'Factor Saguineo'), ('+', 'RH+'), ('-', 'RH-')], max_length=255, verbose_name='Factor Sanguíneo')),
                 ('fecha_nacimiento', models.DateField(verbose_name='Fecha de Nacimiento')),
+                ('tipo_documento', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tipos_documento.TipoDocumento')),
             ],
             options={
                 'verbose_name': 'Persona',
