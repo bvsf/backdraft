@@ -58,8 +58,8 @@
     * Posicionese en el branch **develop** (o la que ud. crea conveniente) para crear a partir de ella una nueva branch.
       
         ```
-         git checkout develop
-         ```
+        git checkout develop
+        ```
          
     * Crear una branch en su PC que se llame **feature/issueN** (donde N es el numero del issue que se le asignó para trabajar).
     * Para crear un nuevo branch se usa el comando:
@@ -82,9 +82,9 @@
     * Una vez que ha terminado de corregir y probar el Issue asignado a ud. deberá subir su rama a github.com:
     * Suba la rama **feature/issueN** a github.com (master no debería tener cambios ya que se usa pura y exclusivamente para el código en producción, y combinar a la rama develop luego complica el pull request al proyecto original, sobre todo cuando se trabajan con varios pull request en simultáneo).
       
-         ```
-         git push origin feature/issueN
-         ```
+        ```
+        git push origin feature/issueN
+        ```
          
 5. Haga un Pull Request al proyecto original [5]
     * Desde la pagina de github.com realize un **Pull Request** desde la rama **feature/issueN** a la rama **develop** del proyecto original
@@ -95,9 +95,9 @@
 6. Sincronize su proyecto Forkeado desde el original [6]
     * Al trabajar en equipos puede que el proyecto original cambie por otros miembros y ud. deber tener que descargar esa información a su PC para poder trabajar siempre con las ultimas versiones disponibles para evitar desfazajes muy amplios, para ello debe sincronizar el repositorio original con el de su PC, para ello ejecute el comando:
       
-         ```
-         git fetch upstream
-         ```
+        ```
+        git fetch upstream
+        ```
          
     * Git descargará en su pc el repositorio remoto, sus branchs y commits. Los branchs se llamaran algo similara a "upstream/develop" Ud. deberá unir esta branch con la propia branch develop de su Pc (y de forma análoga con master, etc.) con los comandos:
       
@@ -119,5 +119,4 @@
 * [6] [https://help.github.com/articles/syncing-a-fork/](https://help.github.com/articles/syncing-a-fork/)
 * [https://git-scm.com/book/ch5-2.html](https://git-scm.com/book/ch5-2.html)
 * [https://help.github.com/categories/collaborating-on-projects-using-issues-and-pull-requests/](https://help.github.com/categories/collaborating-on-projects-using-issues-and-pull-requests/)
-* [http://rogerdudler.github.io/git-guide/index.es.html](http://rogerdudler.github.io/git-guide/index.es.html)
-
+* [http://rogerdudler.github.io/git-guide/index.es.html](http://rogerdudler.github.io/git-guide/index.es.html
