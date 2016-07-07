@@ -3,7 +3,8 @@
 
 ## Para contribuír:
 -------------------
-Para contribuír sigan como ejemplo este enlace https://github.com/PyAr/pyarweb/blob/master/CONTRIBUTING.md
+Para contribuír leer el archivo [CONTRIBUTING.md](https://github.com/bvsf/sigcaw/blob/develop/CONTRIBUTING.md)
+
 Información adicional:
 * http://nvie.com/posts/a-successful-git-branching-model/
 * http://danielkummer.github.io/git-flow-cheatsheet/
