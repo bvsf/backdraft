@@ -82,7 +82,8 @@ class Bombero(Persona):
         verbose_name=_("Lugar de Nacimiento"))
 
 
-class Fallecido(Persona):
+class Fallecido(models.Model):
+    persona = models.OneToOneField(Persona)
     fecha_desceso = models.DateField(
         verbose_name=_("Fecha de Fallecimiento"))
 
@@ -90,3 +91,11 @@ class Fallecido(Persona):
     def aniversario(self):
         delta = (date.today() - self.fecha_desceso)
         return int((delta.days / (365.2425)))
+
+    def __str__(self):
+        return self.persona.nombre_completo
+
+    class Meta:
+        ordering = ['persona__apellido', 'persona__nombre']
+        verbose_name = _('Fallecimiento')
+        verbose_name_plural = _('Fallecimientos')
