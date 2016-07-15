@@ -31,6 +31,10 @@ class Persona(models.Model):
         verbose_name=_("Factor Sanguíneo"))
     fecha_nacimiento = models.DateField(
         verbose_name=_('Fecha de Nacimiento'))
+    fecha_desceso = models.DateField(
+        verbose_name=_("Fecha de Fallecimiento"),
+        null=True,
+        blank=True,)
 
     @property
     def nombre_completo(self):
@@ -54,6 +58,11 @@ class Persona(models.Model):
         return "{0}{1}".format(
             self.grupo_sanguineo,
             self.factor_sanguineo)
+
+    @property
+    def aniversario(self):
+        delta = (date.today() - self.fecha_desceso)
+        return int((delta.days / (365.2425)))
 
     def __str__(self):
         return self.nombre_completo
@@ -80,22 +89,3 @@ class Bombero(Persona):
     lugar_nacimiento = models.ForeignKey(
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
-
-
-class Fallecido(models.Model):
-    persona = models.OneToOneField(Persona)
-    fecha_desceso = models.DateField(
-        verbose_name=_("Fecha de Fallecimiento"))
-
-    @property
-    def aniversario(self):
-        delta = (date.today() - self.fecha_desceso)
-        return int((delta.days / (365.2425)))
-
-    def __str__(self):
-        return self.persona.nombre_completo
-
-    class Meta:
-        ordering = ['persona__apellido', 'persona__nombre']
-        verbose_name = _('Fallecimiento')
-        verbose_name_plural = _('Fallecimientos')
