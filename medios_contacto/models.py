@@ -1,9 +1,15 @@
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from localidades.models import Localidad
+from phonenumber_field.modelfields import PhoneNumberField
+from .choices import USO_MEDIO, TIPO_WEB, TIPO_TELEFONO
 
 
 class Medio(models.Model):
+    uso = models.CharField(
+        verbose_name=_("Uso"),
+        max_length=255,
+        choices=USO_MEDIO)
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Obervaciones"),
@@ -21,7 +27,7 @@ class DireccionPostal(Medio):
     calle = models.CharField(
         max_length=255,
         verbose_name=_("Calle"))
-    numero = models.IntegerField(
+    numero = models.SmallIntegerField(
         verbose_name=_("Número"))
     piso = models.CharField(
         max_length=5,
@@ -60,3 +66,47 @@ class DireccionPostal(Medio):
     class Meta:
         verbose_name = _("Dirección Postal")
         verbose_name_plural = _("Direcciones Postales")
+
+
+class DireccionWeb(Medio):
+    direccion = models.URLField(
+        verbose_name=_("Dirección Web"))
+    tipo = models.CharField(
+        max_length=255,
+        choices=TIPO_WEB,
+        verbose_name=_("Tipo web"))
+
+    def __str__(self):
+        return self.direccion
+
+    class Meta:
+        verbose_name = _("Dirección Web")
+        verbose_name_plural = _("Direcciones Web")
+
+
+class Telefono(Medio):
+    telefono = PhoneNumberField(
+        verbose_name=_("Teléfono"))
+    tipo = models.CharField(
+        max_length=255,
+        choices=TIPO_TELEFONO,
+        verbose_name=_("Tipo de Teléfono"))
+
+    def __str__(self):
+        return self.telefono
+
+    class Meta:
+        verbose_name = _("Teléfono")
+        verbose_name_plural = _("Teléfonos")
+
+
+class DireccionElectronica(Medio):
+    mail = models.EmailField(
+        verbose_name=_("Email"))
+
+    def __str__(self):
+        return self.mail
+
+    class Meta:
+        verbose_name = _("Direccion de Email")
+        verbose_name_plural = _("Direcciones de Email")
