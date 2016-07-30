@@ -78,7 +78,10 @@ class BomberoAdmin(admin.ModelAdmin):
         'lugar_nacimiento__nombre')
     list_filter = (
         'apellido',
-        'lugar_nacimiento')
+        'lugar_nacimiento',
+        'fecha_nacimiento',
+        'tipo_documento',
+        'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
 
 
@@ -110,6 +113,10 @@ class DireccionPostalAdmin(admin.ModelAdmin):
         'persona',
         'calle',
         'localidad')
+    list_filter = (
+        'persona',
+        'uso',
+        'localidad')
 
 
 @admin.register(DireccionWeb)
@@ -132,6 +139,10 @@ class DireccionWebAdmin(admin.ModelAdmin):
         'tipo',
         'uso',
         'direccion')
+    list_filter = (
+        'persona',
+        'tipo',
+        'uso')
 
 
 @admin.register(Telefono)
@@ -154,6 +165,10 @@ class TelefonoAdmin(admin.ModelAdmin):
         'tipo',
         'uso',
         'telefono',)
+    list_filter = (
+        'persona',
+        'tipo',
+        'uso')
 
 
 @admin.register(DireccionElectronica)
@@ -172,3 +187,5 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
     list_display = (
         'persona',
         'mail',)
+    list_filter = (
+        'persona',)
