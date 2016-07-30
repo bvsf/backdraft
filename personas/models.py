@@ -89,3 +89,13 @@ class Bombero(Persona):
     lugar_nacimiento = models.ForeignKey(
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
+
+
+class Fallecido(Persona):
+    fecha_desceso = models.DateField(
+        verbose_name=_("Fecha de Fallecimiento"))
+
+    @property
+    def aniversario(self):
+        delta = (date.today() - self.fecha_desceso)
+        return int((delta.days / (365.2425)))
