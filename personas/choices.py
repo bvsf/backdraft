@@ -24,16 +24,19 @@ ESTADO_CIVIL = (
 )
 
 USO_MEDIO = (
-    ('', _("Particular")),
+    ('', _("Uso dado")),
+    ('P', _("Particular")),
     ('L', _("Laboral")),
 )
 
 TIPO_WEB = (
-    ('', _("Perfil Web Social")),
+    ('', _("Tipo de dirección web")),
+    ('S', _("Perfil Web Social")),
     ('L', _("Pagina Web Laboral")),
 )
 
 TIPO_TELEFONO = (
-    ('', _("Celular")),
+    ('', _("Tipo de Teléfono")),
+    ('C', _("Celular")),
     ('F', _("Fijo"))
 )
