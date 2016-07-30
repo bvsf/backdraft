@@ -184,7 +184,7 @@ class Telefono(Medio):
         verbose_name=_("Tipo de Teléfono"))
 
     def __str__(self):
-        return self.telefono
+        return self.telefono.__str__()
 
     class Meta:
         verbose_name = _("Teléfono")

@@ -106,7 +106,8 @@ class DireccionPostalAdmin(admin.ModelAdmin):
         'piso',
         'departamento',
         'localidad__nombre')
-    list_filter = (
+    list_display = (
+        'persona',
         'calle',
         'localidad')
 
@@ -126,6 +127,11 @@ class DireccionWebAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('observaciones',),
             }))
+    list_display = (
+        'persona',
+        'tipo',
+        'uso',
+        'direccion')
 
 
 @admin.register(Telefono)
@@ -143,6 +149,11 @@ class TelefonoAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('observaciones',),
             }))
+    list_display = (
+        'persona',
+        'tipo',
+        'uso',
+        'telefono',)
 
 
 @admin.register(DireccionElectronica)
@@ -158,3 +169,6 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('observaciones',),
             }))
+    list_display = (
+        'persona',
+        'mail',)
