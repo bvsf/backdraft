@@ -119,6 +119,7 @@ class DireccionWebAdmin(admin.ModelAdmin):
             'fields': (
                 'persona',
                 'tipo',
+                'uso',
                 'direccion')
             }),
         (_("Observaciones"), {
@@ -135,6 +136,7 @@ class TelefonoAdmin(admin.ModelAdmin):
             'fields': (
                 'persona',
                 'tipo',
+                'uso',
                 'telefono')
             }),
         (_("Observaciones"), {
