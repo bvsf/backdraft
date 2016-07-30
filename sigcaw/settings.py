@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'tipos_documento',
     'localidades',
     'personas',
-    'medios_contacto',
 ]
 
 MIDDLEWARE_CLASSES = [

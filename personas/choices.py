@@ -22,3 +22,18 @@ ESTADO_CIVIL = (
     ('Viudo', _('Viudo/a')),
     ('Concubino', _('Concubino/a')),
 )
+
+USO_MEDIO = (
+    ('', _("Particular")),
+    ('L', _("Laboral")),
+)
+
+TIPO_WEB = (
+    ('', _("Perfil Web Social")),
+    ('L', _("Pagina Web Laboral")),
+)
+
+TIPO_TELEFONO = (
+    ('', _("Celular")),
+    ('F', _("Fijo"))
+)
