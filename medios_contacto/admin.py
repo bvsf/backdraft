@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from medios_contacto.models import (
-    DireccionPostal, DireccionWeb, Telefono)
+    DireccionPostal, DireccionWeb, Telefono, DireccionElectronica)
 
 
 @admin.register(DireccionPostal)
@@ -55,6 +55,20 @@ class TelefonoAdmin(admin.ModelAdmin):
             'fields': (
                 'tipo',
                 'telefono')
+            }),
+        (_("Observaciones"), {
+            'classes': ('collapse',),
+            'fields': ('observaciones',),
+            }))
+
+
+@admin.register(DireccionElectronica)
+class DireccionElectronicaAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'mail',)
             }),
         (_("Observaciones"), {
             'classes': ('collapse',),
