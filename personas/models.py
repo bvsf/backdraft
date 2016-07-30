@@ -24,7 +24,8 @@ class Persona(models.Model):
     tipo_documento = models.ForeignKey(TipoDocumento)
     documento = models.CharField(
         max_length=11,
-        verbose_name=_('Número de documento'))
+        verbose_name=_('Número de documento'),
+        unique=True)
     grupo_sanguineo = models.CharField(
         max_length=255,
         choices=GRUPO_SANGUINEO,
@@ -85,7 +86,8 @@ class Bombero(Persona):
         verbose_name=_("Foto Carnet"))
     numero_credencial = models.CharField(
         max_length=255,
-        verbose_name=_("Número de Credencial"))
+        verbose_name=_("Número de Credencial"),
+        unique=True)
     estado_civil = models.CharField(
         max_length=255,
         choices=ESTADO_CIVIL,
