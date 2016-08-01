@@ -7,7 +7,8 @@ from datetime import date
 from .choices import (
     GRUPO_SANGUINEO,
     FACTOR_SANGUINEO,
-    ESTADO_CIVIL)
+    ESTADO_CIVIL,
+    RELACION_PARENTESCO,)
 
 
 class Persona(models.Model):
@@ -89,3 +90,16 @@ class Bombero(Persona):
     lugar_nacimiento = models.ForeignKey(
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
+
+
+class Parentesco(models.Model):
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"))
+    familiar = models.ForeignKey(
+        Persona,
+        verbose_name=_("Familiar"))
+    parentesco = models.CharField(
+        max_length=255,
+        choices=RELACION_PARENTESCO,
+        verbose_name=_("Parentesco"))

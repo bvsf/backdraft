@@ -1,5 +1,5 @@
 from django.contrib import admin
-from personas.models import Persona, Bombero
+from personas.models import Persona, Bombero, Parentesco
 from django.utils.translation import ugettext as _
 
 
@@ -74,3 +74,27 @@ class BomberoAdmin(admin.ModelAdmin):
         'apellido',
         'lugar_nacimiento')
     date_hierarchy = 'fecha_nacimiento'
+
+
+@admin.register(Parentesco)
+class ParentescoAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    raw_id_fields = (
+        ('Bombero.apellido',
+            'Bombero.nombre'),
+        ('Persona.apellido',
+            'Persona.nombre'),)
+    list_display = (
+        ('Bombero.apellido',
+            'Bombero.nombre'),
+        ('Persona.apellido',
+            'Persona.nombre'),)
+    search_fields = (
+        'Bombero.apellido',
+        'Bombero.nombre',
+        'Persona.apellido',
+        'Persona.nombre',)
+    list_filter = (
+        'Bombero.apellido',
+        'Bombero.lugar_nacimiento',)
+    date_hierarchy = 'Bombero.fecha_nacimiento'

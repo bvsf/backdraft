@@ -22,3 +22,16 @@ ESTADO_CIVIL = (
     ('Viudo', _('Viudo/a')),
     ('Concubino', _('Concubino/a')),
 )
+
+RELACION_PARENTESCO = (
+    ('', _('Relacion de Parentesco')),
+    ('Hermano', _('Hermano/a')),
+    ('Padre', _('Padre')),
+    ('Madre', _('Madre')),
+    ('Hijo', _('Hijo/a')),
+    ('Abuelo', _('Abuelo/a')),
+    ('Nieto', _('Nieto/a')),
+    ('Tio', _('Tío/a')),
+    ('Primo', _('Primo/a')),
+    ('Esposo', _('Esposo/a')),
+)
