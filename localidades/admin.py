@@ -44,4 +44,3 @@ class LocalidadAdmin(admin.ModelAdmin):
         'provincia__nombre',
         'provincia__abreviatura']
     list_filter = ['provincia']
-

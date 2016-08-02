@@ -9,6 +9,7 @@ from .choices import (
     GRUPO_SANGUINEO,
     FACTOR_SANGUINEO,
     ESTADO_CIVIL,
+    RELACION_PARENTESCO,
     USO_MEDIO,
     TIPO_WEB,
     TIPO_TELEFONO)
@@ -95,6 +96,21 @@ class Bombero(Persona):
     lugar_nacimiento = models.ForeignKey(
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
+
+
+class Parentesco(models.Model):
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="bombero")
+    familiar = models.ForeignKey(
+        Persona,
+        verbose_name=_("Familiar"),
+        related_name="familiar")
+    parentesco = models.CharField(
+        max_length=255,
+        choices=RELACION_PARENTESCO,
+        verbose_name=_("Parentesco"))
 
 
 class Medio(models.Model):

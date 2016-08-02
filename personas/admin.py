@@ -6,7 +6,8 @@ from personas.models import (
     DireccionPostal,
     DireccionWeb,
     Telefono,
-    DireccionElectronica)
+    DireccionElectronica,
+    Parentesco)
 
 
 @admin.register(Persona)
@@ -83,6 +84,19 @@ class BomberoAdmin(admin.ModelAdmin):
         'tipo_documento',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
+
+
+@admin.register(Parentesco)
+class ParentescoAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    list_display = (
+        'bombero',
+        'familiar')
+    search_fields = (
+        'bombero.persona.apellido',
+        'bombero.persona.nombre',
+        'familiar.apellido',
+        'familiar.nombre',)
 
 
 @admin.register(DireccionPostal)

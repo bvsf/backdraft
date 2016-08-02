@@ -14,7 +14,7 @@ class Zona(models.Model):
         null=True)
 
     def __str__(self):
-        return u"{0}".format(self.nombre)
+        return "{0}".format(self.nombre)
 
     class Meta:
         abstract = True
@@ -23,18 +23,18 @@ class Zona(models.Model):
 class Pais(Zona):
     class Meta:
         ordering = ['nombre']
-        verbose_name = _("País")
+        verbose_name = _("Pais")
         verbose_name_plural = _("Paises")
 
 
 class Provincia(Zona):
     pais = models.ForeignKey(
         Pais,
-        verbose_name=_("País"),
+        verbose_name=_("Pais"),
         related_name='pais')
 
     def __str__(self):
-        return u"{0} ({1})".format(
+        return "{0} ({1})".format(
             self.nombre,
             self.pais.abreviatura)
 
@@ -51,16 +51,16 @@ class Localidad(Zona):
         related_name='provincia')
     codigo_postal = models.CharField(
         max_length=255,
-        verbose_name=_("Código Postal"))
+        verbose_name=_("Codigo Postal"))
 
     def __str__(self):
-        return u"{0}, {1}".format(
+        return "{0}, {1}".format(
             self.nombre,
             self.provincia)
 
     @property
     def nombre_completo(self):
-        return u"({0}) {1}, {2}".format(
+        return "({0}) {1}, {2}".format(
             self.codigo_postal,
             self.nombre,
             self.provincia)

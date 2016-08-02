@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from django.utils.translation import ugettext_lazy as _
 
 GRUPO_SANGUINEO = (
@@ -21,6 +22,19 @@ ESTADO_CIVIL = (
     ('Divorciado', _('Divorciado/a')),
     ('Viudo', _('Viudo/a')),
     ('Concubino', _('Concubino/a')),
+)
+
+RELACION_PARENTESCO = (
+    ('', _('Relacion de Parentesco')),
+    ('Hermano', _('Hermano/a')),
+    ('Padre', _('Padre')),
+    ('Madre', _('Madre')),
+    ('Hijo', _('Hijo/a')),
+    ('Abuelo', _('Abuelo/a')),
+    ('Nieto', _('Nieto/a')),
+    ('Tio', _('Tío/a')),
+    ('Primo', _('Primo/a')),
+    ('Esposo', _('Esposo/a')),
 )
 
 USO_MEDIO = (
