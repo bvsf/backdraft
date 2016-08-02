@@ -1,6 +1,13 @@
 from django.contrib import admin
-from personas.models import Persona, Bombero, Parentesco
 from django.utils.translation import ugettext as _
+from personas.models import (
+    Persona,
+    Bombero,
+    DireccionPostal,
+    DireccionWeb,
+    Telefono,
+    DireccionElectronica,
+    Parentesco)
 
 
 @admin.register(Persona)
@@ -72,29 +79,127 @@ class BomberoAdmin(admin.ModelAdmin):
         'lugar_nacimiento__nombre')
     list_filter = (
         'apellido',
-        'lugar_nacimiento')
+        'lugar_nacimiento',
+        'fecha_nacimiento',
+        'tipo_documento',
+        'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
 
 
 @admin.register(Parentesco)
 class ParentescoAdmin(admin.ModelAdmin):
     actions_on_bottom = True
-    raw_id_fields = (
-        ('Bombero.apellido',
-            'Bombero.nombre'),
-        ('Persona.apellido',
-            'Persona.nombre'),)
     list_display = (
-        ('Bombero.apellido',
-            'Bombero.nombre'),
-        ('Persona.apellido',
-            'Persona.nombre'),)
+        'bombero',
+        'familiar')
     search_fields = (
-        'Bombero.apellido',
-        'Bombero.nombre',
-        'Persona.apellido',
-        'Persona.nombre',)
+        'bombero.persona.apellido',
+        'bombero.persona.nombre',
+        'familiar.apellido',
+        'familiar.nombre',)
+
+
+@admin.register(DireccionPostal)
+class DireccionPostalAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',
+                'uso',
+                'calle',
+                'numero',
+                'piso',
+                'departamento',
+                'localidad')
+            }),
+        (_("Observaciones"), {
+            'classes': ('collapse',),
+            'fields': ('observaciones',),
+            }))
+    search_fields = (
+        'calle',
+        'numero',
+        'piso',
+        'departamento',
+        'localidad__nombre')
+    list_display = (
+        'persona',
+        'calle',
+        'localidad')
     list_filter = (
-        'Bombero.apellido',
-        'Bombero.lugar_nacimiento',)
-    date_hierarchy = 'Bombero.fecha_nacimiento'
+        'persona',
+        'uso',
+        'localidad')
+
+
+@admin.register(DireccionWeb)
+class DireccionWebAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',
+                'tipo',
+                'uso',
+                'direccion')
+            }),
+        (_("Observaciones"), {
+            'classes': ('collapse',),
+            'fields': ('observaciones',),
+            }))
+    list_display = (
+        'persona',
+        'tipo',
+        'uso',
+        'direccion')
+    list_filter = (
+        'persona',
+        'tipo',
+        'uso')
+
+
+@admin.register(Telefono)
+class TelefonoAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',
+                'tipo',
+                'uso',
+                'telefono')
+            }),
+        (_("Observaciones"), {
+            'classes': ('collapse',),
+            'fields': ('observaciones',),
+            }))
+    list_display = (
+        'persona',
+        'tipo',
+        'uso',
+        'telefono',)
+    list_filter = (
+        'persona',
+        'tipo',
+        'uso')
+
+
+@admin.register(DireccionElectronica)
+class DireccionElectronicaAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',
+                'mail',)
+            }),
+        (_("Observaciones"), {
+            'classes': ('collapse',),
+            'fields': ('observaciones',),
+            }))
+    list_display = (
+        'persona',
+        'mail',)
+    list_filter = (
+        'persona',)
