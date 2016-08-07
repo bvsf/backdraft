@@ -15,7 +15,7 @@ from .choices import (
     TIPO_TELEFONO)
 
 
-class Persona(models.Model):
+class PersonaBase(models.Model):
     apellido = models.CharField(
         max_length=255,
         verbose_name=_('Apellido'))
@@ -74,12 +74,21 @@ class Persona(models.Model):
         return self.nombre_completo
 
     class Meta:
+        abstract = True
         ordering = ['apellido', 'nombre']
         verbose_name = _('Persona')
         verbose_name_plural = _('Personas')
 
 
-class Bombero(Persona):
+class Persona(PersonaBase):
+    pass
+
+
+class Bombero(models.Model):
+    persona = models.OneToOneField(
+        Persona,
+        verbose_name=_("Persona"),
+        related_name="bombero")
     foto = models.ImageField(
         upload_to="avatars/",
         null=True,
@@ -96,6 +105,9 @@ class Bombero(Persona):
     lugar_nacimiento = models.ForeignKey(
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
+
+    def __str__(self):
+        return self.persona.nombre_completo
 
 
 class Parentesco(models.Model):

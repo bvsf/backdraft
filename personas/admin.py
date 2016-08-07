@@ -52,38 +52,25 @@ class BomberoAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'apellido',
-                'nombre',
-                'tipo_documento',
-                'documento',
-                'fecha_nacimiento',
+                'persona',
                 'foto',
+                'numero_credencial',
+                'estado_civil',
                 'lugar_nacimiento',
-                'estado_civil',)
-        }),
-        (_('¿Fallecido?'), {
-            'classes': ('collapse',),
-            'fields': ('fecha_desceso',),
+                )
         }),
     )
     list_display = (
-        'apellido',
-        'nombre',
-        'tipo_documento',
-        'documento',
-        'fecha_nacimiento')
+        'persona',)
     search_fields = (
-        'apellido',
-        'nombre',
-        'documento',
-        'lugar_nacimiento__nombre')
+        'persona__apellido',
+        'persona__nombre',
+        'persona__documento')
     list_filter = (
-        'apellido',
-        'lugar_nacimiento',
-        'fecha_nacimiento',
-        'tipo_documento',
-        'fecha_desceso',)
-    date_hierarchy = 'fecha_nacimiento'
+        'persona__apellido',
+        'persona__fecha_nacimiento',
+        'persona__tipo_documento',
+        'persona__fecha_desceso',)
 
 
 @admin.register(Parentesco)
@@ -91,7 +78,8 @@ class ParentescoAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     list_display = (
         'bombero',
-        'familiar')
+        'familiar',
+        'parentesco',)
     search_fields = (
         'bombero.persona.apellido',
         'bombero.persona.nombre',
