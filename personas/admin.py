@@ -20,6 +20,8 @@ class PersonaAdmin(admin.ModelAdmin):
                 'nombre',
                 'tipo_documento',
                 'documento',
+                'grupo_sanguineo',
+                'factor_sanguineo',
                 'fecha_nacimiento',)
         }),
         (_('¿Fallecido?'), {
@@ -32,6 +34,8 @@ class PersonaAdmin(admin.ModelAdmin):
         'nombre',
         'tipo_documento',
         'documento',
+        'grupo_sanguineo',
+        'factor_sanguineo',
         'fecha_nacimiento',
         'fecha_desceso',)
     search_fields = (
@@ -42,6 +46,8 @@ class PersonaAdmin(admin.ModelAdmin):
         'apellido',
         'fecha_nacimiento',
         'tipo_documento',
+        'grupo_sanguineo',
+        'factor_sanguineo',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
 
@@ -56,6 +62,8 @@ class BomberoAdmin(admin.ModelAdmin):
                 'nombre',
                 'tipo_documento',
                 'documento',
+                'grupo_sanguineo',
+                'factor_sanguineo',
                 'fecha_nacimiento',
                 'foto',
                 'lugar_nacimiento',
@@ -71,6 +79,8 @@ class BomberoAdmin(admin.ModelAdmin):
         'nombre',
         'tipo_documento',
         'documento',
+        'grupo_sanguineo',
+        'factor_sanguineo',
         'fecha_nacimiento')
     search_fields = (
         'apellido',
@@ -82,6 +92,8 @@ class BomberoAdmin(admin.ModelAdmin):
         'lugar_nacimiento',
         'fecha_nacimiento',
         'tipo_documento',
+        'grupo_sanguineo',
+        'factor_sanguineo',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
 

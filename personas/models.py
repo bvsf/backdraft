@@ -67,8 +67,9 @@ class Persona(models.Model):
 
     @property
     def aniversario(self):
-        delta = (date.today() - self.fecha_desceso)
-        return int((delta.days / (365.2425)))
+        if self.fecha_desceso:
+            delta = (date.today() - self.fecha_desceso)
+            return int((delta.days / (365.2425)))
 
     def __str__(self):
         return self.nombre_completo
