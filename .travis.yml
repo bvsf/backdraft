@@ -1,7 +1,6 @@
 language: python
 python:
-    - "3.2"
-    - "3.3"
+    # Las versiones de Python menores a 3.4 no estan soportadas por Django1.9
     - "3.4"
     - "3.5"
 
