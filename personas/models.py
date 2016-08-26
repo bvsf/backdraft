@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django.db import models
 from django.utils.translation import ugettext as _
-from tipos_documento.models import TipoDocumento
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
@@ -12,17 +11,25 @@ from .choices import (
     RELACION_PARENTESCO,
     USO_MEDIO,
     TIPO_WEB,
-    TIPO_TELEFONO)
+    TIPO_TELEFONO,
+    TIPO_DOCUMENTO
+)
 
 
 class Persona(models.Model):
     apellido = models.CharField(
         max_length=255,
-        verbose_name=_('Apellido'))
+        verbose_name=_('Apellido')
+    )
     nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre'))
-    tipo_documento = models.ForeignKey(TipoDocumento)
+        verbose_name=_('Nombre')
+    )
+    tipo_documento = models.CharField(
+        max_length=10,
+        choices=TIPO_DOCUMENTO,
+        default=TIPO_DOCUMENTO[0][0],
+        verbose_name=_("Tipo de Documento"))
     documento = models.CharField(
         max_length=11,
         verbose_name=_('Número de documento'),
@@ -30,10 +37,12 @@ class Persona(models.Model):
     grupo_sanguineo = models.CharField(
         max_length=255,
         choices=GRUPO_SANGUINEO,
+        default=GRUPO_SANGUINEO[0][0],
         verbose_name=_("Grupo Sanguíneo"))
     factor_sanguineo = models.CharField(
         max_length=255,
         choices=FACTOR_SANGUINEO,
+        default=FACTOR_SANGUINEO[0][0],
         verbose_name=_("Factor Sanguíneo"))
     fecha_nacimiento = models.DateField(
         verbose_name=_('Fecha de Nacimiento'))
@@ -93,6 +102,7 @@ class Bombero(Persona):
     estado_civil = models.CharField(
         max_length=255,
         choices=ESTADO_CIVIL,
+        default=ESTADO_CIVIL[0][0],
         verbose_name=_("Estado Civil"))
     lugar_nacimiento = models.ForeignKey(
         Localidad,
@@ -111,6 +121,7 @@ class Parentesco(models.Model):
     parentesco = models.CharField(
         max_length=255,
         choices=RELACION_PARENTESCO,
+        default=RELACION_PARENTESCO[0][0],
         verbose_name=_("Parentesco"))
 
 
@@ -119,12 +130,15 @@ class Medio(models.Model):
     uso = models.CharField(
         verbose_name=_("Uso"),
         max_length=255,
-        choices=USO_MEDIO)
+        choices=USO_MEDIO,
+        default=USO_MEDIO[0][0]
+    )
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Obervaciones"),
         blank=True,
-        null=True)
+        null=True
+    )
 
     class Meta:
         abstract = True
@@ -184,6 +198,7 @@ class DireccionWeb(Medio):
     tipo = models.CharField(
         max_length=255,
         choices=TIPO_WEB,
+        default=TIPO_WEB[0][0],
         verbose_name=_("Tipo web"))
 
     def __str__(self):
@@ -200,6 +215,7 @@ class Telefono(Medio):
     tipo = models.CharField(
         max_length=255,
         choices=TIPO_TELEFONO,
+        default=TIPO_TELEFONO[0][0],
         verbose_name=_("Tipo de Teléfono"))
 
     def __str__(self):
