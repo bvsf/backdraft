@@ -61,7 +61,7 @@ class Persona(models.Model):
 
     @property
     def sangre(self):
-        return "{0}{1}".format(
+        return "{0} ({1})".format(
             self.grupo_sanguineo,
             self.factor_sanguineo)
 
