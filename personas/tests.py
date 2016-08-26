@@ -1,5 +1,4 @@
 from django.test import TestCase
-from tipos_documento.models import TipoDocumento
 from localidades.models import (
     Localidad,
     Provincia,
@@ -13,10 +12,6 @@ from personas.models import (
 class SimpleTest(TestCase):
 
     def setUp(self):
-        TipoDocumento.objects.create(
-            tipo='Documento',
-            abreviatura='D',
-        )
 
         Persona.objects.create(
             apellido='Apellido',
@@ -25,7 +20,7 @@ class SimpleTest(TestCase):
             grupo_sanguineo='O',
             factor_sanguineo='-',
             fecha_nacimiento='1991-01-31',
-            tipo_documento=TipoDocumento.objects.get(abreviatura='D'),
+            tipo_documento='DNI',
         )
 
         Pais.objects.create(
@@ -76,7 +71,7 @@ class SimpleTest(TestCase):
         persona = Persona.objects.get(apellido='Apellido')
         self.assertEqual(persona.nombre_completo, 'APELLIDO, Nombre')
         self.assertEqual(persona.edad, 25)
-        self.assertEqual(persona.dni, 'D 12345678')
+        self.assertEqual(persona.dni, 'DNI 12345678')
         self.assertEqual(persona.sangre, 'O (-)')
         self.assertEqual(persona.aniversario, None)
 

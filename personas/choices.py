@@ -2,7 +2,6 @@
 from django.utils.translation import ugettext_lazy as _
 
 GRUPO_SANGUINEO = (
-    ('', _('Grupo Saguineo')),
     ('AB', _('Grupo AB')),
     ('A', _('Grupo A')),
     ('B', _('Grupo B')),
@@ -10,13 +9,11 @@ GRUPO_SANGUINEO = (
 )
 
 FACTOR_SANGUINEO = (
-    ('', _('Factor Saguineo')),
     ('+', _('RH+')),
     ('-', _('RH-')),
 )
 
 ESTADO_CIVIL = (
-    ('', _('Estado Civil')),
     ('Casado', _('Casado/a')),
     ('Soltero', _('Soltero/a')),
     ('Divorciado', _('Divorciado/a')),
@@ -25,7 +22,6 @@ ESTADO_CIVIL = (
 )
 
 RELACION_PARENTESCO = (
-    ('', _('Relacion de Parentesco')),
     ('Hermano', _('Hermano/a')),
     ('Padre', _('Padre')),
     ('Madre', _('Madre')),
@@ -38,19 +34,22 @@ RELACION_PARENTESCO = (
 )
 
 USO_MEDIO = (
-    ('', _("Uso dado")),
     ('P', _("Particular")),
     ('L', _("Laboral")),
 )
 
 TIPO_WEB = (
-    ('', _("Tipo de dirección web")),
     ('S', _("Perfil Web Social")),
     ('L', _("Pagina Web Laboral")),
 )
 
 TIPO_TELEFONO = (
-    ('', _("Tipo de Teléfono")),
     ('C', _("Celular")),
     ('F', _("Fijo"))
+)
+
+TIPO_DOCUMENTO = (
+    ('DNI', _("DNI")),
+    ('LC', _("LC")),
+    ('LE', _("LE")),
 )
