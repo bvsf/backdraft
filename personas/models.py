@@ -61,14 +61,15 @@ class Persona(models.Model):
 
     @property
     def sangre(self):
-        return "{0}{1}".format(
+        return "{0} ({1})".format(
             self.grupo_sanguineo,
             self.factor_sanguineo)
 
     @property
     def aniversario(self):
-        delta = (date.today() - self.fecha_desceso)
-        return int((delta.days / (365.2425)))
+        if self.fecha_desceso:
+            delta = (date.today() - self.fecha_desceso)
+            return int((delta.days / (365.2425)))
 
     def __str__(self):
         return self.nombre_completo
