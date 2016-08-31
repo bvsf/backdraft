@@ -62,6 +62,7 @@ class BomberoAdmin(admin.ModelAdmin):
                 'nombre',
                 'tipo_documento',
                 'documento',
+                'numero_credencial',
                 'grupo_sanguineo',
                 'factor_sanguineo',
                 'fecha_nacimiento',
@@ -75,12 +76,10 @@ class BomberoAdmin(admin.ModelAdmin):
         }),
     )
     list_display = (
-        'apellido',
-        'nombre',
-        'tipo_documento',
-        'documento',
-        'grupo_sanguineo',
-        'factor_sanguineo',
+        'nombre_completo',
+        'numero_credencial',
+        'dni',
+        'sangre',
         'fecha_nacimiento')
     search_fields = (
         'apellido',
