@@ -20,6 +20,8 @@ class PersonaAdmin(admin.ModelAdmin):
                 'nombre',
                 'tipo_documento',
                 'documento',
+                'grupo_sanguineo',
+                'factor_sanguineo',
                 'fecha_nacimiento',)
         }),
         (_('¿Fallecido?'), {
@@ -28,10 +30,9 @@ class PersonaAdmin(admin.ModelAdmin):
         }),
     )
     list_display = (
-        'apellido',
-        'nombre',
-        'tipo_documento',
-        'documento',
+        'nombre_completo',
+        'dni',
+        'sangre',
         'fecha_nacimiento',
         'fecha_desceso',)
     search_fields = (
@@ -42,6 +43,8 @@ class PersonaAdmin(admin.ModelAdmin):
         'apellido',
         'fecha_nacimiento',
         'tipo_documento',
+        'grupo_sanguineo',
+        'factor_sanguineo',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
 
@@ -53,24 +56,36 @@ class BomberoAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'persona',
-                'foto',
                 'numero_credencial',
+                'foto',
                 'estado_civil',
                 'lugar_nacimiento',
                 )
         }),
     )
     list_display = (
-        'persona',)
+        'numero_credencial',
+        'nombre_completo',
+        'dni',
+        'sangre',
+    )
+
+    def nombre_completo(self, obj):
+        return obj.persona.nombre_completo
+    nombre_completo.short_description = _('Apellido y Nombre')
+
+    def sangre(self, obj):
+        return obj.persona.sangre
+    sangre.short_description = _('Grupo Sanguíneo')
+
+    def dni(self, obj):
+        return obj.persona.dni
+    dni.short_description = _('Documento')
+
     search_fields = (
         'persona__apellido',
         'persona__nombre',
         'persona__documento')
-    list_filter = (
-        'persona__apellido',
-        'persona__fecha_nacimiento',
-        'persona__tipo_documento',
-        'persona__fecha_desceso',)
 
 
 @admin.register(Parentesco)
@@ -113,8 +128,8 @@ class DireccionPostalAdmin(admin.ModelAdmin):
         'localidad__nombre')
     list_display = (
         'persona',
-        'calle',
-        'localidad')
+        'direccion_completa',
+    )
     list_filter = (
         'persona',
         'uso',
