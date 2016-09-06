@@ -30,12 +30,9 @@ class PersonaAdmin(admin.ModelAdmin):
         }),
     )
     list_display = (
-        'apellido',
-        'nombre',
-        'tipo_documento',
-        'documento',
-        'grupo_sanguineo',
-        'factor_sanguineo',
+        'nombre_completo',
+        'dni',
+        'sangre',
         'fecha_nacimiento',
         'fecha_desceso',)
     search_fields = (
@@ -58,43 +55,37 @@ class BomberoAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'apellido',
-                'nombre',
-                'tipo_documento',
-                'documento',
+                'persona',
                 'numero_credencial',
-                'grupo_sanguineo',
-                'factor_sanguineo',
-                'fecha_nacimiento',
                 'foto',
+                'estado_civil',
                 'lugar_nacimiento',
-                'estado_civil',)
-        }),
-        (_('¿Fallecido?'), {
-            'classes': ('collapse',),
-            'fields': ('fecha_desceso',),
+                )
         }),
     )
     list_display = (
-        'nombre_completo',
         'numero_credencial',
+        'nombre_completo',
         'dni',
         'sangre',
-        'fecha_nacimiento')
+    )
+
+    def nombre_completo(self, obj):
+        return obj.persona.nombre_completo
+    nombre_completo.short_description = _('Apellido y Nombre')
+
+    def sangre(self, obj):
+        return obj.persona.sangre
+    sangre.short_description = _('Grupo Sanguíneo')
+
+    def dni(self, obj):
+        return obj.persona.dni
+    dni.short_description = _('Documento')
+
     search_fields = (
-        'apellido',
-        'nombre',
-        'documento',
-        'lugar_nacimiento__nombre')
-    list_filter = (
-        'apellido',
-        'lugar_nacimiento',
-        'fecha_nacimiento',
-        'tipo_documento',
-        'grupo_sanguineo',
-        'factor_sanguineo',
-        'fecha_desceso',)
-    date_hierarchy = 'fecha_nacimiento'
+        'persona__apellido',
+        'persona__nombre',
+        'persona__documento')
 
 
 @admin.register(Parentesco)
@@ -102,7 +93,8 @@ class ParentescoAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     list_display = (
         'bombero',
-        'familiar')
+        'familiar',
+        'parentesco',)
     search_fields = (
         'bombero.persona.apellido',
         'bombero.persona.nombre',
@@ -136,8 +128,8 @@ class DireccionPostalAdmin(admin.ModelAdmin):
         'localidad__nombre')
     list_display = (
         'persona',
-        'calle',
-        'localidad')
+        'direccion_completa',
+    )
     list_filter = (
         'persona',
         'uso',
