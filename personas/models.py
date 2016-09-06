@@ -243,3 +243,47 @@ class DireccionElectronica(Medio):
     class Meta:
         verbose_name = _("Direccion de Email")
         verbose_name_plural = _("Direcciones de Email")
+
+
+class Instituciones(models.Model):
+    razon_social = models.CharField(
+        max_length=255,
+        verbose_name=_("Razón Social"),
+    )
+    localidad = models.ForeignKey(
+        Localidad,
+        verbose_name=_("Localidad"))
+    calle = models.CharField(
+        max_length=255,
+        verbose_name=_("Calle"))
+    numero = models.SmallIntegerField(
+        verbose_name=_("Número"))
+    piso = models.CharField(
+        max_length=5,
+        verbose_name=_("Piso"),
+        blank=True,
+        null=True)
+    departamento = models.CharField(
+        max_length=5,
+        verbose_name=_("Departamento"),
+        blank=True,
+        null=True)
+
+    @property
+    def direccion_completa(self):
+        piso = ""
+        dpto = ""
+        if self.piso:
+            piso = " piso {0}".format(self.piso)
+        if self.departamento:
+            dpto = ' dpto. "{0}"'.format(self.departamento)
+
+        return "{0} {1}{2}{3}, {4}".format(
+            self.calle,
+            self.numero,
+            piso,
+            dpto,
+            self.localidad)
+
+    def __str__(self):
+        return self.razon_social
