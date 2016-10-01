@@ -12,11 +12,54 @@ from .choices import (
     USO_MEDIO,
     TIPO_WEB,
     TIPO_TELEFONO,
-    TIPO_DOCUMENTO
+    TIPO_DOCUMENTO,
+    CUIT_CUIL,
 )
 
 
-class Persona(models.Model):
+class Entidad(models.Model):
+    tipo_cuit = models.CharField(
+        max_length=4,
+        verbose_name=_("CUIT/CUIL"),
+        choices=CUIT_CUIL,
+        default=CUIT_CUIL[0][0],
+    )
+    nro_cuit = models.CharField(
+        max_length=13,
+        blank=True,
+        null=True,
+        verbose_name=_('Numero de CUIT/CUIL'),
+    )
+
+    def __str__(self):
+        try:
+            if hasattr(self, 'persona'):
+                return "{0}".format(self.persona)
+            elif hasattr(self, 'institucion'):
+                return "{0}".format(self.institucion)
+        except NotImplementedError:
+            return _("ERROR! No es una Persona ni una Institución")
+
+
+class Institucion(Entidad):
+    razon_social = models.CharField(
+        max_length=255,
+        verbose_name=_("Razón Social"),
+    )
+
+    def __str__(self):
+        return self.razon_social
+
+    @property
+    def nombre_completo(self):
+        return "({0}: {1}) - {0}".format(
+            self.tipo_cuit,
+            self.nro_cuit,
+            self.razon_social,
+            )
+
+
+class Persona(Entidad):
     apellido = models.CharField(
         max_length=255,
         verbose_name=_('Apellido')
@@ -133,7 +176,7 @@ class Parentesco(models.Model):
 
 
 class Medio(models.Model):
-    persona = models.ForeignKey(Persona)
+    entidad = models.ForeignKey(Entidad)
     uso = models.CharField(
         verbose_name=_("Uso"),
         max_length=255,
@@ -243,47 +286,3 @@ class DireccionElectronica(Medio):
     class Meta:
         verbose_name = _("Direccion de Email")
         verbose_name_plural = _("Direcciones de Email")
-
-
-class Instituciones(models.Model):
-    razon_social = models.CharField(
-        max_length=255,
-        verbose_name=_("Razón Social"),
-    )
-    localidad = models.ForeignKey(
-        Localidad,
-        verbose_name=_("Localidad"))
-    calle = models.CharField(
-        max_length=255,
-        verbose_name=_("Calle"))
-    numero = models.SmallIntegerField(
-        verbose_name=_("Número"))
-    piso = models.CharField(
-        max_length=5,
-        verbose_name=_("Piso"),
-        blank=True,
-        null=True)
-    departamento = models.CharField(
-        max_length=5,
-        verbose_name=_("Departamento"),
-        blank=True,
-        null=True)
-
-    @property
-    def direccion_completa(self):
-        piso = ""
-        dpto = ""
-        if self.piso:
-            piso = " piso {0}".format(self.piso)
-        if self.departamento:
-            dpto = ' dpto. "{0}"'.format(self.departamento)
-
-        return "{0} {1}{2}{3}, {4}".format(
-            self.calle,
-            self.numero,
-            piso,
-            dpto,
-            self.localidad)
-
-    def __str__(self):
-        return self.razon_social

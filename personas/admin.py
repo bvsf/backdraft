@@ -16,6 +16,8 @@ class PersonaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
+                'tipo_cuit',
+                'nro_cuit',
                 'apellido',
                 'nombre',
                 'tipo_documento',
@@ -108,7 +110,7 @@ class DireccionPostalAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'persona',
+                'entidad',
                 'uso',
                 'calle',
                 'numero',
@@ -127,11 +129,11 @@ class DireccionPostalAdmin(admin.ModelAdmin):
         'departamento',
         'localidad__nombre')
     list_display = (
-        'persona',
+        'entidad',
         'direccion_completa',
     )
     list_filter = (
-        'persona',
+        'entidad',
         'uso',
         'localidad')
 
@@ -142,7 +144,7 @@ class DireccionWebAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'persona',
+                'entidad',
                 'tipo',
                 'uso',
                 'direccion')
@@ -152,12 +154,12 @@ class DireccionWebAdmin(admin.ModelAdmin):
             'fields': ('observaciones',),
             }))
     list_display = (
-        'persona',
+        'entidad',
         'tipo',
         'uso',
         'direccion')
     list_filter = (
-        'persona',
+        'entidad',
         'tipo',
         'uso')
 
@@ -168,7 +170,7 @@ class TelefonoAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'persona',
+                'entidad',
                 'tipo',
                 'uso',
                 'telefono')
@@ -178,12 +180,12 @@ class TelefonoAdmin(admin.ModelAdmin):
             'fields': ('observaciones',),
             }))
     list_display = (
-        'persona',
+        'entidad',
         'tipo',
         'uso',
         'telefono',)
     list_filter = (
-        'persona',
+        'entidad',
         'tipo',
         'uso')
 
@@ -194,7 +196,7 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'persona',
+                'entidad',
                 'mail',)
             }),
         (_("Observaciones"), {
@@ -202,7 +204,7 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
             'fields': ('observaciones',),
             }))
     list_display = (
-        'persona',
+        'entidad',
         'mail',)
     list_filter = (
-        'persona',)
+        'entidad',)

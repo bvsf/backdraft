@@ -53,3 +53,8 @@ TIPO_DOCUMENTO = (
     ('LC', _("LC")),
     ('LE', _("LE")),
 )
+
+CUIT_CUIL = (
+    ('CUIT', _("CUIT")),
+    ('CUIL', _("CUIL")),
+    )
