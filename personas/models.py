@@ -3,11 +3,16 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from tipos_documento.models import TipoDocumento
 from localidades.models import Localidad
+from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
 from .choices import (
     GRUPO_SANGUINEO,
     FACTOR_SANGUINEO,
-    ESTADO_CIVIL)
+    ESTADO_CIVIL,
+    RELACION_PARENTESCO,
+    USO_MEDIO,
+    TIPO_WEB,
+    TIPO_TELEFONO)
 
 
 class Persona(models.Model):
@@ -20,7 +25,8 @@ class Persona(models.Model):
     tipo_documento = models.ForeignKey(TipoDocumento)
     documento = models.CharField(
         max_length=11,
-        verbose_name=_('Número de documento'))
+        verbose_name=_('Número de documento'),
+        unique=True)
     grupo_sanguineo = models.CharField(
         max_length=255,
         choices=GRUPO_SANGUINEO,
@@ -31,6 +37,10 @@ class Persona(models.Model):
         verbose_name=_("Factor Sanguíneo"))
     fecha_nacimiento = models.DateField(
         verbose_name=_('Fecha de Nacimiento'))
+    fecha_desceso = models.DateField(
+        verbose_name=_("Fecha de Fallecimiento"),
+        null=True,
+        blank=True,)
 
     @property
     def nombre_completo(self):
@@ -55,6 +65,11 @@ class Persona(models.Model):
             self.grupo_sanguineo,
             self.factor_sanguineo)
 
+    @property
+    def aniversario(self):
+        delta = (date.today() - self.fecha_desceso)
+        return int((delta.days / (365.2425)))
+
     def __str__(self):
         return self.nombre_completo
 
@@ -72,7 +87,8 @@ class Bombero(Persona):
         verbose_name=_("Foto Carnet"))
     numero_credencial = models.CharField(
         max_length=255,
-        verbose_name=_("Número de Credencial"))
+        verbose_name=_("Número de Credencial"),
+        unique=True)
     estado_civil = models.CharField(
         max_length=255,
         choices=ESTADO_CIVIL,
@@ -82,11 +98,124 @@ class Bombero(Persona):
         verbose_name=_("Lugar de Nacimiento"))
 
 
-class Fallecido(Persona):
-    fecha_desceso = models.DateField(
-        verbose_name=_("Fecha de Fallecimiento"))
+class Parentesco(models.Model):
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="bombero")
+    familiar = models.ForeignKey(
+        Persona,
+        verbose_name=_("Familiar"),
+        related_name="familiar")
+    parentesco = models.CharField(
+        max_length=255,
+        choices=RELACION_PARENTESCO,
+        verbose_name=_("Parentesco"))
+
+
+class Medio(models.Model):
+    persona = models.ForeignKey(Persona)
+    uso = models.CharField(
+        verbose_name=_("Uso"),
+        max_length=255,
+        choices=USO_MEDIO)
+    observaciones = models.TextField(
+        max_length=1000,
+        verbose_name=_("Obervaciones"),
+        blank=True,
+        null=True)
+
+    class Meta:
+        abstract = True
+
+
+class DireccionPostal(Medio):
+    localidad = models.ForeignKey(
+        Localidad,
+        verbose_name=_("Localidad"))
+    calle = models.CharField(
+        max_length=255,
+        verbose_name=_("Calle"))
+    numero = models.SmallIntegerField(
+        verbose_name=_("Número"))
+    piso = models.CharField(
+        max_length=5,
+        verbose_name=_("Piso"),
+        blank=True,
+        null=True)
+    departamento = models.CharField(
+        max_length=5,
+        verbose_name=_("Departamento"),
+        blank=True,
+        null=True)
 
     @property
-    def aniversario(self):
-        delta = (date.today() - self.fecha_desceso)
-        return int((delta.days / (365.2425)))
+    def direccion_completa(self):
+        piso = ""
+        dpto = ""
+        if self.piso:
+            piso = " piso {0}".format(self.piso)
+        if self.departamento:
+            dpto = ' dpto. "{0}"'.format(self.departamento)
+
+        return "{0} {1}{2}{3}, {4}".format(
+            self.calle,
+            self.numero,
+            piso,
+            dpto,
+            self.localidad)
+
+    def __str__(self):
+        return "{0} {1} {2} {3}".format(
+            self.calle,
+            self.numero,
+            self.piso,
+            self.departamento)
+
+    class Meta:
+        verbose_name = _("Dirección Postal")
+        verbose_name_plural = _("Direcciones Postales")
+
+
+class DireccionWeb(Medio):
+    direccion = models.URLField(
+        verbose_name=_("Dirección Web"))
+    tipo = models.CharField(
+        max_length=255,
+        choices=TIPO_WEB,
+        verbose_name=_("Tipo web"))
+
+    def __str__(self):
+        return self.direccion
+
+    class Meta:
+        verbose_name = _("Dirección Web")
+        verbose_name_plural = _("Direcciones Web")
+
+
+class Telefono(Medio):
+    telefono = PhoneNumberField(
+        verbose_name=_("Teléfono"))
+    tipo = models.CharField(
+        max_length=255,
+        choices=TIPO_TELEFONO,
+        verbose_name=_("Tipo de Teléfono"))
+
+    def __str__(self):
+        return self.telefono.__str__()
+
+    class Meta:
+        verbose_name = _("Teléfono")
+        verbose_name_plural = _("Teléfonos")
+
+
+class DireccionElectronica(Medio):
+    mail = models.EmailField(
+        verbose_name=_("Email"))
+
+    def __str__(self):
+        return self.mail
+
+    class Meta:
+        verbose_name = _("Direccion de Email")
+        verbose_name_plural = _("Direcciones de Email")
