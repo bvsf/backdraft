@@ -14,6 +14,8 @@ from .choices import (
     TIPO_TELEFONO,
     TIPO_DOCUMENTO,
     CUIT_CUIL,
+    NIVEL_ESTUDIO,
+    ESTADO_ESTUDIO,
 )
 
 
@@ -286,3 +288,88 @@ class DireccionElectronica(Medio):
     class Meta:
         verbose_name = _("Direccion de Email")
         verbose_name_plural = _("Direcciones de Email")
+
+
+class Empleo(models.Model):
+    empresa = models.ForeignKey(
+        Institucion,
+        verbose_name=_("Empresa"))
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"))
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name=_("Título o cargo"))
+    periodo_desde = models.DateField(
+        verbose_name=_("Fecha de Inicio"))
+    periodo_hasta = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de Fin"))
+    descripcion = models.TextField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        verbose_name=_("Descripción"))
+
+    class Meta:
+        verbose_name = _("Empleo")
+        verbose_name_plural = _("Empleos")
+
+    @property
+    def periodo(self):
+        periodo = "desde el {0} hasta".format(
+            self.periodo_desde)
+        if self.periodo_hasta:
+            periodo += " el {1}".format(
+                self.periodo_hasta)
+        else:
+            periodo = ' la actualidad'
+        return "{0}".format(periodo)
+
+    @property
+    def trabajo(self):
+        return "({0}) {1} - {2}".format(
+            self.periodo,
+            self.empresa,
+            self.titulo,
+            )
+
+    def __str__(self):
+        return "{0} - {1} ({2})".format(
+            self.bombero,
+            self.institucion,
+            self.periodo)
+
+
+class Estudio(models.Model):
+    establecimiento = models.ForeignKey(
+        Institucion,
+        verbose_name=_("Establecimiento"))
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"))
+    nivel = models.CharField(
+        max_length=5,
+        choices=NIVEL_ESTUDIO,
+        default=NIVEL_ESTUDIO[0][0],
+        verbose_name=_("Nivel de Estudio"))
+    estado = models.CharField(
+        max_length=5,
+        choices=ESTADO_ESTUDIO,
+        default=ESTADO_ESTUDIO[0][0],
+        verbose_name=_("Estado de cursado"))
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name=_("Título"))
+    periodo_desde = models.DateField(
+        verbose_name=_("Fecha de Inicio"))
+    periodo_hasta = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de Fin"))
+    descripcion = models.TextField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        verbose_name=_("Descripción"))
