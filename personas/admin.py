@@ -7,7 +7,127 @@ from personas.models import (
     DireccionWeb,
     Telefono,
     DireccionElectronica,
-    Parentesco)
+    Parentesco,
+    Estudio,
+    Empleo,
+    Institucion,
+)
+
+
+@admin.register(Institucion)
+class InstitucionAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'tipo_cuit',
+                'nro_cuit',
+                'razon_social',
+                )
+        }),
+    )
+    list_display = (
+        'tipo_cuit',
+        'nro_cuit',
+        'razon_social',
+    )
+    search_fields = (
+        'nro_cuit',
+        'razon_social',
+    )
+
+
+@admin.register(Estudio)
+class EstudioAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'bombero',
+                'establecimiento',
+                'nivel',
+                'titulo',
+                'estado',
+                'periodo_desde',
+                'periodo_hasta',
+                )
+        }),
+        (_('Descripcion'), {
+            'classes': ('collapse',),
+            'fields': ('descripcion',),
+        }),
+    )
+    list_display = (
+        'periodo',
+        'establecimiento',
+        'bombero',
+    )
+    search_fields = (
+        'bombero__persona__apellido',
+        'bombero__persona__nombre',
+        'bombero__persona__documento',
+        'bombero__persona__nro_cuit',
+        'establecimiento__razon_social',
+        'establecimiento__nro_cuit',
+        'nivel',
+        'estado',
+        'titulo',
+    )
+    list_filter = (
+        'bombero',
+        'establecimiento',
+        'nivel',
+        'estado',
+        'titulo',
+    )
+    date_hierarchy = 'periodo_desde'
+
+    def periodo(self, obj):
+        return obj.periodo
+    periodo.short_description = _('Periodo')
+
+
+@admin.register(Empleo)
+class EmpleoAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'bombero',
+                'empresa',
+                'titulo',
+                'periodo_desde',
+                'periodo_hasta',
+                )
+        }),
+        (_('Descripcion'), {
+            'classes': ('collapse',),
+            'fields': ('descripcion',),
+        }),
+    )
+    list_display = (
+        'periodo',
+        'empresa',
+        'bombero',
+    )
+    search_fields = (
+        'bombero__persona__apellido',
+        'bombero__persona__nombre',
+        'bombero__persona__documento',
+        'bombero__persona__nro_cuit',
+        'empresa__razon_social',
+        'empresa__nro_cuit',
+        'titulo',
+    )
+    list_filter = (
+        'bombero',
+        'empresa',
+    )
+    date_hierarchy = 'periodo_desde'
+
+    def periodo(self, obj):
+        return obj.periodo
+    periodo.short_description = _('Periodo')
 
 
 @admin.register(Persona)
@@ -40,7 +160,9 @@ class PersonaAdmin(admin.ModelAdmin):
     search_fields = (
         'apellido',
         'nombre',
-        'documento',)
+        'documento',
+        'nro_cuit',
+    )
     list_filter = (
         'apellido',
         'fecha_nacimiento',
@@ -87,7 +209,9 @@ class BomberoAdmin(admin.ModelAdmin):
     search_fields = (
         'persona__apellido',
         'persona__nombre',
-        'persona__documento')
+        'persona__documento',
+        'persona__nro_cuit',
+    )
 
 
 @admin.register(Parentesco)

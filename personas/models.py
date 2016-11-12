@@ -60,6 +60,10 @@ class Institucion(Entidad):
             self.razon_social,
             )
 
+    class Meta:
+        verbose_name = _("Institución")
+        verbose_name_plural = _("Instituciones")
+
 
 class Persona(Entidad):
     apellido = models.CharField(
@@ -318,13 +322,13 @@ class Empleo(models.Model):
 
     @property
     def periodo(self):
-        periodo = "desde el {0} hasta".format(
+        periodo = "Desde el {0} hasta".format(
             self.periodo_desde)
         if self.periodo_hasta:
-            periodo += " el {1}".format(
+            periodo += " el {0}".format(
                 self.periodo_hasta)
         else:
-            periodo = ' la actualidad'
+            periodo += ' la actualidad'
         return "{0}".format(periodo)
 
     @property
@@ -338,7 +342,7 @@ class Empleo(models.Model):
     def __str__(self):
         return "{0} - {1} ({2})".format(
             self.bombero,
-            self.institucion,
+            self.empresa,
             self.periodo)
 
 
@@ -373,3 +377,43 @@ class Estudio(models.Model):
         blank=True,
         null=True,
         verbose_name=_("Descripción"))
+
+    class Meta:
+        verbose_name = _("Estudio")
+        verbose_name_plural = _("Estudios")
+
+    @property
+    def periodo(self):
+        periodo = "Desde el {0} hasta".format(
+            self.periodo_desde)
+        if self.periodo_hasta:
+            periodo += " el {0}".format(
+                self.periodo_hasta)
+        else:
+            periodo += ' la actualidad'
+        return "{0}".format(periodo)
+
+    @property
+    def nivel_estudio(self):
+        '''
+        https://docs.djangoproject.com/en/dev/
+            ref/models/instances/#django.db.models.Model.get_FOO_display
+        '''
+        return "{0} - {1}".format(
+            self.get_nivel_display(),
+            self.get_estado_display(),
+            )
+
+    @property
+    def estudio(self):
+        return "({0})({1}) {2} - {3}".format(
+            self.periodo,
+            self.nivel_estudio,
+            self.establecimiento,
+            self.titulo,
+            )
+
+    def __str__(self):
+        return "{0}".format(
+            self.estudio
+            )
