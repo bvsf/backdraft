@@ -396,7 +396,6 @@ class Estudio(models.Model):
     @property
     def nivel_estudio(self):
         '''
-        XD
         https://docs.djangoproject.com/en/dev/
             ref/models/instances/#django.db.models.Model.get_FOO_display
         '''
