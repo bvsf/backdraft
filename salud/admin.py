@@ -12,15 +12,15 @@ class AlergenosAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'nombre_alergeno'
+                'nombre_alergeno',
             )
         }),
     )
     list_display = (
-        'nombre_alergeno'
+        'nombre_alergeno',
     )
     search_fields = (
-        'nombre_alergeno'
+        'nombre_alergeno',
     )
 
 
