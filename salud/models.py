@@ -3,11 +3,17 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from personas.models import Bombero
 
+
 class Alergenos(models.Model):
     nombre_alergeno = models.CharField(
         max_length=255,
         verbose_name=_('Nombre del Alérgeno'),
     )
+
+    def __str__(self):
+        return "{0}".format(
+            self.nombre_alergeno
+            )
 
     class Meta:
         verbose_name = _("Alérgeno")
@@ -29,6 +35,12 @@ class Alergicos(models.Model):
         blank=True,
         null=True
     )
+
+    def __str__(self):
+        return "{0} -> {1}".format(
+            self.bombero,
+            self.alergeno
+        )
 
     class Meta:
         verbose_name = _("Alérgico")
