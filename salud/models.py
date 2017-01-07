@@ -45,3 +45,4 @@ class Alergicos(models.Model):
     class Meta:
         verbose_name = _("Alérgico")
         verbose_name_plural = _("Alérgicos")
+        unique_together = (("bombero", "alergeno"),)
