@@ -12,7 +12,6 @@ from personas.models import (
 class SimpleTest(TestCase):
 
     def setUp(self):
-
         Persona.objects.create(
             apellido='Apellido',
             nombre='Nombre',
@@ -42,27 +41,27 @@ class SimpleTest(TestCase):
         )
 
         DireccionPostal.objects.create(
-            persona = Persona.objects.get(apellido='Apellido'),
-            uso = 'P',
-            localidad = Localidad.objects.get(nombre='San Francisco'),
-            calle = 'Algún Prócer',
-            numero = '123',
+            entidad=Persona.objects.get(apellido='Apellido'),
+            uso='P',
+            localidad=Localidad.objects.get(nombre='San Francisco'),
+            calle='Algún Prócer',
+            numero='123',
         )
         DireccionPostal.objects.create(
-            persona = Persona.objects.get(apellido='Apellido'),
-            uso = 'L',
-            localidad = Localidad.objects.get(nombre='San Francisco'),
-            calle = 'Otro Prócer',
-            numero = '456',
-            piso = 'PA',
+            entidad=Persona.objects.get(apellido='Apellido'),
+            uso='L',
+            localidad=Localidad.objects.get(nombre='San Francisco'),
+            calle='Otro Prócer',
+            numero='456',
+            piso='PA',
         )
         DireccionPostal.objects.create(
-            persona = Persona.objects.get(apellido='Apellido'),
-            uso = 'L',
-            localidad = Localidad.objects.get(nombre='San Francisco'),
-            calle = 'Una fecha importante',
-            numero = '789',
-            piso = '8vo.',
+            entidad=Persona.objects.get(apellido='Apellido'),
+            uso='L',
+            localidad=Localidad.objects.get(nombre='San Francisco'),
+            calle='Una fecha importante',
+            numero='789',
+            piso='8vo.',
             departamento='A',
         )
 
