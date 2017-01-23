@@ -53,3 +53,21 @@ TIPO_DOCUMENTO = (
     ('LC', _("LC")),
     ('LE', _("LE")),
 )
+
+CUIT_CUIL = (
+    ('CUIT', _("CUIT")),
+    ('CUIL', _("CUIL")),
+    )
+
+ESTADO_ESTUDIO = (
+    ('F', _("Finalizado")),
+    ('C', _("Cursando")),
+    ('A', _("Abandonado")),
+    )
+
+NIVEL_ESTUDIO = (
+    ('P', _("Primario")),
+    ('S', _("Secundario")),
+    ('T', _("Terciario")),
+    ('U', _("Universitario")),
+    )

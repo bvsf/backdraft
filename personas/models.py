@@ -12,11 +12,60 @@ from .choices import (
     USO_MEDIO,
     TIPO_WEB,
     TIPO_TELEFONO,
-    TIPO_DOCUMENTO
+    TIPO_DOCUMENTO,
+    CUIT_CUIL,
+    NIVEL_ESTUDIO,
+    ESTADO_ESTUDIO,
 )
 
 
-class Persona(models.Model):
+class Entidad(models.Model):
+    tipo_cuit = models.CharField(
+        max_length=4,
+        verbose_name=_("CUIT/CUIL"),
+        choices=CUIT_CUIL,
+        default=CUIT_CUIL[0][0],
+    )
+    nro_cuit = models.CharField(
+        max_length=13,
+        blank=True,
+        null=True,
+        verbose_name=_('Numero de CUIT/CUIL'),
+    )
+
+    def __str__(self):
+        try:
+            if hasattr(self, 'persona'):
+                return "{0}".format(self.persona)
+            elif hasattr(self, 'institucion'):
+                return "{0}".format(self.institucion)
+        except NotImplementedError:
+            return _("ERROR! No es una Persona ni una Institución")
+
+
+class Institucion(Entidad):
+    razon_social = models.CharField(
+        max_length=255,
+        verbose_name=_("Razón Social"),
+    )
+
+    def __str__(self):
+        return self.razon_social
+
+    @property
+    def nombre_completo(self):
+        return "({0}: {1}) - {0}".format(
+            self.tipo_cuit,
+            self.nro_cuit,
+            self.razon_social,
+            )
+
+    class Meta:
+        verbose_name = _("Institución")
+        verbose_name_plural = _("Instituciones")
+
+
+class Persona(Entidad):
     apellido = models.CharField(
         max_length=255,
         verbose_name=_('Apellido')
@@ -133,7 +182,7 @@ class Parentesco(models.Model):
 
 
 class Medio(models.Model):
-    persona = models.ForeignKey(Persona)
+    entidad = models.ForeignKey(Entidad)
     uso = models.CharField(
         verbose_name=_("Uso"),
         max_length=255,
@@ -243,3 +292,128 @@ class DireccionElectronica(Medio):
     class Meta:
         verbose_name = _("Direccion de Email")
         verbose_name_plural = _("Direcciones de Email")
+
+
+class Empleo(models.Model):
+    empresa = models.ForeignKey(
+        Institucion,
+        verbose_name=_("Empresa"))
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"))
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name=_("Título o cargo"))
+    periodo_desde = models.DateField(
+        verbose_name=_("Fecha de Inicio"))
+    periodo_hasta = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de Fin"))
+    descripcion = models.TextField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        verbose_name=_("Descripción"))
+
+    class Meta:
+        verbose_name = _("Empleo")
+        verbose_name_plural = _("Empleos")
+
+    @property
+    def periodo(self):
+        periodo = "Desde el {0} hasta".format(
+            self.periodo_desde)
+        if self.periodo_hasta:
+            periodo += " el {0}".format(
+                self.periodo_hasta)
+        else:
+            periodo += ' la actualidad'
+        return "{0}".format(periodo)
+
+    @property
+    def trabajo(self):
+        return "({0}) {1} - {2}".format(
+            self.periodo,
+            self.empresa,
+            self.titulo,
+            )
+
+    def __str__(self):
+        return "{0} - {1} ({2})".format(
+            self.bombero,
+            self.empresa,
+            self.periodo)
+
+
+class Estudio(models.Model):
+    establecimiento = models.ForeignKey(
+        Institucion,
+        verbose_name=_("Establecimiento"))
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"))
+    nivel = models.CharField(
+        max_length=5,
+        choices=NIVEL_ESTUDIO,
+        default=NIVEL_ESTUDIO[0][0],
+        verbose_name=_("Nivel de Estudio"))
+    estado = models.CharField(
+        max_length=5,
+        choices=ESTADO_ESTUDIO,
+        default=ESTADO_ESTUDIO[0][0],
+        verbose_name=_("Estado de cursado"))
+    titulo = models.CharField(
+        max_length=255,
+        verbose_name=_("Título"))
+    periodo_desde = models.DateField(
+        verbose_name=_("Fecha de Inicio"))
+    periodo_hasta = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de Fin"))
+    descripcion = models.TextField(
+        max_length=1000,
+        blank=True,
+        null=True,
+        verbose_name=_("Descripción"))
+
+    class Meta:
+        verbose_name = _("Estudio")
+        verbose_name_plural = _("Estudios")
+
+    @property
+    def periodo(self):
+        periodo = "Desde el {0} hasta".format(
+            self.periodo_desde)
+        if self.periodo_hasta:
+            periodo += " el {0}".format(
+                self.periodo_hasta)
+        else:
+            periodo += ' la actualidad'
+        return "{0}".format(periodo)
+
+    @property
+    def nivel_estudio(self):
+        '''
+        https://docs.djangoproject.com/en/dev/
+            ref/models/instances/#django.db.models.Model.get_FOO_display
+        '''
+        return "{0} - {1}".format(
+            self.get_nivel_display(),
+            self.get_estado_display(),
+            )
+
+    @property
+    def estudio(self):
+        return "({0})({1}) {2} - {3}".format(
+            self.periodo,
+            self.nivel_estudio,
+            self.establecimiento,
+            self.titulo,
+            )
+
+    def __str__(self):
+        return "{0}".format(
+            self.estudio
+            )
