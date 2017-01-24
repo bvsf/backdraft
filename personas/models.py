@@ -417,3 +417,22 @@ class Estudio(models.Model):
         return "{0}".format(
             self.estudio
             )
+
+
+class CalificacionAnual(models.Model):
+
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="bombero_calificacion")
+    periodo = models.IntegerField(
+        unique=True,
+        null=False,
+        blank=False,
+        verbose_name=_("Año"))
+    puntaje_en_numero = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        #mix_value=0.0,
+        #max_value=20.0,
+        verbose_name=_("Puntaje Numérico"))

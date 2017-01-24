@@ -11,6 +11,7 @@ from personas.models import (
     Estudio,
     Empleo,
     Institucion,
+    CalificacionAnual
 )
 
 
@@ -332,3 +333,6 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
         'mail',)
     list_filter = (
         'entidad',)
+
+admin.site.register(CalificacionAnual)
+#@admi.register(CalificacionAnual)
