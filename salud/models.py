@@ -29,6 +29,7 @@ class Alergicos(models.Model):
         Alergenos,
         verbose_name=_("Alérgeno")
     )
+
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Observaciones"),
@@ -68,15 +69,16 @@ class PlanMedico(models.Model):
         max_length=255,
         verbose_name=_('Descripción')
     )
-    '''TODO: Ver qué se le puede agregar a esta clase'''
+
     obraSocial = models.ForeignKey(
         ObraSocial,
         verbose_name=_("Obra Social"),
         related_name="obraSocial")
 
     def __str__(self):
-        return "{0}".format(
+        return "{0} ({1})".format(
             self.descripcion,
+            self.obraSocial,
         )
 
     class Meta:
@@ -111,7 +113,7 @@ class MedicoCabecera(models.Model):
         verbose_name=_("Número de Matrícula"),
         unique=True
     )
-    '''TODO: Ver qué se le puede agregar a esta clase'''
+
     def __str__(self):
         return "{0}, Nro de Mat.:{1}".format(
             self.persona,
@@ -146,15 +148,21 @@ class CoberturaMedica(models.Model):
         verbose_name=_('Número de Afiliado'),
         unique=True
     )
+    fechaInicio = models.DateField(
+        verbose_name=_("Fecha de Inicio de Cobertura"),
+        null=True
+    )
+    fechaFin = models.DateField(
+        verbose_name=_("Fecha de Finalización de Cobertura"),
+        blank=True,
+        null=True
+    )
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Observaciones"),
         blank=True,
         null=True
     )
-    '''TODO:
-            Ver qué se le puede agregar a esta clase
-            Ver cómo achicar el __str__'''
 
     def __str__(self):
         return "Bombero:{0}, Nº Afiliado:{1}, Plan:{2}, Médico de cabecera:{3}, Clinica:{4}".format(

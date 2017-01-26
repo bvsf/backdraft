@@ -142,20 +142,28 @@ class CoberturaMedicaAdmin(admin.ModelAdmin):
                 'nroAfiliado',
                 'planMedico',
                 'medicoCabecera',
-                'clinica'
+                'clinica',
+                'fechaInicio',
                 )
+        }),
+        (_('¿Cobertura finalizada?'), {
+            'classes': ('collapse',),
+            'fields': ('fechaFin',),
         }),
         (_('¿Observaciones?'), {
             'classes': ('collapse',),
             'fields': ('observaciones',),
         }),
+
     )
     list_display = (
         'bombero',
         'nroAfiliado',
         'planMedico',
         'medicoCabecera',
-        'clinica'
+        'clinica',
+        'fechaInicio',
+        'fechaFin',
     )
     search_fields = (
         'planMedico__obraSocial__institucion__razon_social',
