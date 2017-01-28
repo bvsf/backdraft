@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
@@ -436,3 +437,12 @@ class CalificacionAnual(models.Model):
         #mix_value=0.0,
         #max_value=20.0,
         verbose_name=_("Puntaje Numérico"))
+
+    class Meta:
+        verbose_name = _("Calificación Anual")
+        verbose_name_plural = _("Calificaciones Anuales")
+
+    def clean(self):
+        if (self.puntaje_en_numero < 0) or (self.puntaje_en_numero > 20):
+            raise ValidationError(_(
+                'Puntaje Numérico fuera de los límites establecidos.'))
