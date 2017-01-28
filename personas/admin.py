@@ -334,5 +334,24 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
     list_filter = (
         'entidad',)
 
-admin.site.register(CalificacionAnual)
-#@admi.register(CalificacionAnual)
+#admin.site.register(CalificacionAnual)
+
+
+@admin.register(CalificacionAnual)
+class CalificacionAnualAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    list_display = (
+        'bombero',
+        'periodo',
+        'puntaje_en_numero',)
+    list_filter = (
+        'bombero',
+        'periodo',)
+    fieldsets = (
+        (None, {
+            'fields': (
+                'bombero',
+                'periodo',
+                'puntaje_en_numero',)
+        }),
+    )
