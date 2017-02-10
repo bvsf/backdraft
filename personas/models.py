@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from decimal import *
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
@@ -446,3 +447,32 @@ class CalificacionAnual(models.Model):
         if (self.puntaje_en_numero < 0) or (self.puntaje_en_numero > 20):
             raise ValidationError(_(
                 'Puntaje Numérico fuera de los límites establecidos.'))
+
+    @property
+    def calificacion_escrita(self):
+        if self.puntaje_en_numero >= Decimal(19) and \
+        self.puntaje_en_numero <= Decimal(20):
+            return "{0}".format(
+                "Excelente"
+            )
+        elif self.puntaje_en_numero < Decimal(19) and \
+        self.puntaje_en_numero >= Decimal(15):
+            return "{0}".format(
+                "Muy Bueno"
+            )
+        elif self.puntaje_en_numero < Decimal(15) and \
+        self.puntaje_en_numero >= Decimal(10):
+            return "{0}".format(
+                "Bueno"
+            )
+        elif self.puntaje_en_numero < Decimal(10) and \
+        self.puntaje_en_numero >= Decimal(0):
+            return "{0}".format(
+                "Insuficiente"
+            )
+
+    def __str__(self):
+        return "{0} {1} {2}".format(
+            self.bombero,
+            self.periodo,
+            self.calificacion_escrita)
