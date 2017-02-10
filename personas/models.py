@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
+from decimal import *
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
@@ -417,3 +419,58 @@ class Estudio(models.Model):
         return "{0}".format(
             self.estudio
             )
+
+
+class CalificacionAnual(models.Model):
+
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="bombero_calificacion")
+    periodo = models.IntegerField(
+        unique=True,
+        null=False,
+        blank=False,
+        verbose_name=_("Año"))
+    puntaje_en_numero = models.DecimalField(
+        max_digits=4,
+        decimal_places=2,
+        verbose_name=_("Puntaje Numérico"))
+
+    class Meta:
+        verbose_name = _("Calificación Anual")
+        verbose_name_plural = _("Calificaciones Anuales")
+
+    def clean(self):
+        if (self.puntaje_en_numero < 0) or (self.puntaje_en_numero > 20):
+            raise ValidationError(_(
+                'Puntaje Numérico fuera de los límites establecidos.'))
+
+    @property
+    def calificacion_escrita(self):
+        if self.puntaje_en_numero >= Decimal(19) and \
+        self.puntaje_en_numero <= Decimal(20):
+            return "{0}".format(
+                "Excelente"
+            )
+        elif self.puntaje_en_numero < Decimal(19) and \
+        self.puntaje_en_numero >= Decimal(15):
+            return "{0}".format(
+                "Muy Bueno"
+            )
+        elif self.puntaje_en_numero < Decimal(15) and \
+        self.puntaje_en_numero >= Decimal(10):
+            return "{0}".format(
+                "Bueno"
+            )
+        elif self.puntaje_en_numero < Decimal(10) and \
+        self.puntaje_en_numero >= Decimal(0):
+            return "{0}".format(
+                "Insuficiente"
+            )
+
+    def __str__(self):
+        return "{0} {1} {2}".format(
+            self.bombero,
+            self.periodo,
+            self.calificacion_escrita)
