@@ -2,6 +2,7 @@
 from decimal import *
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
@@ -111,7 +112,7 @@ class Persona(Entidad):
     @property
     def edad(self):
         delta = (date.today() - self.fecha_nacimiento)
-        return int((delta.days / (365.2425)))
+        return int(delta.days / 365.2425)
 
     @property
     def dni(self):
@@ -129,7 +130,7 @@ class Persona(Entidad):
     def aniversario(self):
         if self.fecha_desceso:
             delta = (date.today() - self.fecha_desceso)
-            return int((delta.days / (365.2425)))
+            return int(delta.days / 365.2425)
 
     def __str__(self):
         return self.nombre_completo
@@ -181,6 +182,51 @@ class Parentesco(models.Model):
         choices=RELACION_PARENTESCO,
         default=RELACION_PARENTESCO[0][0],
         verbose_name=_("Parentesco"))
+
+
+class NumeroOrden(models.Model):
+    numero_orden = models.SmallIntegerField(
+        verbose_name=_("Número de Orden")
+    )
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="numero_orden_bombero")
+    vigencia_desde = models.DateField(
+        default=timezone.now,
+    )
+    vigencia_hasta = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    @property
+    def vigencia(self):
+        vigencia = "vigente desde "
+        if self.vigencia_hasta:
+            vigencia += "{0} hasta el {1}".format(
+                self.vigencia_desde,
+                self.vigencia_hasta,
+            )
+        else:
+            vigencia += "{0}".format(
+                self.vigencia_desde,
+            )
+        return vigencia
+
+    def cierre_vigencia(self):
+        numero = NumeroOrden.objects.filter(
+            prestador=self.bombero,
+            vigencia_desde__lt=self.vigencia_desde,
+            vigencia_hasta__isnull=True,
+        )
+        if solicitudes:
+            numero.update(vigencia_hasta=self.vigencia_desde)
+
+    def __str__(self):
+        return "{0} {1}".format(
+            self.numero_orden,
+            self.bombero)
 
 
 class Medio(models.Model):
