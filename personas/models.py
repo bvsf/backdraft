@@ -226,7 +226,8 @@ class NumeroOrden(models.Model):
     def __str__(self):
         return "{0} {1}".format(
             self.numero_orden,
-            self.bombero)
+            self.bombero
+        )
 
 
 class Medio(models.Model):
