@@ -185,6 +185,10 @@ class Parentesco(models.Model):
 
 
 class NumeroOrden(models.Model):
+    '''Administrativamente siempre se usa el numero de orden de los bomberos en la
+    carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
+    con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
+    en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso'''
     numero_orden = models.SmallIntegerField(
         verbose_name=_("Número de Orden")
     )
