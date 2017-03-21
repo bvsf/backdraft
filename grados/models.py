@@ -25,7 +25,7 @@ class Escalafon(models.Model):
         max_length=255,
         verbose_name=_('Nombre')
     )
-    rango = models.ForeignFey(
+    rango = models.ForeignKey(
         Rango,
         verbose_name=_('Rango')
     )
@@ -43,7 +43,9 @@ class Grados(models.Model):
         verbose_name=_('Nombre')
     )
     grado_superior = models.OneToOneField(
-        Grados,
+        'self',
+        blank=True,
+        null=True,
         verbose_name=_('Grado Superior')
     )
     escalafon = models.ForeignKey(
@@ -55,3 +57,10 @@ class Grados(models.Model):
         return "{0} - {1}".format(
             self.nombre,
             self.escalafon)
+#TODO: Hacer función que permita saltar los grados especiales.
+#Antes de guardar el ascenso, verificar si se puede hacer
+#(llamada desde Ascenso). Agregar forma de identificar excepciones.
+#Si existe grado superior de ese grado, proseguir
+#Si no existe grado superior de ese grado, salir
+#Si existe la excepción, tener el cuenta el grado superior del grado superior
+#Si no existe la excepcion, verificar si el grado superior conincide el ascenso
