@@ -52,15 +52,26 @@ class Grados(models.Model):
         Escalafon,
         verbose_name=_('Escalafón')
     )
+    excepcion = models.BooleanField(
+        verbose_name=_('Posee más de un grado superior'),
+        default=False,
+        null=False,
+        blank=False
+    )
 
     def __str__(self):
         return "{0} - {1}".format(
             self.nombre,
             self.escalafon)
-#TODO: Hacer función que permita saltar los grados especiales.
-#Antes de guardar el ascenso, verificar si se puede hacer
-#(llamada desde Ascenso). Agregar forma de identificar excepciones.
-#Si existe grado superior de ese grado, proseguir
-#Si no existe grado superior de ese grado, salir
-#Si existe la excepción, tener el cuenta el grado superior del grado superior
-#Si no existe la excepcion, verificar si el grado superior conincide el ascenso
+
+    def grado_superior_del_superior(self):
+        '''Trata las excepciones de los grados especiales.'''
+        if (self.excepcion is True):
+            grado = self.grado_superior
+            return grado.grado_superior
+        else:
+            if (self.grado_superior is None):
+                return _('Éste grado no posee grado superior')
+            else:
+                return _(
+                    'El grado superior de éste grado no posee grado superior')

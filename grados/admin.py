@@ -57,6 +57,7 @@ class GradosAdmin(admin.ModelAdmin):
                 'nombre',
                 'grado_superior',
                 'escalafon',
+                'excepcion',
                 )
         }),
     )
@@ -64,6 +65,7 @@ class GradosAdmin(admin.ModelAdmin):
         'nombre',
         'grado_superior',
         'escalafon',
+        'excepcion',
     )
     search_fields = (
         'nombre',
