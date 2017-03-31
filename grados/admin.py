@@ -2,7 +2,7 @@ from django.contrib import admin
 from grados.models import (
     Rango,
     Escalafon,
-    Grados
+    Grado
 )
 
 
@@ -48,8 +48,8 @@ class EscalafonAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Grados)
-class GradosAdmin(admin.ModelAdmin):
+@admin.register(Grado)
+class GradoAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     fieldsets = (
         (None, {

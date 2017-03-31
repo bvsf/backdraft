@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext as _
+from colorfield.fields import ColorField
 
 
 class Rango(models.Model):
@@ -10,13 +11,16 @@ class Rango(models.Model):
         max_length=255,
         verbose_name=_('Nombre')
     )
-    color = models.CharField(
-        max_length=255,
-        verbose_name=_('Color')
+    color = ColorField(
+        default='#FF0000'
     )
 
     def __str__(self):
         return self.nombre
+
+    class Meta:
+        verbose_name = _("Rango")
+        verbose_name_plural = _("Rangos")
 
 
 class Escalafon(models.Model):
@@ -35,8 +39,12 @@ class Escalafon(models.Model):
             self.nombre,
             self.rango)
 
+    class Meta:
+        verbose_name = _("Escalafón")
+        verbose_name_plural = _("Escalafones")
 
-class Grados(models.Model):
+
+class Grado(models.Model):
 
     nombre = models.CharField(
         max_length=255,
@@ -63,6 +71,10 @@ class Grados(models.Model):
         return "{0} - {1}".format(
             self.nombre,
             self.escalafon)
+
+    class Meta:
+        verbose_name = _("Grado")
+        verbose_name_plural = _("Grados")
 
     def grado_superior_del_superior(self):
         '''Trata las excepciones de los grados especiales.'''
