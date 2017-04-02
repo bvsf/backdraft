@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'localidades',
     'personas',
     'salud',
+    'actas',
 ]
 
 MIDDLEWARE_CLASSES = [
