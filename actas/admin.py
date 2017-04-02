@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Actas.models import (
+from actas.models import (
     Acta,
 )
 
@@ -12,7 +12,7 @@ class ActaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'Numero_acta',
+                'numero_acta',
                 'fecha_acta',
                 'numero_folio',
                 'numero_libro',
@@ -22,14 +22,14 @@ class ActaAdmin(admin.ModelAdmin):
     )
     list_display = (
 
-            'Numero_acta',
+            'numero_acta',
             'fecha_acta',
             'numero_folio',
             'numero_libro',
             'descripcion_acta',
             )
     search_fields = (
-            'Numero_acta',
+            'numero_acta',
             'fecha_acta',
             'numero_folio',
             'numero_libro',
