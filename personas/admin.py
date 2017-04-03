@@ -182,6 +182,7 @@ class BomberoAdmin(admin.ModelAdmin):
             'fields': (
                 'persona',
                 'numero_credencial',
+                'fecha_vencimiento',
                 'foto',
                 'estado_civil',
                 'lugar_nacimiento',
@@ -190,6 +191,7 @@ class BomberoAdmin(admin.ModelAdmin):
     )
     list_display = (
         'numero_credencial',
+        'fecha_vencimiento',
         'nombre_completo',
         'dni',
         'sangre',
