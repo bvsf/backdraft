@@ -71,4 +71,3 @@ class GradoAdmin(admin.ModelAdmin):
         'nombre',
         'escalafon',
     )
-

@@ -75,15 +75,3 @@ class Grado(models.Model):
     class Meta:
         verbose_name = _("Grado")
         verbose_name_plural = _("Grados")
-
-    def grado_superior_del_superior(self):
-        '''Trata las excepciones de los grados especiales.'''
-        if (self.excepcion is True):
-            grado = self.grado_superior
-            return grado.grado_superior
-        else:
-            if (self.grado_superior is None):
-                return _('Éste grado no posee grado superior')
-            else:
-                return _(
-                    'El grado superior de éste grado no posee grado superior')
