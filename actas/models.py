@@ -21,7 +21,7 @@ class Acta (models.Model):
     )
     descripcion_acta = models.CharField(
         verbose_name=_('Descripcion del Acta'),
-        max_length = 100,
+
     )
 
 # Create your models here.
