@@ -6,6 +6,9 @@
 __pycache__
 *.py[cod]
 *$py.class
+*grados/migrations/*
+*personas/migrations/*
+*salud/migrations/*
 
 # C extensions
 *.so
