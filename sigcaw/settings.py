@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'localidades',
     'personas',
     'salud',
+    'actas',
     'grados',
 ]
 
