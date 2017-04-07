@@ -23,5 +23,6 @@ class Acta (models.Model):
         verbose_name=_('Descripcion del Acta'),
         max_length = 1000,
     )
-
+class Meta:
+       abstract = True
 # Create your models here.
