@@ -155,6 +155,8 @@ class Bombero(models.Model):
         max_length=255,
         verbose_name=_("Número de Credencial"),
         unique=True)
+    fecha_vencimiento = models.DateField(
+        verbose_name=_('Fecha de Vencimiento'))
     estado_civil = models.CharField(
         max_length=255,
         choices=ESTADO_CIVIL,
