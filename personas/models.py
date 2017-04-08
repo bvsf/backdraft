@@ -193,7 +193,8 @@ class NumeroOrden(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="numero_orden_bombero")
+        related_name="numero_orden_bombero"
+    )
     vigencia_desde = models.DateField(
         default=timezone.now,
     )
@@ -216,6 +217,7 @@ class NumeroOrden(models.Model):
             )
         return vigencia
 
+    @staticmethod
     def cierre_vigencia(self):
         numero = NumeroOrden.objects.filter(
             prestador=self.bombero,
