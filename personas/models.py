@@ -4,6 +4,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
@@ -142,6 +143,11 @@ class Persona(Entidad):
 
 
 class Bombero(models.Model):
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.PROTECT,
+        related_name="usuario",
+    )
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
@@ -168,6 +174,17 @@ class Bombero(models.Model):
 
     def __str__(self):
         return self.persona.nombre_completo
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.usuario = User.objects.create_user(
+                self.persona.nombre.split()[0].lower() + self.persona.apellido.lower(),
+                '',
+                self.persona.documento,
+                last_name = self.persona.apellido,
+                first_name = self.persona.nombre
+            )
+        super(Bombero, self).save(*args, **kwargs)
 
 
 class Parentesco(models.Model):
