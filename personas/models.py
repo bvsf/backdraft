@@ -187,6 +187,10 @@ class Parentesco(models.Model):
 
 
 class NumeroOrden(models.Model):
+    '''Administrativamente siempre se usa el numero de orden de los bomberos en la
+    carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
+    con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
+    en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso'''
     numero_orden = models.SmallIntegerField(
         verbose_name=_("Número de Orden")
     )
@@ -220,17 +224,37 @@ class NumeroOrden(models.Model):
     @staticmethod
     def cierre_vigencia(self):
         numero = NumeroOrden.objects.filter(
-            prestador=self.bombero,
+            bombero=self.bombero,
             vigencia_desde__lt=self.vigencia_desde,
             vigencia_hasta__isnull=True,
         )
-        if solicitudes:
+        if numero:
             numero.update(vigencia_hasta=self.vigencia_desde)
 
+    def clean(self):
+        numero = NumeroOrden.objects.filter(
+            bombero=self.bombero,
+            vigencia_desde__gte=self.vigencia_desde,).count()
+        if numero > 0 and self.id is None:
+            raise ValidationError(
+                {'vigencia_desde':
+                 _("Ya existe un bombero con este número de orden vigente")})
+
+    def save(self, *args, **kwargs):
+        '''Siempre que se guarde un bombero se pone al final de la lista con el
+        numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
+        acuerdo a los criterios que se decida.'''
+        mayor = NumeroOrden.objects.filter(
+            vigencia_hasta__isnull=True,
+        ).order_by('-numero_orden')[:1]
+        self.numero_orden = mayor + 1
+        super(NumeroOrden, self).save(*args, **kwargs)
+
     def __str__(self):
-        return "{0} {1}".format(
+        return "{0} - {1} ({2})".format(
             self.numero_orden,
-            self.bombero
+            self.bombero,
+            self.vigencia
         )
 
 
