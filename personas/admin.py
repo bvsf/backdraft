@@ -11,7 +11,8 @@ from personas.models import (
     Estudio,
     Empleo,
     Institucion,
-    CalificacionAnual
+    CalificacionAnual,
+    NumeroOrden,
 )
 
 
@@ -336,8 +337,6 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
     list_filter = (
         'entidad',)
 
-#admin.site.register(CalificacionAnual)
-
 
 @admin.register(CalificacionAnual)
 class CalificacionAnualAdmin(admin.ModelAdmin):
@@ -356,4 +355,41 @@ class CalificacionAnualAdmin(admin.ModelAdmin):
                 'periodo',
                 'puntaje_en_numero',)
         }),
+    )
+
+
+@admin.register(NumeroOrden)
+class NumeroOrdenAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'numero_orden',
+                'bombero',
+                'vigencia_desde',)
+        }),
+        (_("Finalización de vigencia"), {
+            'classes': ('collapse',),
+            'fields': ('vigencia_hasta',),
+        })
+    )
+    list_display = (
+        'numero_orden',
+        'bombero',
+        'vigencia_desde',
+        'vigencia_hasta',
+    )
+    list_filter = (
+        'numero_orden',
+        'bombero',
+        'vigencia_desde',
+        'vigencia_hasta',
+    )
+    date_hierarchy = 'vigencia_hasta'
+    search_fields = (
+        'numero_orden',
+        'bombero.persona.apellido',
+        'bombero.persona.nombre',
+        'vigencia_desde',
+        'vigencia_hasta',
     )
