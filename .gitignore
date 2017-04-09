@@ -69,3 +69,7 @@ target/
 
 # temporal develop images
 avatars/
+
+#Migrations
+*personas/migrations/
+*salud/migrations/
