@@ -65,11 +65,10 @@ class SimpleTest(TestCase):
             departamento='A',
         )
 
-
     def test_model_Persona(self):
         persona = Persona.objects.get(apellido='Apellido')
         self.assertEqual(persona.nombre_completo, 'APELLIDO, Nombre')
-        self.assertEqual(persona.edad, 25)
+        self.assertEqual(persona.edad, 26)
         self.assertEqual(persona.dni, 'DNI 12345678')
         self.assertEqual(persona.sangre, 'O (-)')
         self.assertEqual(persona.aniversario, None)
@@ -82,10 +81,11 @@ class SimpleTest(TestCase):
         self.assertEqual(localidad.nombre_completo, '(2400) San Francisco, Córdoba (Arg.)')
 
     def test_model_DireccionPostal(self):
-        dirA = DireccionPostal.objects.get(calle='Algún Prócer')
-        dirB = DireccionPostal.objects.get(calle='Otro Prócer')
-        dirC = DireccionPostal.objects.get(calle='Una fecha importante')
+        dir_a = DireccionPostal.objects.get(calle='Algún Prócer')
+        dir_b = DireccionPostal.objects.get(calle='Otro Prócer')
+        dir_c = DireccionPostal.objects.get(calle='Una fecha importante')
 
-        self.assertEqual(dirA.direccion_completa, 'Algún Prócer 123, San Francisco, Córdoba (Arg.)')
-        self.assertEqual(dirB.direccion_completa, 'Otro Prócer 456 piso PA, San Francisco, Córdoba (Arg.)')
-        self.assertEqual(dirC.direccion_completa, 'Una fecha importante 789 piso 8vo. dpto. "A", San Francisco, Córdoba (Arg.)')
+        self.assertEqual(dir_a.direccion_completa, 'Algún Prócer 123, San Francisco, Córdoba (Arg.)')
+        self.assertEqual(dir_b.direccion_completa, 'Otro Prócer 456 piso PA, San Francisco, Córdoba (Arg.)')
+        self.assertEqual(dir_c.direccion_completa, 'Una fecha importante 789 piso 8vo. dpto. "A", San Francisco, '
+                                                   'Córdoba (Arg.)')

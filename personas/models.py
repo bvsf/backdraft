@@ -2,7 +2,9 @@
 from decimal import *
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date
@@ -111,7 +113,7 @@ class Persona(Entidad):
     @property
     def edad(self):
         delta = (date.today() - self.fecha_nacimiento)
-        return int((delta.days / (365.2425)))
+        return int(delta.days / 365.2425)
 
     @property
     def dni(self):
@@ -129,7 +131,7 @@ class Persona(Entidad):
     def aniversario(self):
         if self.fecha_desceso:
             delta = (date.today() - self.fecha_desceso)
-            return int((delta.days / (365.2425)))
+            return int(delta.days / 365.2425)
 
     def __str__(self):
         return self.nombre_completo
@@ -141,6 +143,11 @@ class Persona(Entidad):
 
 
 class Bombero(models.Model):
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.PROTECT,
+        related_name="usuario",
+    )
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
@@ -168,6 +175,17 @@ class Bombero(models.Model):
     def __str__(self):
         return self.persona.nombre_completo
 
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.usuario = User.objects.create_user(
+                self.persona.nombre.split()[0].lower() + self.persona.apellido.lower(),
+                '',
+                self.persona.documento,
+                last_name = self.persona.apellido,
+                first_name = self.persona.nombre
+            )
+        super(Bombero, self).save(*args, **kwargs)
+
 
 class Parentesco(models.Model):
     bombero = models.ForeignKey(
@@ -183,6 +201,78 @@ class Parentesco(models.Model):
         choices=RELACION_PARENTESCO,
         default=RELACION_PARENTESCO[0][0],
         verbose_name=_("Parentesco"))
+
+
+class NumeroOrden(models.Model):
+    '''Administrativamente siempre se usa el numero de orden de los bomberos en la
+    carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
+    con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
+    en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso'''
+    numero_orden = models.SmallIntegerField(
+        verbose_name=_("Número de Orden")
+    )
+    bombero = models.ForeignKey(
+        Bombero,
+        verbose_name=_("Bombero"),
+        related_name="numero_orden_bombero"
+    )
+    vigencia_desde = models.DateField(
+        default=timezone.now,
+    )
+    vigencia_hasta = models.DateField(
+        null=True,
+        blank=True,
+    )
+
+    @property
+    def vigencia(self):
+        vigencia = "vigente desde "
+        if self.vigencia_hasta:
+            vigencia += "{0} hasta el {1}".format(
+                self.vigencia_desde,
+                self.vigencia_hasta,
+            )
+        else:
+            vigencia += "{0}".format(
+                self.vigencia_desde,
+            )
+        return vigencia
+
+    @staticmethod
+    def cierre_vigencia(self):
+        numero = NumeroOrden.objects.filter(
+            bombero=self.bombero,
+            vigencia_desde__lt=self.vigencia_desde,
+            vigencia_hasta__isnull=True,
+        )
+        if numero:
+            numero.update(vigencia_hasta=self.vigencia_desde)
+
+    def clean(self):
+        numero = NumeroOrden.objects.filter(
+            bombero=self.bombero,
+            vigencia_desde__gte=self.vigencia_desde,).count()
+        if numero > 0 and self.id is None:
+            raise ValidationError(
+                {'vigencia_desde':
+                 _("Ya existe un bombero con este número de orden vigente")})
+
+    def save(self, *args, **kwargs):
+        '''Siempre que se guarde un bombero se pone al final de la lista con el
+        numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
+        acuerdo a los criterios que se decida.'''
+        mayor = NumeroOrden.objects.filter(
+            vigencia_hasta__isnull=True,
+        ).order_by('-numero_orden')[:1]
+        self.numero_orden = mayor + 1
+        super(NumeroOrden, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return "{0} - {1} ({2})".format(
+            self.numero_orden,
+            self.bombero,
+            self.vigencia
+        )
 
 
 class Medio(models.Model):

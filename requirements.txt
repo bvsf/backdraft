@@ -5,4 +5,4 @@ django-phonenumber-field==1.1.0
 phonenumberslite==7.4.4
 pytz==2016.4
 envdir==0.7
-
+django-colorfield==0.1.12
