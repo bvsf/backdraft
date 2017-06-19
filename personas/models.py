@@ -186,6 +186,13 @@ class Bombero(models.Model):
             )
         super(Bombero, self).save(*args, **kwargs)
 
+    @property
+    def get_numero_orden_vigente(self):
+        return NumeroOrden.objects.filter(
+            bombero=self,
+            vigencia_hasta__isnull=True,
+        ).first()
+
 
 class Parentesco(models.Model):
     bombero = models.ForeignKey(
@@ -204,10 +211,10 @@ class Parentesco(models.Model):
 
 
 class NumeroOrden(models.Model):
-    '''Administrativamente siempre se usa el numero de orden de los bomberos en la
-    carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
-    con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
-    en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso'''
+    # Administrativamente siempre se usa el numero de orden de los bomberos en la
+    # carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
+    # con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
+    # en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso
     numero_orden = models.SmallIntegerField(
         verbose_name=_("Número de Orden")
     )
@@ -258,9 +265,9 @@ class NumeroOrden(models.Model):
                  _("Ya existe un bombero con este número de orden vigente")})
 
     def save(self, *args, **kwargs):
-        '''Siempre que se guarde un bombero se pone al final de la lista con el
-        numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
-        acuerdo a los criterios que se decida.'''
+        # Siempre que se guarde un bombero se pone al final de la lista con el
+        # numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
+        # acuerdo a los criterios que se decida.
         mayor = NumeroOrden.objects.filter(
             vigencia_hasta__isnull=True,
         ).order_by('-numero_orden')[:1]
@@ -489,10 +496,8 @@ class Estudio(models.Model):
 
     @property
     def nivel_estudio(self):
-        '''
-        https://docs.djangoproject.com/en/dev/
-            ref/models/instances/#django.db.models.Model.get_FOO_display
-        '''
+        # https://docs.djangoproject.com/en/dev/
+        #    ref/models/instances/#django.db.models.Model.get_FOO_display
         return "{0} - {1}".format(
             self.get_nivel_display(),
             self.get_estado_display(),
@@ -540,26 +545,14 @@ class CalificacionAnual(models.Model):
 
     @property
     def calificacion_escrita(self):
-        if self.puntaje_en_numero >= Decimal(19) and \
-        self.puntaje_en_numero <= Decimal(20):
-            return "{0}".format(
-                "Excelente"
-            )
-        elif self.puntaje_en_numero < Decimal(19) and \
-        self.puntaje_en_numero >= Decimal(15):
-            return "{0}".format(
-                "Muy Bueno"
-            )
-        elif self.puntaje_en_numero < Decimal(15) and \
-        self.puntaje_en_numero >= Decimal(10):
-            return "{0}".format(
-                "Bueno"
-            )
-        elif self.puntaje_en_numero < Decimal(10) and \
-        self.puntaje_en_numero >= Decimal(0):
-            return "{0}".format(
-                "Insuficiente"
-            )
+        if Decimal(19) <= self.puntaje_en_numero <= Decimal(20):
+            return "{0}".format("Excelente")
+        elif Decimal(15) <= self.puntaje_en_numero < Decimal(19):
+            return "{0}".format("Muy Bueno")
+        elif Decimal(10) <= self.puntaje_en_numero < Decimal(15):
+            return "{0}".format("Bueno")
+        elif Decimal(0) <= self.puntaje_en_numero < Decimal(10):
+            return "{0}".format("Insuficiente")
 
     def __str__(self):
         return "{0} {1} {2}".format(
