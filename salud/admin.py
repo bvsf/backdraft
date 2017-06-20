@@ -7,8 +7,7 @@ from salud.models import (
     PlanMedico,
     Clinica,
     MedicoCabecera,
-    CoberturaMedica
-)
+    CoberturaMedica)
 
 
 @admin.register(Alergenos)
@@ -17,16 +16,13 @@ class AlergenosAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'nombre_alergeno',
-            )
+                'nombre_alergeno',)
         }),
     )
     list_display = (
-        'nombre_alergeno',
-    )
+        'nombre_alergeno',)
     search_fields = (
-        'nombre_alergeno',
-    )
+        'nombre_alergeno',)
 
 
 @admin.register(Alergicos)
@@ -37,19 +33,16 @@ class AlergicosAdmin(admin.ModelAdmin):
             'fields': (
                 'bombero',
                 'alergeno',
-                'observaciones'
-                )
+                'observaciones')
         }),
     )
     list_display = (
         'bombero',
         'alergeno',
-        'observaciones'
-    )
+        'observaciones')
     search_fields = (
         'bombero',
-        'alergeno'
-    )
+        'alergeno')
 
 
 @admin.register(ObraSocial)
@@ -63,11 +56,9 @@ class ObraSocialAdmin(admin.ModelAdmin):
         }),
     )
     list_display = (
-        'institucion',
-    )
+        'institucion',)
     search_fields = (
-        'institucion__razon_social',
-    )
+        'institucion__razon_social',)
 
 
 @admin.register(PlanMedico)
@@ -83,12 +74,10 @@ class PlanMedicoAdmin(admin.ModelAdmin):
     )
     list_display = (
         'obraSocial',
-        'descripcion'
-    )
+        'descripcion')
     search_fields = (
         'obraSocial__institucion__razon_social',
-        'descripcion'
-    )
+        'descripcion')
 
 
 @admin.register(Clinica)
@@ -97,16 +86,13 @@ class Clinica(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'institucion',
-                )
+                'institucion',)
         }),
     )
     list_display = (
-        'institucion',
-    )
+        'institucion',)
     search_fields = (
-        'institucion__razon_social',
-    )
+        'institucion__razon_social',)
 
 
 @admin.register(MedicoCabecera)
@@ -116,20 +102,17 @@ class MedicoCabeceraAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'persona',
-                'nroMatricula'
-                )
+                'nroMatricula')
         }),
     )
     list_display = (
         'persona',
-        'nroMatricula'
-    )
+        'nroMatricula')
     search_fields = (
         'persona__nombre',
         'persona__apellido',
         'persona__documento',
-        'nroMatricula'
-    )
+        'nroMatricula')
 
 
 @admin.register(CoberturaMedica)
@@ -143,8 +126,7 @@ class CoberturaMedicaAdmin(admin.ModelAdmin):
                 'planMedico',
                 'medicoCabecera',
                 'clinica',
-                'fechaInicio',
-                )
+                'fechaInicio')
         }),
         (_('¿Cobertura finalizada?'), {
             'classes': ('collapse',),
@@ -163,8 +145,7 @@ class CoberturaMedicaAdmin(admin.ModelAdmin):
         'medicoCabecera',
         'clinica',
         'fechaInicio',
-        'fechaFin',
-    )
+        'fechaFin')
     search_fields = (
         'planMedico__obraSocial__institucion__razon_social',
         'planMedico__descripcion',
@@ -176,5 +157,4 @@ class CoberturaMedicaAdmin(admin.ModelAdmin):
         'bombero__persona__apellido',
         'bombero__persona__nombre',
         'bombero__persona__documento',
-        'nroAfiliado'
-    )
+        'nroAfiliado')

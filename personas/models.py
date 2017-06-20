@@ -19,8 +19,7 @@ from .choices import (
     TIPO_DOCUMENTO,
     CUIT_CUIL,
     NIVEL_ESTUDIO,
-    ESTADO_ESTUDIO,
-)
+    ESTADO_ESTUDIO)
 
 
 class Entidad(models.Model):
@@ -28,14 +27,12 @@ class Entidad(models.Model):
         max_length=4,
         verbose_name=_("CUIT/CUIL"),
         choices=CUIT_CUIL,
-        default=CUIT_CUIL[0][0],
-    )
+        default=CUIT_CUIL[0][0])
     nro_cuit = models.CharField(
         max_length=13,
         blank=True,
         null=True,
-        verbose_name=_('Numero de CUIT/CUIL'),
-    )
+        verbose_name=_('Numero de CUIT/CUIL'))
 
     def __str__(self):
         try:
@@ -50,8 +47,7 @@ class Entidad(models.Model):
 class Institucion(Entidad):
     razon_social = models.CharField(
         max_length=255,
-        verbose_name=_("Razón Social"),
-    )
+        verbose_name=_("Razón Social"))
 
     def __str__(self):
         return self.razon_social
@@ -61,8 +57,7 @@ class Institucion(Entidad):
         return "({0}: {1}) - {0}".format(
             self.tipo_cuit,
             self.nro_cuit,
-            self.razon_social,
-            )
+            self.razon_social)
 
     class Meta:
         verbose_name = _("Institución")
@@ -72,12 +67,10 @@ class Institucion(Entidad):
 class Persona(Entidad):
     apellido = models.CharField(
         max_length=255,
-        verbose_name=_('Apellido')
-    )
+        verbose_name=_('Apellido'))
     nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre')
-    )
+        verbose_name=_('Nombre'))
     tipo_documento = models.CharField(
         max_length=10,
         choices=TIPO_DOCUMENTO,
@@ -102,7 +95,7 @@ class Persona(Entidad):
     fecha_desceso = models.DateField(
         verbose_name=_("Fecha de Fallecimiento"),
         null=True,
-        blank=True,)
+        blank=True)
 
     @property
     def nombre_completo(self):
@@ -146,8 +139,7 @@ class Bombero(models.Model):
     usuario = models.OneToOneField(
         User,
         on_delete=models.PROTECT,
-        related_name="usuario",
-    )
+        related_name="usuario")
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
@@ -182,8 +174,7 @@ class Bombero(models.Model):
                 '',
                 self.persona.documento,
                 last_name = self.persona.apellido,
-                first_name = self.persona.nombre
-            )
+                first_name = self.persona.nombre)
         super(Bombero, self).save(*args, **kwargs)
 
     @property
@@ -216,20 +207,16 @@ class NumeroOrden(models.Model):
     # con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
     # en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso
     numero_orden = models.SmallIntegerField(
-        verbose_name=_("Número de Orden")
-    )
+        verbose_name=_("Número de Orden"))
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="numero_orden_bombero"
-    )
+        related_name="numero_orden_bombero")
     vigencia_desde = models.DateField(
-        default=timezone.now,
-    )
+        default=timezone.now)
     vigencia_hasta = models.DateField(
         null=True,
-        blank=True,
-    )
+        blank=True)
 
     @property
     def vigencia(self):
@@ -237,12 +224,10 @@ class NumeroOrden(models.Model):
         if self.vigencia_hasta:
             vigencia += "{0} hasta el {1}".format(
                 self.vigencia_desde,
-                self.vigencia_hasta,
-            )
+                self.vigencia_hasta)
         else:
             vigencia += "{0}".format(
-                self.vigencia_desde,
-            )
+                self.vigencia_desde)
         return vigencia
 
     @staticmethod
@@ -250,8 +235,7 @@ class NumeroOrden(models.Model):
         numero = NumeroOrden.objects.filter(
             bombero=self.bombero,
             vigencia_desde__lt=self.vigencia_desde,
-            vigencia_hasta__isnull=True,
-        )
+            vigencia_hasta__isnull=True)
         if numero:
             numero.update(vigencia_hasta=self.vigencia_desde)
 
@@ -278,8 +262,7 @@ class NumeroOrden(models.Model):
         return "{0} - {1} ({2})".format(
             self.numero_orden,
             self.bombero,
-            self.vigencia
-        )
+            self.vigencia)
 
 
 class Medio(models.Model):
@@ -288,14 +271,12 @@ class Medio(models.Model):
         verbose_name=_("Uso"),
         max_length=255,
         choices=USO_MEDIO,
-        default=USO_MEDIO[0][0]
-    )
+        default=USO_MEDIO[0][0])
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Obervaciones"),
         blank=True,
-        null=True
-    )
+        null=True)
 
     class Meta:
         abstract = True
@@ -437,8 +418,7 @@ class Empleo(models.Model):
         return "({0}) {1} - {2}".format(
             self.periodo,
             self.empresa,
-            self.titulo,
-            )
+            self.titulo)
 
     def __str__(self):
         return "{0} - {1} ({2})".format(
@@ -500,8 +480,7 @@ class Estudio(models.Model):
         #    ref/models/instances/#django.db.models.Model.get_FOO_display
         return "{0} - {1}".format(
             self.get_nivel_display(),
-            self.get_estado_display(),
-            )
+            self.get_estado_display())
 
     @property
     def estudio(self):
@@ -509,17 +488,14 @@ class Estudio(models.Model):
             self.periodo,
             self.nivel_estudio,
             self.establecimiento,
-            self.titulo,
-            )
+            self.titulo)
 
     def __str__(self):
         return "{0}".format(
-            self.estudio
-            )
+            self.estudio)
 
 
 class CalificacionAnual(models.Model):
-
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),

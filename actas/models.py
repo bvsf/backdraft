@@ -28,8 +28,12 @@ class Acta(models.Model):
            abstract = True
 
     def __str__(self):
-        return "Libro: {0} - Folio: {1} - Acta: {2}".format(
+        return "Libro: {0} Folio: {1} Acta: {2} - Fecha:".format(
             self.numero_libro,
             self.numero_folio,
             self.numero_acta,
+            self.fecha_acta,
         )
+
+class ActaAscenso(Acta):
+    pass

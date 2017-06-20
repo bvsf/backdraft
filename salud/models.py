@@ -7,13 +7,11 @@ from personas.models import Bombero, Institucion, Entidad, Persona
 class Alergenos(models.Model):
     nombre_alergeno = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre del Alérgeno'),
-    )
+        verbose_name=_('Nombre del Alérgeno'))
 
     def __str__(self):
         return "{0}".format(
-            self.nombre_alergeno
-            )
+            self.nombre_alergeno)
 
     class Meta:
         verbose_name = _("Alérgeno")
@@ -23,25 +21,21 @@ class Alergenos(models.Model):
 class Alergicos(models.Model):
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero")
-    )
+        verbose_name=_("Bombero"))
     alergeno = models.ForeignKey(
         Alergenos,
-        verbose_name=_("Alérgeno")
-    )
+        verbose_name=_("Alérgeno"))
 
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Observaciones"),
         blank=True,
-        null=True
-    )
+        null=True)
 
     def __str__(self):
         return "{0} -> {1}".format(
             self.bombero,
-            self.alergeno
-        )
+            self.alergeno)
 
     class Meta:
         verbose_name = _("Alérgico")
@@ -56,8 +50,7 @@ class ObraSocial(models.Model):
 
     def __str__(self):
         return "{0}".format(
-            self.institucion
-        )
+            self.institucion)
 
     class Meta:
         verbose_name = _("Obra Social")
@@ -67,8 +60,7 @@ class ObraSocial(models.Model):
 class PlanMedico(models.Model):
     descripcion = models.TextField(
         max_length=255,
-        verbose_name=_('Descripción')
-    )
+        verbose_name=_('Descripción'))
 
     obraSocial = models.ForeignKey(
         ObraSocial,
@@ -78,8 +70,7 @@ class PlanMedico(models.Model):
     def __str__(self):
         return "{0} ({1})".format(
             self.descripcion,
-            self.obraSocial,
-        )
+            self.obraSocial)
 
     class Meta:
         verbose_name = _("Plan Médico")
@@ -87,11 +78,10 @@ class PlanMedico(models.Model):
 
 
 class Clinica(models.Model):
+    # TODO: Ver qué se le puede agregar a esta clase
     institucion = models.OneToOneField(
         Institucion,
-        verbose_name=_("Institución")
-    )
-    '''TODO: Ver qué se le puede agregar a esta clase'''
+        verbose_name=_("Institución"))
     def __str__(self):
         return "{0}".format(
             self.institucion,
@@ -106,19 +96,16 @@ class MedicoCabecera(models.Model):
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
-        null=True
-    )
+        null=True)
     nroMatricula = models.CharField(
         max_length=11,
         verbose_name=_("Número de Matrícula"),
-        unique=True
-    )
+        unique=True)
 
     def __str__(self):
         return "{0}, Nro de Mat.:{1}".format(
             self.persona,
-            self.nroMatricula
-        )
+            self.nroMatricula)
 
     class Meta:
         verbose_name = _("Médico de Cabecera")
@@ -129,25 +116,20 @@ class MedicoCabecera(models.Model):
 class CoberturaMedica(models.Model):
     planMedico = models.ForeignKey(
         PlanMedico,
-        verbose_name=_("Plan Médico")
-    )
+        verbose_name=_("Plan Médico"))
     medicoCabecera = models.ForeignKey(
         MedicoCabecera,
-        verbose_name=_("Médico de Cabecera")
-    )
+        verbose_name=_("Médico de Cabecera"))
     clinica = models.ForeignKey(
         Clinica,
-        verbose_name=_("Clínica")
-    )
+        verbose_name=_("Clínica"))
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero")
-    )
+        verbose_name=_("Bombero"))
     nroAfiliado = models.CharField(
         max_length=11,
         verbose_name=_('Número de Afiliado'),
-        unique=True
-    )
+        unique=True)
     fechaInicio = models.DateField(
         verbose_name=_("Fecha de Inicio de Cobertura"),
         null=True
@@ -155,14 +137,12 @@ class CoberturaMedica(models.Model):
     fechaFin = models.DateField(
         verbose_name=_("Fecha de Finalización de Cobertura"),
         blank=True,
-        null=True
-    )
+        null=True)
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Observaciones"),
         blank=True,
-        null=True
-    )
+        null=True)
 
     def __str__(self):
         return "Bombero:{0}, Nº Afiliado:{1}, Plan:{2}, Médico de cabecera:{3}, Clinica:{4}".format(
@@ -170,8 +150,7 @@ class CoberturaMedica(models.Model):
             self.nroAfiliado,
             self.planMedico,
             self.medicoCabecera,
-            self.clinica
-        )
+            self.clinica)
 
     class Meta:
         verbose_name = _("Cobertura Médica")
