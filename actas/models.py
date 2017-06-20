@@ -4,25 +4,21 @@ from django.utils.translation import ugettext as _
 
 class Acta(models.Model):
     numero_libro = models.CharField(
-        max_length=100,
-        verbose_name=_("Numero de Libro"),
-    )
+        max_length=10,
+        verbose_name=_("Numero de Libro"))
     numero_folio = models.CharField(
-        max_length=100,
+        max_length=10,
         verbose_name=_("Numero de Folio"),
-        unique=True,
-    )
+        unique=True)
     numero_acta = models.CharField(
-        max_length=100,
+        max_length=10,
         verbose_name=_("Numero de Acta"),
         unique=True)
     fecha_acta = models.DateField(
-        verbose_name=("Fecha de Acta"),
-    )
+        verbose_name=_("Fecha de Acta"),)
     descripcion_acta = models.CharField(
         verbose_name=_("Descripcion del Acta"),
-        max_length = 1000,
-    )
+        max_length=1000)
 
     class Meta:
            abstract = True
@@ -32,8 +28,4 @@ class Acta(models.Model):
             self.numero_libro,
             self.numero_folio,
             self.numero_acta,
-            self.fecha_acta,
-        )
-
-class ActaAscenso(Acta):
-    pass
+            self.fecha_acta)
