@@ -3,8 +3,9 @@ from actas.models import (
     Acta,
 )
 
-# Register your models here.
 
+'''
+El acta es abstracto, se debe poner solo las actas especificas
 
 @admin.register(Acta)
 class ActaAdmin(admin.ModelAdmin):
@@ -36,3 +37,4 @@ class ActaAdmin(admin.ModelAdmin):
             'descripcion_acta',
             )
 #agregar el campo descripcion_acta.
+'''
