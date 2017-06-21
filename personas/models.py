@@ -19,8 +19,7 @@ from .choices import (
     TIPO_DOCUMENTO,
     CUIT_CUIL,
     NIVEL_ESTUDIO,
-    ESTADO_ESTUDIO,
-)
+    ESTADO_ESTUDIO)
 
 
 class Entidad(models.Model):
@@ -28,14 +27,12 @@ class Entidad(models.Model):
         max_length=4,
         verbose_name=_("CUIT/CUIL"),
         choices=CUIT_CUIL,
-        default=CUIT_CUIL[0][0],
-    )
+        default=CUIT_CUIL[0][0])
     nro_cuit = models.CharField(
         max_length=13,
         blank=True,
         null=True,
-        verbose_name=_('Numero de CUIT/CUIL'),
-    )
+        verbose_name=_('Numero de CUIT/CUIL'))
 
     def __str__(self):
         try:
@@ -50,8 +47,7 @@ class Entidad(models.Model):
 class Institucion(Entidad):
     razon_social = models.CharField(
         max_length=255,
-        verbose_name=_("Razón Social"),
-    )
+        verbose_name=_("Razón Social"))
 
     def __str__(self):
         return self.razon_social
@@ -61,8 +57,7 @@ class Institucion(Entidad):
         return "({0}: {1}) - {0}".format(
             self.tipo_cuit,
             self.nro_cuit,
-            self.razon_social,
-            )
+            self.razon_social)
 
     class Meta:
         verbose_name = _("Institución")
@@ -72,12 +67,10 @@ class Institucion(Entidad):
 class Persona(Entidad):
     apellido = models.CharField(
         max_length=255,
-        verbose_name=_('Apellido')
-    )
+        verbose_name=_('Apellido'))
     nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre')
-    )
+        verbose_name=_('Nombre'))
     tipo_documento = models.CharField(
         max_length=10,
         choices=TIPO_DOCUMENTO,
@@ -102,7 +95,7 @@ class Persona(Entidad):
     fecha_desceso = models.DateField(
         verbose_name=_("Fecha de Fallecimiento"),
         null=True,
-        blank=True,)
+        blank=True)
 
     @property
     def nombre_completo(self):
@@ -146,8 +139,7 @@ class Bombero(models.Model):
     usuario = models.OneToOneField(
         User,
         on_delete=models.PROTECT,
-        related_name="usuario",
-    )
+        related_name="usuario")
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
@@ -182,9 +174,15 @@ class Bombero(models.Model):
                 '',
                 self.persona.documento,
                 last_name = self.persona.apellido,
-                first_name = self.persona.nombre
-            )
+                first_name = self.persona.nombre)
         super(Bombero, self).save(*args, **kwargs)
+
+    @property
+    def get_numero_orden_vigente(self):
+        return NumeroOrden.objects.filter(
+            bombero=self,
+            vigencia_hasta__isnull=True,
+        ).first()
 
 
 class Parentesco(models.Model):
@@ -204,25 +202,21 @@ class Parentesco(models.Model):
 
 
 class NumeroOrden(models.Model):
-    '''Administrativamente siempre se usa el numero de orden de los bomberos en la
-    carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
-    con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
-    en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso'''
+    # Administrativamente siempre se usa el numero de orden de los bomberos en la
+    # carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
+    # con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
+    # en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso
     numero_orden = models.SmallIntegerField(
-        verbose_name=_("Número de Orden")
-    )
+        verbose_name=_("Número de Orden"))
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="numero_orden_bombero"
-    )
+        related_name="numero_orden_bombero")
     vigencia_desde = models.DateField(
-        default=timezone.now,
-    )
+        default=timezone.now)
     vigencia_hasta = models.DateField(
         null=True,
-        blank=True,
-    )
+        blank=True)
 
     @property
     def vigencia(self):
@@ -230,12 +224,10 @@ class NumeroOrden(models.Model):
         if self.vigencia_hasta:
             vigencia += "{0} hasta el {1}".format(
                 self.vigencia_desde,
-                self.vigencia_hasta,
-            )
+                self.vigencia_hasta)
         else:
             vigencia += "{0}".format(
-                self.vigencia_desde,
-            )
+                self.vigencia_desde)
         return vigencia
 
     @staticmethod
@@ -243,8 +235,7 @@ class NumeroOrden(models.Model):
         numero = NumeroOrden.objects.filter(
             bombero=self.bombero,
             vigencia_desde__lt=self.vigencia_desde,
-            vigencia_hasta__isnull=True,
-        )
+            vigencia_hasta__isnull=True)
         if numero:
             numero.update(vigencia_hasta=self.vigencia_desde)
 
@@ -258,9 +249,9 @@ class NumeroOrden(models.Model):
                  _("Ya existe un bombero con este número de orden vigente")})
 
     def save(self, *args, **kwargs):
-        '''Siempre que se guarde un bombero se pone al final de la lista con el
-        numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
-        acuerdo a los criterios que se decida.'''
+        # Siempre que se guarde un bombero se pone al final de la lista con el
+        # numero de orden mas bajo. Luego el sistema tendra que reordenarlo de
+        # acuerdo a los criterios que se decida.
         mayor = NumeroOrden.objects.filter(
             vigencia_hasta__isnull=True,
         ).order_by('-numero_orden')[:1]
@@ -271,8 +262,7 @@ class NumeroOrden(models.Model):
         return "{0} - {1} ({2})".format(
             self.numero_orden,
             self.bombero,
-            self.vigencia
-        )
+            self.vigencia)
 
 
 class Medio(models.Model):
@@ -281,14 +271,12 @@ class Medio(models.Model):
         verbose_name=_("Uso"),
         max_length=255,
         choices=USO_MEDIO,
-        default=USO_MEDIO[0][0]
-    )
+        default=USO_MEDIO[0][0])
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Obervaciones"),
         blank=True,
-        null=True
-    )
+        null=True)
 
     class Meta:
         abstract = True
@@ -430,8 +418,7 @@ class Empleo(models.Model):
         return "({0}) {1} - {2}".format(
             self.periodo,
             self.empresa,
-            self.titulo,
-            )
+            self.titulo)
 
     def __str__(self):
         return "{0} - {1} ({2})".format(
@@ -489,14 +476,11 @@ class Estudio(models.Model):
 
     @property
     def nivel_estudio(self):
-        '''
-        https://docs.djangoproject.com/en/dev/
-            ref/models/instances/#django.db.models.Model.get_FOO_display
-        '''
+        # https://docs.djangoproject.com/en/dev/
+        #    ref/models/instances/#django.db.models.Model.get_FOO_display
         return "{0} - {1}".format(
             self.get_nivel_display(),
-            self.get_estado_display(),
-            )
+            self.get_estado_display())
 
     @property
     def estudio(self):
@@ -504,17 +488,14 @@ class Estudio(models.Model):
             self.periodo,
             self.nivel_estudio,
             self.establecimiento,
-            self.titulo,
-            )
+            self.titulo)
 
     def __str__(self):
         return "{0}".format(
-            self.estudio
-            )
+            self.estudio)
 
 
 class CalificacionAnual(models.Model):
-
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
@@ -540,26 +521,14 @@ class CalificacionAnual(models.Model):
 
     @property
     def calificacion_escrita(self):
-        if self.puntaje_en_numero >= Decimal(19) and \
-        self.puntaje_en_numero <= Decimal(20):
-            return "{0}".format(
-                "Excelente"
-            )
-        elif self.puntaje_en_numero < Decimal(19) and \
-        self.puntaje_en_numero >= Decimal(15):
-            return "{0}".format(
-                "Muy Bueno"
-            )
-        elif self.puntaje_en_numero < Decimal(15) and \
-        self.puntaje_en_numero >= Decimal(10):
-            return "{0}".format(
-                "Bueno"
-            )
-        elif self.puntaje_en_numero < Decimal(10) and \
-        self.puntaje_en_numero >= Decimal(0):
-            return "{0}".format(
-                "Insuficiente"
-            )
+        if Decimal(19) <= self.puntaje_en_numero <= Decimal(20):
+            return "{0}".format("Excelente")
+        elif Decimal(15) <= self.puntaje_en_numero < Decimal(19):
+            return "{0}".format("Muy Bueno")
+        elif Decimal(10) <= self.puntaje_en_numero < Decimal(15):
+            return "{0}".format("Bueno")
+        elif Decimal(0) <= self.puntaje_en_numero < Decimal(10):
+            return "{0}".format("Insuficiente")
 
     def __str__(self):
         return "{0} {1} {2}".format(
