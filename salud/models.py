@@ -109,7 +109,7 @@ class MedicoCabecera(models.Model):
 
     def __str__(self):
         return "Nombre Completo:{0}, {1}, Especialidad:{2}, Nro de Mat.:{3}".format(
-            self.apellido.uppercase(),
+            self.apellido,
             self.nombre,
             self.especialidad,
             self.nroMatricula)
