@@ -101,17 +101,21 @@ class MedicoCabeceraAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'persona',
+                'apellido',
+                'nombre',
+                'especialidad',
                 'nroMatricula')
         }),
     )
     list_display = (
-        'persona',
+        'apellido',
+        'nombre',
+        'especialidad',
         'nroMatricula')
     search_fields = (
-        'persona__nombre',
-        'persona__apellido',
-        'persona__documento',
+        'apellido',
+        'nombre',
+        'especialidad',
         'nroMatricula')
 
 
