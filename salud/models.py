@@ -93,24 +93,31 @@ class Clinica(models.Model):
 
 
 class MedicoCabecera(models.Model):
-    persona = models.OneToOneField(
-        Persona,
-        verbose_name=_("Persona"),
-        null=True)
+    apellido = models.CharField(
+        max_length=255,
+        verbose_name=_('Apellido'))
+    nombre = models.CharField(
+        max_length=255,
+        verbose_name=_('Nombre'))
+    especialidad = models.CharField(
+        max_length=255,
+        verbose_name=_('Especialidad'))
     nroMatricula = models.CharField(
         max_length=11,
         verbose_name=_("Número de Matrícula"),
         unique=True)
 
     def __str__(self):
-        return "{0}, Nro de Mat.:{1}".format(
-            self.persona,
+        return "Nombre Completo:{0}, {1}, Especialidad:{2}, Nro de Mat.:{3}".format(
+            self.apellido,
+            self.nombre,
+            self.especialidad,
             self.nroMatricula)
 
     class Meta:
         verbose_name = _("Médico de Cabecera")
         verbose_name_plural = _("Médicos de Cabecera")
-        unique_together = (("persona", "nroMatricula"),)
+        unique_together = (("nombre", "apellido", "nroMatricula"),)
 
 
 class CoberturaMedica(models.Model):
