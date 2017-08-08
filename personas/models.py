@@ -1,13 +1,15 @@
 # -*- coding: UTF-8 -*-
+from datetime import date
 from decimal import *
-from django.db import models
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from django.contrib.auth.models import User
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
-from datetime import date
 from .choices import (
     GRUPO_SANGUINEO,
     FACTOR_SANGUINEO,
@@ -202,10 +204,14 @@ class Parentesco(models.Model):
 
 
 class NumeroOrden(models.Model):
-    # Administrativamente siempre se usa el numero de orden de los bomberos en la
-    # carga de partes de siniestros. Los numeros de orden cambian de un bombero a otro
-    # con el tiempo debido a renuncias, ascensos, etc. con lo cual se debe tener registrado
-    # en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso
+    """
+    Administrativamente siempre se usa el numero de orden de los bomberos en la carga de partes de siniestros.
+    Los numeros de orden cambian de un bombero a otro con el tiempo debido a renuncias, ascensos, etc. con lo cual se
+    debe tener registrado en que periodo de tiempo un bombero tuvo cada numero de orden por el que paso.
+    El Número de Orden más bajo es asignado al Jefe del Cuerpo Activo y el más alto al de menor Jerarquía.
+    Cuando entra un Bombero nuevo se le dá el Número de Orden más bajo hasta que el 02/06 se defina su situación
+        respecto a su antigüedad, rango, etc. que pudiera tener.
+    """
     numero_orden = models.SmallIntegerField(
         verbose_name=_("Número de Orden"))
     bombero = models.ForeignKey(
@@ -217,6 +223,16 @@ class NumeroOrden(models.Model):
     vigencia_hasta = models.DateField(
         null=True,
         blank=True)
+
+    class Meta:
+        verbose_name = _("Número de Orden")
+        verbose_name_plural = _("Números de Orden")
+
+    @receiver(post_save, sender=Bombero)
+    def crear_nro_orden(sender, **kwargs):
+        if kwargs.get('created', True):
+            NumeroOrden.objects.create(
+                bombero=kwargs.get('instance'))
 
     @property
     def vigencia(self):
@@ -242,7 +258,7 @@ class NumeroOrden(models.Model):
     def clean(self):
         numero = NumeroOrden.objects.filter(
             bombero=self.bombero,
-            vigencia_desde__gte=self.vigencia_desde,).count()
+            vigencia_desde__gte=self.vigencia_desde).count()
         if numero > 0 and self.id is None:
             raise ValidationError(
                 {'vigencia_desde':
@@ -254,8 +270,8 @@ class NumeroOrden(models.Model):
         # acuerdo a los criterios que se decida.
         mayor = NumeroOrden.objects.filter(
             vigencia_hasta__isnull=True,
-        ).order_by('-numero_orden')[:1]
-        self.numero_orden = mayor + 1
+        ).order_by('-numero_orden').first()
+        self.numero_orden = mayor.numero_orden + 1
         super(NumeroOrden, self).save(*args, **kwargs)
 
     def __str__(self):
