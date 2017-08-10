@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 from personas.models import (
     Persona,
     Bombero,
@@ -360,6 +361,40 @@ class CalificacionAnualAdmin(admin.ModelAdmin):
 
 @admin.register(NumeroOrden)
 class NumeroOrdenAdmin(admin.ModelAdmin):
+    """
+    Acciones con parametros
+    http://agiliq.com/blog/2014/08/passing-parameters-to-django-admin-action/
+    Da un error que dice "No se ha seleccionado ninguna accion :|
+
+    class CierreActionForm(ActionForm):
+        fecha_cierre = forms.DateField()
+
+    def cerrar_vigencia(modeladmin, request, queryset):
+        fecha = request.POST.get('fecha_cierre', timezone.now())
+        print("Action!!")
+        if not isinstance(fecha, datetime):
+            try:
+                fecha = datetime.strptime(fecha, "%Y-%m-%d").date()
+            except ValueError:
+                raise ValidationError(
+                    {'vigencia_hasta':
+                         _("La fecha de cierre de vigencia no es válida, debe tener el formato 'YYYY-MM-DD'.")})
+        queryset.update(vigencia_hasta=fecha)
+        modeladmin.message_user(
+            request,
+            _("Se cerraron satisfactoriamente las vigencias a {0} Bomberos").format(queryset.count()),)
+    cerrar_vigencia.short_description = _("Cerrar vigencia de los bomberos seleccionados")
+
+    action_form = CierreActionForm
+    """
+    def cerrar_vigencia(modeladmin, request, queryset):
+        queryset.update(vigencia_hasta=timezone.now())
+        modeladmin.message_user(
+            request,
+            _("Se cerraron satisfactoriamente las vigencias a {0} Bomberos").format(queryset.count()), )
+    cerrar_vigencia.short_description = _("Cerrar vigencia de los bomberos seleccionados")
+
+    actions = [cerrar_vigencia]
     actions_on_bottom = True
     fieldsets = (
         (None, {
