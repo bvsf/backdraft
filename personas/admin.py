@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from django.utils import timezone
+from django.contrib.admin.filters import DateFieldListFilter
 from personas.models import (
     Persona,
     Bombero,
@@ -359,6 +360,24 @@ class CalificacionAnualAdmin(admin.ModelAdmin):
     )
 
 
+# https://djangosnippets.org/snippets/10566/
+class DateFieldListFilterOrNull(DateFieldListFilter):
+    def __init__(self, field, request, params, model, model_admin, field_path):
+        self.lookup_kwarg_isnull = '%s__isnull' % (field_path,)
+        super(DateFieldListFilterOrNull, self).__init__(field, request, params, model, model_admin, field_path)
+        self.links = self.links + (
+            (_("Sólo los Activos"), {
+                self.lookup_kwarg_isnull: 'True',
+            }),
+            (_("Sólo los Inactivos"), {
+                self.lookup_kwarg_isnull: 'False',
+            }),
+        )
+
+    def expected_parameters(self):
+        return super(DateFieldListFilterOrNull, self).expected_parameters() + [self.lookup_kwarg_isnull, ]
+
+
 @admin.register(NumeroOrden)
 class NumeroOrdenAdmin(admin.ModelAdmin):
     """
@@ -418,7 +437,7 @@ class NumeroOrdenAdmin(admin.ModelAdmin):
         'numero_orden',
         'bombero',
         'vigencia_desde',
-        'vigencia_hasta',
+        ('vigencia_hasta', DateFieldListFilterOrNull),
     )
     date_hierarchy = 'vigencia_hasta'
     search_fields = (
@@ -428,3 +447,4 @@ class NumeroOrdenAdmin(admin.ModelAdmin):
         'vigencia_desde',
         'vigencia_hasta',
     )
+
