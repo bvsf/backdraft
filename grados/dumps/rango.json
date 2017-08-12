@@ -1,0 +1,26 @@
+[
+    {
+        "model":"grados.rango",
+        "pk":1,
+        "fields":{
+            "nombre":"Oficiales",
+            "color":"#FFFFFF"
+        }
+    },
+    {
+        "model":"grados.rango",
+        "pk":2,
+        "fields":{
+            "nombre":"SubOficiales",
+            "color":"#FF0000"
+        }
+    },
+    {
+        "model":"grados.rango",
+        "pk":3,
+        "fields":{
+            "nombre":"Bomberos",
+            "color":"#FFFB00"
+        }
+    }
+]
