@@ -62,8 +62,7 @@ class Licencia(Acta):
         return _("({0}) - Licencia desde {1} hasta {2}").format(
             self.nombre_corto,
             self.fecha_acta,
-            self.fecha_hasta
-        )
+            self.fecha_hasta)
 
     @property
     def periodo_licencia(self):
