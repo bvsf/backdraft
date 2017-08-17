@@ -1,0 +1,1 @@
+sudo apt-get install -y python3-dev gcc cmake tk-dev libjpeg8-dev zlib1g-dev libtiff5-dev libfreetype6-dev liblcms2-dev libwebp-dev libtk-img-doc
