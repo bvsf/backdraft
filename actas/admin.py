@@ -2,7 +2,23 @@ from django.contrib import admin
 from django.utils.translation import ugettext as _
 from actas.models import (
     Licencia,
+    ActaAscenso,
+    Ascenso,
+    ActaSancion,
+    Sancion,
+    Premio,
+    Pase,
 )
+
+
+@admin.register(Premio)
+class PremioAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Pase)
+class PaseAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Licencia)
@@ -51,3 +67,25 @@ class LicenciaAdmin(admin.ModelAdmin):
     def periodo_licencia(self, obj):
         return obj.periodo_licencia
     periodo_licencia.short_description = _('Licencia')
+
+
+class AscensoTabular(admin.TabularInline):
+    model = Ascenso
+
+
+@admin.register(ActaAscenso)
+class ActaAscensoAdmin(admin.ModelAdmin):
+    inlines = [
+        AscensoTabular,
+    ]
+
+
+class SancionTabular(admin.TabularInline):
+    model = Sancion
+
+
+@admin.register(ActaSancion)
+class ActaSancionAdmin(admin.ModelAdmin):
+    inlines = [
+        SancionTabular,
+    ]
