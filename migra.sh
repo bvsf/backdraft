@@ -26,6 +26,7 @@ python manage.py loaddata localidades/dumps/localidad.json
 python manage.py loaddata personas/dumps/entidad.json
 python manage.py loaddata personas/dumps/persona.json
 python manage.py loaddata personas/dumps/user.json
+#usuario: admin, clave: administrador
 python manage.py loaddata personas/dumps/bombero.json
 python manage.py loaddata personas/dumps/parentesco.json
 

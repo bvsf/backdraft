@@ -53,7 +53,7 @@ class Acta(models.Model):
     fecha_acta = models.DateField(
         verbose_name=_("Fecha de Acta"),
         default=timezone.now)
-    descripcion_acta = models.CharField(
+    descripcion_acta = models.TextField(
         verbose_name=_("Descripción del Acta"),
         max_length=1000)
 
