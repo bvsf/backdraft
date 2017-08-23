@@ -1,50 +1,50 @@
-[
-    {
-        "model":"grados.escalafon",
-        "pk":1,
-        "fields":{
-            "nombre":"Oficiales Superiores",
-            "rango":1
-        }
-    },
-    {
-        "model":"grados.escalafon",
-        "pk":2,
-        "fields":{
-            "nombre":"Oficiales Jefes",
-            "rango":1
-        }
-    },
-    {
-        "model":"grados.escalafon",
-        "pk":3,
-        "fields":{
-            "nombre":"Oficiales SubAlternos",
-            "rango":1
-        }
-    },
-    {
-        "model":"grados.escalafon",
-        "pk":4,
-        "fields":{
-            "nombre":"SubOficiales Superiores",
-            "rango":2
-        }
-    },
-    {
-        "model":"grados.escalafon",
-        "pk":5,
-        "fields":{
-            "nombre":"SubOficiales SubAlternos",
-            "rango":2
-        }
-    },
-    {
-        "model":"grados.escalafon",
-        "pk":6,
-        "fields":{
-            "nombre":"Bomberos",
-            "rango":3
-        }
-    }
+[ 
+    { 
+        "model":"grados.escalafon", 
+        "pk":1, 
+        "fields":{ 
+            "nombre":"Oficiales Superiores", 
+            "rango":1 
+        } 
+    }, 
+    { 
+        "model":"grados.escalafon", 
+        "pk":2, 
+        "fields":{ 
+            "nombre":"Oficiales Jefes", 
+            "rango":1 
+        } 
+    }, 
+    { 
+        "model":"grados.escalafon", 
+        "pk":3, 
+        "fields":{ 
+            "nombre":"Oficiales SubAlternos", 
+            "rango":1 
+        } 
+    }, 
+    { 
+        "model":"grados.escalafon", 
+        "pk":4, 
+        "fields":{ 
+            "nombre":"SubOficiales Superiores", 
+            "rango":2 
+        } 
+    }, 
+    { 
+        "model":"grados.escalafon", 
+        "pk":5, 
+        "fields":{ 
+            "nombre":"SubOficiales SubAlternos", 
+            "rango":2 
+        } 
+    }, 
+    { 
+        "model":"grados.escalafon", 
+        "pk":6, 
+        "fields":{ 
+            "nombre":"Bomberos", 
+            "rango":3 
+        } 
+    } 
 ]

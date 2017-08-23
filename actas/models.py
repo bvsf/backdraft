@@ -13,14 +13,20 @@ from .choices import (
 
 def get_last_libro():
     acta = Acta.objects.all().order_by('-numero_libro').first()
-    return acta.numero_libro
+    if not acta:
+        return 1
+    else:
+        return acta.numero_libro
 
 
 def get_last_folio():
     acta = Acta.objects.filter(
         numero_libro=get_last_libro()
     ).order_by('-numero_folio').first()
-    return acta.numero_folio
+    if not acta:
+        return 1
+    else:
+        return acta.numero_folio
 
 
 def get_next_acta():
@@ -28,7 +34,10 @@ def get_next_acta():
         numero_libro=get_last_libro(),
         numero_folio=get_last_folio()
     ).order_by('-numero_acta').first()
-    return acta.numero_acta + 1
+    if not acta:
+        return 1
+    else:
+        return acta.numero_acta + 1
 
 
 class Acta(models.Model):
@@ -111,6 +120,10 @@ class Licencia(Acta):
             self.fecha_desde,
             self.fecha_hasta,
         )
+
+    class Meta:
+        verbose_name = _("Acta de Licencia")
+        verbose_name_plural = _("Actas de Licencias")
 
 
 class ActaAscenso(Acta):
@@ -228,6 +241,10 @@ class Premio(Acta):
         verbose_name=_("Premio Otorgado"),
     )
 
+    class Meta:
+        verbose_name = _("Acta de Premio")
+        verbose_name_plural = _("Actas de Premios")
+
 
 class Pase(Acta):
     fecha_efectiva = models.DateField(
@@ -248,3 +265,7 @@ class Pase(Acta):
         related_name='Institucion_Destino',
         verbose_name=_("Institución Destino")
     )
+
+    class Meta:
+        verbose_name = _("Acta de Pase")
+        verbose_name_plural = _("Actas de Pases")
