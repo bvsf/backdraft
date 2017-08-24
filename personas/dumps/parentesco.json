@@ -1,0 +1,11 @@
+[ 
+    { 
+        "model":"personas.parentesco", 
+        "pk":1, 
+        "fields":{ 
+            "bombero":1, 
+            "familiar":2, 
+            "parentesco":"Esposo" 
+        } 
+    } 
+]

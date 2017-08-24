@@ -30,7 +30,8 @@ class Escalafon(models.Model):
     def __str__(self):
         return "{0} ({1})".format(
             self.nombre,
-            self.rango)
+            self.rango
+        )
 
     class Meta:
         verbose_name = _("Escalafón")

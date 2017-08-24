@@ -21,7 +21,8 @@ from .choices import (
     TIPO_DOCUMENTO,
     CUIT_CUIL,
     NIVEL_ESTUDIO,
-    ESTADO_ESTUDIO)
+    ESTADO_ESTUDIO,
+)
 
 
 class Entidad(models.Model):
@@ -170,6 +171,7 @@ class Bombero(models.Model):
         return self.persona.nombre_completo
 
     def save(self, *args, **kwargs):
+        # No podemos crear un signal en el model User que viene con django, por ende hacemos esto acá
         if not self.pk:
             self.usuario = User.objects.create_user(
                 self.persona.nombre.split()[0].lower() + self.persona.apellido.lower(),

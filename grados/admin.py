@@ -67,6 +67,9 @@ class GradoAdmin(admin.ModelAdmin):
         'escalafon',
         'excepcion',
     )
+    list_filter = (
+        'escalafon',
+    )
     search_fields = (
         'nombre',
         'escalafon',
