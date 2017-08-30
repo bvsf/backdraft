@@ -1,0 +1,18 @@
+[ 
+    { 
+        "model":"personas.entidad", 
+        "pk":1, 
+        "fields":{ 
+            "tipo_cuit":"CUIL", 
+            "nro_cuit":"20-29087702-5" 
+        } 
+    }, 
+    { 
+        "model":"personas.entidad", 
+        "pk":2, 
+        "fields":{ 
+            "tipo_cuit":"CUIL", 
+            "nro_cuit":"27-31139529-2" 
+        } 
+    } 
+]

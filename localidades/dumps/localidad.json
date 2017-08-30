@@ -1,0 +1,32 @@
+[ 
+    { 
+        "model":"localidades.localidad", 
+        "pk":1, 
+        "fields":{ 
+            "nombre":"Suardi", 
+            "abreviatura":"Sdi.", 
+            "provincia":20, 
+            "codigo_postal":"2349" 
+        } 
+    }, 
+    { 
+        "model":"localidades.localidad", 
+        "pk":2, 
+        "fields":{ 
+            "nombre":"San Guillermo", 
+            "abreviatura":"San Gmo.", 
+            "provincia":20, 
+            "codigo_postal":"2347" 
+        } 
+    }, 
+    { 
+        "model":"localidades.localidad", 
+        "pk":3, 
+        "fields":{ 
+            "nombre":"San Francisco", 
+            "abreviatura":"San Fco.", 
+            "provincia":5, 
+            "codigo_postal":"2400" 
+        } 
+    } 
+]

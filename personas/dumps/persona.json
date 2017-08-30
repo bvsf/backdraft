@@ -1,0 +1,30 @@
+[ 
+    { 
+        "model":"personas.persona", 
+        "pk":1, 
+        "fields":{ 
+            "apellido":"Ferrero", 
+            "nombre":"Rafael Eduardo", 
+            "tipo_documento":"DNI", 
+            "documento":"29087702", 
+            "grupo_sanguineo":"O", 
+            "factor_sanguineo":"-", 
+            "fecha_nacimiento":"1981-12-02", 
+            "fecha_desceso":null 
+        } 
+    }, 
+    { 
+        "model":"personas.persona", 
+        "pk":2, 
+        "fields":{ 
+            "apellido":"Rosso", 
+            "nombre":"Pamela Soledad", 
+            "tipo_documento":"DNI", 
+            "documento":"31139529", 
+            "grupo_sanguineo":"O", 
+            "factor_sanguineo":"+", 
+            "fecha_nacimiento":"1985-04-27", 
+            "fecha_desceso":null 
+        } 
+    } 
+]
