@@ -82,6 +82,7 @@ class Clinica(models.Model):
     institucion = models.OneToOneField(
         Institucion,
         verbose_name=_("Institución"))
+
     def __str__(self):
         return "{0}".format(
             self.institucion,
@@ -108,7 +109,7 @@ class MedicoCabecera(models.Model):
         unique=True)
 
     def __str__(self):
-        return "Nombre Completo:{0}, {1}, Especialidad:{2}, Nro de Mat.:{3}".format(
+        return "{0}, {1} - {2} - Mat.:{3}".format(
             self.apellido,
             self.nombre,
             self.especialidad,

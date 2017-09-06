@@ -3,13 +3,13 @@
         "model":"personas.persona", 
         "pk":1, 
         "fields":{ 
-            "apellido":"Ferrero", 
-            "nombre":"Rafael Eduardo", 
+            "apellido":"Tal",
+            "nombre":"Mengano",
             "tipo_documento":"DNI", 
-            "documento":"29087702", 
+            "documento":"12345678",
             "grupo_sanguineo":"O", 
             "factor_sanguineo":"-", 
-            "fecha_nacimiento":"1981-12-02", 
+            "fecha_nacimiento":"1981-01-01",
             "fecha_desceso":null 
         } 
     }, 
@@ -17,13 +17,13 @@
         "model":"personas.persona", 
         "pk":2, 
         "fields":{ 
-            "apellido":"Rosso", 
-            "nombre":"Pamela Soledad", 
+            "apellido":"de Tal",
+            "nombre":"Fulana",
             "tipo_documento":"DNI", 
-            "documento":"31139529", 
+            "documento":"12345679",
             "grupo_sanguineo":"O", 
             "factor_sanguineo":"+", 
-            "fecha_nacimiento":"1985-04-27", 
+            "fecha_nacimiento":"1982-01-01",
             "fecha_desceso":null 
         } 
     } 

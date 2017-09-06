@@ -4,7 +4,7 @@
         "pk":1, 
         "fields":{ 
             "tipo_cuit":"CUIL", 
-            "nro_cuit":"20-29087702-5" 
+            "nro_cuit":"20-12345678-5"
         } 
     }, 
     { 
@@ -12,7 +12,7 @@
         "pk":2, 
         "fields":{ 
             "tipo_cuit":"CUIL", 
-            "nro_cuit":"27-31139529-2" 
+            "nro_cuit":"27-12345679-2"
         } 
     } 
 ]

@@ -6,8 +6,8 @@
             "usuario":2, 
             "persona":1, 
             "foto":"", 
-            "numero_credencial":"29087702", 
-            "fecha_vencimiento":"1981-12-02", 
+            "numero_credencial":"12345678",
+            "fecha_vencimiento":"1981-01-01",
             "estado_civil":"Casado", 
             "lugar_nacimiento":1 
         } 
