@@ -12,6 +12,7 @@ from personas.api.serializers import (
 	PersonaSerializer, 
 	NumeroOrdenSerializer,
 	DireccionWebSerializer,
+	DireccionPostalSerializer,
 	)
 
 

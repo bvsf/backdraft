@@ -291,7 +291,9 @@ class NumeroOrden(models.Model):
 
 
 class Medio(models.Model):
-    entidad = models.ForeignKey(Entidad)
+    entidad = models.ForeignKey(
+        Entidad,
+        related_name="entidad_%(class)s")
     uso = models.CharField(
         verbose_name=_("Uso"),
         max_length=255,
@@ -310,7 +312,8 @@ class Medio(models.Model):
 class DireccionPostal(Medio):
     localidad = models.ForeignKey(
         Localidad,
-        verbose_name=_("Localidad"))
+        verbose_name=_("Localidad"),
+        related_name="localidad")
     calle = models.CharField(
         max_length=255,
         verbose_name=_("Calle"))

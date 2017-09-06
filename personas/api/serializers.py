@@ -1,13 +1,31 @@
 from rest_framework import serializers
 
-from personas.models import Bombero, Persona, NumeroOrden, DireccionWeb
+from personas.models import (
+	Entidad,
+	Bombero,
+	Persona,
+	NumeroOrden,
+	Medio,
+	DireccionPostal,
+	DireccionWeb)
+
 from localidades.models import Localidad
 from localidades.api.serializers import LocalidadSerializer
 
-class PersonaSerializer(serializers.ModelSerializer):
+
+class EntidadSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Persona
+		model = Entidad
 		fields = [
+			'tipo_cuit',
+			'nro_cuit',
+		]
+
+
+class PersonaSerializer(EntidadSerializer):
+	class Meta(EntidadSerializer.Meta):
+		model = Persona
+		fields = EntidadSerializer.Meta.fields + [
 			'nombre',
 			'apellido',
 			'documento',
@@ -24,6 +42,39 @@ class NumeroOrdenSerializer(serializers.ModelSerializer):
 			'numero_orden',
 			'vigencia_desde',
 			'vigencia_hasta',
+		]
+
+
+class MedioSerializer(serializers.ModelSerializer):
+	medio_entidad = EntidadSerializer(read_only=True)
+	class Meta:
+		models = Medio
+		fields = [
+			'medio_entidad',
+			'uso',
+			'observaciones',
+		]
+
+
+class DireccionPostalSerializer(serializers.ModelSerializer):
+	localidad = LocalidadSerializer()
+	class Meta: 
+		model = DireccionPostal
+		fields = [
+			'localidad',
+			'calle',
+			'numero',
+			'piso',
+			'departamento',
+		]
+
+
+class DireccionWebSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = DireccionWeb
+		fields= [
+			'direccion',
+			'tipo',
 		]
 
 
@@ -44,11 +95,3 @@ class BomberoSerializer(serializers.ModelSerializer):
 			'numero_orden_bombero',
 		]
 
-
-class DireccionWebSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = DireccionWeb
-		fields= [
-			'direccion',
-			'tipo',
-		]
