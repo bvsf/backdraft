@@ -447,4 +447,3 @@ class NumeroOrdenAdmin(admin.ModelAdmin):
         'vigencia_desde',
         'vigencia_hasta',
     )
-
