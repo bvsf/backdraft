@@ -9,8 +9,8 @@ from personas.api.views import (
 	)
 
 urlpatterns = [
-	url(r'^$', BomberoListAPIView.as_view(), name='firefighter-list'),
-	url(r'^$', BomberoDetailAPIView.as_view(), name='firefighter'),
-	url(r'^$', PersonaListAPIView.as_view(), name='people-list'),
+	url(r'^listado/bomberos$', BomberoListAPIView.as_view(), name='firefighter-list'),
+	url(r'^detalle/bombero/$', BomberoDetailAPIView.as_view(), name='firefighter'),
+	url(r'^listado/personas$', PersonaListAPIView.as_view(), name='people-list'),
 	
 ]

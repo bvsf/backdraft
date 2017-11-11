@@ -58,7 +58,6 @@ class Acta(models.Model):
         max_length=1000)
 
     class Meta:
-        # abstract = True
         unique_together = (
             'numero_libro',
             'numero_folio',
