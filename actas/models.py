@@ -57,9 +57,7 @@ class Acta(models.Model):
         verbose_name=_("Descripción del Acta"),
         max_length=1000)
 
-
     class Meta:
-        # abstract = True
         unique_together = (
             'numero_libro',
             'numero_folio',
@@ -104,6 +102,7 @@ class Licencia(Acta):
     )
     bombero = models.ForeignKey(
         Bombero,
+        related_name='bombero_licenciado',
         verbose_name=_("Bombero")
     )
 
@@ -139,14 +138,17 @@ class ActaAscenso(Acta):
 class Ascenso(models.Model):
     acta_ascenso = models.ForeignKey(
         ActaAscenso,
+        related_name='acta_ascenso',
         verbose_name=_("Acta de Ascenso"),
     )
     bombero = models.ForeignKey(
         Bombero,
+        related_name='bombero_ascendido',
         verbose_name=_("Bombero Ascendido"),
     )
     grado_ascenso = models.ForeignKey(
         Grado,
+        related_name='grado_ascendido',
         verbose_name=_("Grado Ascendido"),
     )
 
@@ -181,10 +183,12 @@ class ActaSancion(Acta):
 class Sancion(models.Model):
     acta_sancion = models.ForeignKey(
         ActaSancion,
+        related_name='acta_sancion',
         verbose_name=_("Acta de Sanción"),
     )
     bombero = models.ForeignKey(
         Bombero,
+        related_name='bombero_interviniente',
         verbose_name=_("Bombero interviniente"),
     )
     rol_incidente = models.CharField(
@@ -234,6 +238,7 @@ class Premio(Acta):
     )
     bombero = models.ForeignKey(
         Bombero,
+        related_name='bombero_premiado',
         verbose_name=_("Bombero premiado"),
     )
     premio_otorgado = models.CharField(
@@ -249,20 +254,21 @@ class Premio(Acta):
 class Pase(Acta):
     fecha_efectiva = models.DateField(
         default=timezone.now,
-        verbose_name=_("Fecha en que se efectiviza el pase"),
+        verbose_name=_("Fecha efectiva del pase"),
     )
     bombero = models.ForeignKey(
         Bombero,
+        related_name='bombero_solicitante',
         verbose_name=_("Bombero solicitante")
     )
     institucion_origen = models.ForeignKey(
         Institucion,
-        related_name='Institucion_Origen',
+        related_name='institucion_origen',
         verbose_name=_("Institución Origen"),
     )
     institucion_destino = models.ForeignKey(
         Institucion,
-        related_name='Institucion_Destino',
+        related_name='institucion_destino',
         verbose_name=_("Institución Destino")
     )
 
