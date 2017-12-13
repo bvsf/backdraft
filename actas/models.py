@@ -134,6 +134,8 @@ class ActaAscenso(Acta):
         verbose_name = _("Acta de Ascenso")
         verbose_name_plural = _("Actas de Ascensos")
 
+    # TODO: obtener todos los ascensos del acta.
+
 
 class Ascenso(models.Model):
     acta_ascenso = models.ForeignKey(
@@ -161,6 +163,8 @@ class Ascenso(models.Model):
 
     class Meta:
         ordering = ['acta_ascenso']
+
+    # TODO: obtener el ultimo grado del bombero.
 
 
 class ActaSancion(Acta):
@@ -223,7 +227,7 @@ class Sancion(models.Model):
             self.bombero,
             self.tipo_sancion)
 
-        if self.dias_suspencion>0:
+        if self.dias_suspencion > 0:
             linea += _("Suspendido {0} días").format(self.dias_suspencion)
 
         return linea
@@ -250,6 +254,14 @@ class Premio(Acta):
         verbose_name = _("Acta de Premio")
         verbose_name_plural = _("Actas de Premios")
 
+    def __str__(self):
+        return _("{0}: {1} premiado el {2} con {3}").format(
+            self.nombre_corto,
+            self.bombero,
+            self.fecha_premiacion,
+            self.premio_otorgado,
+        )
+
 
 class Pase(Acta):
     fecha_efectiva = models.DateField(
@@ -275,3 +287,12 @@ class Pase(Acta):
     class Meta:
         verbose_name = _("Acta de Pase")
         verbose_name_plural = _("Actas de Pases")
+
+    def __str__(self):
+        return _("{0}: {1} pasó de {2} a {3} desde el {4}").format(
+            self.nombre_corto,
+            self.bombero,
+            self.institucion_origen,
+            self.institucion_destino,
+            self.fecha_efectiva,
+        )
