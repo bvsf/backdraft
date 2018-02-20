@@ -148,7 +148,8 @@ class PersonaAdmin(admin.ModelAdmin):
                 'documento',
                 'grupo_sanguineo',
                 'factor_sanguineo',
-                'fecha_nacimiento',)
+                'fecha_nacimiento',
+                'genero')
         }),
         (_('¿Fallecido?'), {
             'classes': ('collapse',),
@@ -158,6 +159,7 @@ class PersonaAdmin(admin.ModelAdmin):
     list_display = (
         'nombre_completo',
         'dni',
+        'genero',
         'sangre',
         'fecha_nacimiento',
         'fecha_desceso',)
@@ -171,6 +173,7 @@ class PersonaAdmin(admin.ModelAdmin):
         'apellido',
         'fecha_nacimiento',
         'tipo_documento',
+        'genero',
         'grupo_sanguineo',
         'factor_sanguineo',
         'fecha_desceso',)

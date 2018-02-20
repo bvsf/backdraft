@@ -1,6 +1,11 @@
 # -*- coding: UTF-8 -*-
 from django.utils.translation import ugettext_lazy as _
 
+GENERO = (
+    ('M', _('Masculino')),
+    ('F', _('Femenino')),
+)
+
 GRUPO_SANGUINEO = (
     ('AB', _('Grupo AB')),
     ('A', _('Grupo A')),
