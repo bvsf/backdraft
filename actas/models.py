@@ -58,18 +58,6 @@ class Acta(models.Model):
         verbose_name=_("Descripción del Acta"),
         max_length=1000)
 
-    class Meta:
-        unique_together = (
-            'numero_libro',
-            'numero_folio',
-            'numero_acta',
-        )
-        ordering = [
-            'numero_libro',
-            'numero_folio',
-            'numero_acta',
-        ]
-
     @property
     def nombre_completo(self):
         return _("Libro: {0} Folio: {1} Acta: {2} - Fecha: {3}").format(
@@ -85,6 +73,18 @@ class Acta(models.Model):
             self.numero_folio,
             self.numero_acta,
         )
+
+    class Meta:
+        unique_together = (
+            'numero_libro',
+            'numero_folio',
+            'numero_acta',
+        )
+        ordering = [
+            'numero_libro',
+            'numero_folio',
+            'numero_acta',
+        ]
 
     def __str__(self):
         return "{0}".format(self.nombre_completo)
@@ -107,13 +107,6 @@ class Licencia(Acta):
         verbose_name=_("Bombero")
     )
 
-    def __str__(self):
-        return _("({0}) - Licencia desde {1} hasta {2}").format(
-            self.nombre_corto,
-            self.fecha_acta,
-            self.fecha_hasta,
-        )
-
     @property
     def periodo_licencia(self):
         return _("Desde: {0} hasta: {1}").format(
@@ -124,6 +117,13 @@ class Licencia(Acta):
     class Meta:
         verbose_name = _("Acta de Licencia")
         verbose_name_plural = _("Actas de Licencias")
+
+    def __str__(self):
+        return _("({0}) - Licencia desde {1} hasta {2}").format(
+            self.nombre_corto,
+            self.fecha_acta,
+            self.fecha_hasta,
+        )
 
 
 class ActaAscenso(Acta):
@@ -155,15 +155,15 @@ class Ascenso(models.Model):
         verbose_name=_("Grado Ascendido"),
     )
 
+    class Meta:
+        ordering = ['acta_ascenso']
+
     def __str__(self):
         return _("{0} ascendido a {1} el {2}").format(
             self.bombero,
             self.grado_ascenso,
             self.acta_ascenso.fecha_efectiva,
         )
-
-    class Meta:
-        ordering = ['acta_ascenso']
 
     # TODO: obtener el ultimo grado del bombero.
 
@@ -184,8 +184,18 @@ class BajaBombero(Acta):
     verbose_name=_("Fecha efectiva de baja"),
     )
 
+    class Meta:
+    verbose_name = _("Baja de Bombero")
+    verbose_name_plural = _("Bajas de Bomberos")
+
+    def __str__(self):
+        return _("{0} dado de baja el {1}").format(
+            self.bombero,
+            self.fecha_efectiva,
+        )
+
     def save(self, *args, **kwargs):
-        # Registrar la baja cierra la vigencia del Número de Orden del bombero
+        # Cerrar vigencia del número de orden del bombero
         numero_orden = NumeroOrden.objects.filter(bombero=self.bombero).last()
         numero_orden.cerrar_vigencia()
         super(BajaBombero, self).save(*args, **kwargs)
@@ -245,6 +255,9 @@ class Sancion(models.Model):
         verbose_name=_("Fecha en que se efectiviza la sanción"),
     )
 
+    class Meta:
+        ordering = ['acta_sancion']
+
     def __str__(self):
         linea = "{0} {1} {2}".format(
             self.acta_sancion.nombre_corto,
@@ -255,9 +268,6 @@ class Sancion(models.Model):
             linea += _("Suspendido {0} días").format(self.dias_suspencion)
 
         return linea
-
-    class Meta:
-        ordering = ['acta_sancion']
 
 
 class Premio(Acta):
