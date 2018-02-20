@@ -4,6 +4,7 @@ from actas.models import (
     Licencia,
     ActaAscenso,
     Ascenso,
+    BajaBombero,
     ActaSancion,
     Sancion,
     Premio,
@@ -157,6 +158,29 @@ class LicenciaAdmin(admin.ModelAdmin):
 
 class AscensoTabular(admin.TabularInline):
     model = Ascenso
+
+
+@admin.register(BajaBombero)
+class BajaBomberoAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (None, {
+            'fields': (
+                'bombero',
+                'fecha_solicitud',
+            )
+        }),
+    )
+    list_display = (
+        'bombero',
+        'fecha_solicitud',
+        'fecha_efectiva',
+    )
+    list_filter = (
+        'fecha_solicitud',
+    )
+    search_fields = (
+        'fecha_solicitud',
+    )
 
 
 @admin.register(ActaAscenso)

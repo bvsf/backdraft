@@ -84,7 +84,7 @@ class NumeroOrden(models.Model):
                     {'vigencia_hasta':
                          _("La fecha de cierre de vigencia no es válida, debe tener el formato 'YYYY-MM-DD'.")})
 
-        if self.vigencia_desde > fecha_cierre:
+        if self.vigencia_desde > fecha_cierre.date():
             raise ValidationError(
                 {'vigencia_hasta':
                  _("La fecha de cierre de vigencia no debe ser mayor a la de inicio de la vigencia.")})

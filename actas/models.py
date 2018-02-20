@@ -186,7 +186,7 @@ class BajaBombero(Acta):
 
     def save(self, *args, **kwargs):
         # Registrar la baja cierra la vigencia del Número de Orden del bombero
-        numero_orden = NumeroOrden.objects.get(bombero=self.bombero).last()
+        numero_orden = NumeroOrden.objects.filter(bombero=self.bombero).last()
         numero_orden.cerrar_vigencia()
         super(BajaBombero, self).save(*args, **kwargs)
 
