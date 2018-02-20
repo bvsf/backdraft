@@ -7,7 +7,8 @@
             "nombre":"Mengano",
             "tipo_documento":"DNI", 
             "documento":"12345678",
-            "grupo_sanguineo":"O", 
+            "genero": "M",
+            "grupo_sanguineo":"O",
             "factor_sanguineo":"-", 
             "fecha_nacimiento":"1981-01-01",
             "fecha_desceso":null 
@@ -21,6 +22,7 @@
             "nombre":"Fulana",
             "tipo_documento":"DNI", 
             "documento":"12345679",
+            "genero": "F",
             "grupo_sanguineo":"O", 
             "factor_sanguineo":"+", 
             "fecha_nacimiento":"1982-01-01",

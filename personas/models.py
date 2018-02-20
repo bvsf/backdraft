@@ -19,6 +19,7 @@ from .choices import (
     CUIT_CUIL,
     NIVEL_ESTUDIO,
     ESTADO_ESTUDIO,
+    GENERO,
 )
 
 
@@ -96,6 +97,11 @@ class Persona(Entidad):
         verbose_name=_("Fecha de Fallecimiento"),
         null=True,
         blank=True)
+    genero = models.CharField(
+        max_length=255,
+        choices=GENERO,
+        default=GENERO[0][0],
+        verbose_name=_("Genero"))
 
     @property
     def nombre_completo(self):
