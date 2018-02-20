@@ -5,6 +5,7 @@ from personas.models import (
     Bombero,
     Institucion,
 )
+from nro_orden.models import NumeroOrden
 from grados.models import Grado
 from .choices import (
     TIPO_SANCION,
@@ -165,6 +166,29 @@ class Ascenso(models.Model):
         ordering = ['acta_ascenso']
 
     # TODO: obtener el ultimo grado del bombero.
+
+
+class BajaBombero(Acta):
+    bombero = models.ForeignKey(
+        Bombero,
+        related_name='bombero_baja',
+        verbose_name=_("Bombero dado de baja"),
+    )
+    fecha_solicitud = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de solicitud de baja"),
+    )
+    fecha_efectiva = models.DateField(
+    default=timezone.now,
+    verbose_name=_("Fecha efectiva de baja"),
+    )
+
+    def save(self, *args, **kwargs):
+        # Registrar la baja cierra la vigencia del Número de Orden del bombero
+        numero_orden = NumeroOrden.objects.get(bombero=self.bombero).last()
+        numero_orden.cerrar_vigencia()
+        super(BajaBombero, self).save(*args, **kwargs)
 
 
 class ActaSancion(Acta):
