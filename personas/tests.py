@@ -68,7 +68,7 @@ class SimpleTest(TestCase):
     def test_model_Persona(self):
         persona = Persona.objects.get(apellido='Apellido')
         self.assertEqual(persona.nombre_completo, 'APELLIDO, Nombre')
-        self.assertEqual(persona.edad, 26)
+        self.assertEqual(persona.edad, 27)
         self.assertEqual(persona.dni, 'DNI 12345678')
         self.assertEqual(persona.sangre, 'O (-)')
         self.assertEqual(persona.aniversario, None)

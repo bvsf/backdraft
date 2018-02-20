@@ -4,13 +4,15 @@ from personas.models import (
     Entidad,
     Bombero,
     Persona,
-    NumeroOrden,
     Medio,
     DireccionPostal,
     DireccionWeb,
 )
 
-from localidades.models import Localidad
+from nro_orden.models import (
+    NumeroOrden,
+    )
+
 from localidades.api.serializers import LocalidadSerializer
 
 
@@ -61,7 +63,7 @@ class MedioSerializer(serializers.ModelSerializer):
 class DireccionPostalSerializer(serializers.ModelSerializer):
     localidad = LocalidadSerializer()
 
-    class Meta: 
+    class Meta:
         model = DireccionPostal
         fields = [
             'localidad',

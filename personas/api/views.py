@@ -5,18 +5,20 @@ from rest_framework.generics import (
     )
 
 from personas.models import (
-    Bombero, 
-    Persona, 
-    NumeroOrden,
+    Bombero,
+    Persona,
     DireccionWeb,
     )
 
+from nro_orden.models import (
+    NumeroOrden,
+    )
+
 from personas.api.serializers import (
-    BomberoSerializer, 
-    PersonaSerializer, 
+    BomberoSerializer,
+    PersonaSerializer,
     NumeroOrdenSerializer,
     DireccionWebSerializer,
-    DireccionPostalSerializer,
     )
 
 
