@@ -185,8 +185,8 @@ class BajaBombero(Acta):
     )
 
     class Meta:
-    verbose_name = _("Baja de Bombero")
-    verbose_name_plural = _("Bajas de Bomberos")
+        verbose_name = _("Baja de Bombero")
+        verbose_name_plural = _("Bajas de Bomberos")
 
     def __str__(self):
         return _("{0} dado de baja el {1}").format(
