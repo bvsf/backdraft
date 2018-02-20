@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^schema/$', schema_view),
-    url(r'^bomberos/', include("personas.api.urls", namespace='bomberos-api')),
+    url(r'^personas/', include("personas.api.urls", namespace='bomberos-api')),
     url(r'^localidades/', include("localidades.api.urls", namespace='localidades-api')),
-    #url(r'^api/personas/', include("personas.api.urls", namespace='personas-api')),
+    # url(r'^api/personas/', include("personas.api.urls", namespace='personas-api')),
 ]
