@@ -73,3 +73,5 @@ avatars/
 #Migrations
 *personas/migrations/
 *salud/migrations/
+
+*personas/dumps/local/

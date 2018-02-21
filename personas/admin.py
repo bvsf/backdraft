@@ -12,6 +12,7 @@ from personas.models import (
     Empleo,
     Institucion,
     CalificacionAnual,
+    Cuartelero,
 )
 
 
@@ -175,6 +176,17 @@ class PersonaAdmin(admin.ModelAdmin):
         'factor_sanguineo',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
+
+
+@admin.register(Cuartelero)
+class CuarteleroAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',),
+        }),
+    )
 
 
 @admin.register(Bombero)
