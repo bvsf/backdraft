@@ -175,23 +175,23 @@ class Cuartelero(models.Model):
             try:
                 bombero = Bombero.objects.get(persona__id=self.persona.pk)
             except ObjectDoesNotExist:
-                # Si la persona no es un bombero lo creo como usuario
-                self.usuario, created = User.objects.get_or_create(
-                    username=self.persona.nombre.split()[0].lower() +
-                                self.persona.apellido.lower(),
-                    defaults={
-                        'username': self.persona.nombre.split()[0].lower() +
-                                        self.persona.apellido.lower(),
-                        'email': '',
-                        'password': self.persona.documento,
-                        'last_name': self.persona.apellido,
-                        'first_name': self.persona.nombre,
-                    }
-                )
-            else:
-                # Si la persona es un bombero uso su mismo usuario
-                self.usuario = User.objects.get(pk=bombero.usuario.pk)
-
+                try:
+                    # Si la persona es un bombero uso su mismo usuario
+                    self.usuario = User.objects.get(pk=bombero.usuario.pk)
+                except ObjectDoesNotExist:
+                    # Si la persona no es un bombero lo creo como usuario
+                    self.usuario, created = User.objects.get_or_create(
+                        username=self.persona.nombre.split()[0].lower() +
+                                    self.persona.apellido.lower(),
+                        defaults={
+                            'username': self.persona.nombre.split()[0].lower() +
+                                            self.persona.apellido.lower(),
+                            'email': '',
+                            'password': self.persona.documento,
+                            'last_name': self.persona.apellido,
+                            'first_name': self.persona.nombre,
+                        }
+                    )
             super(Cuartelero, self).save(*args, **kwargs)
 
 class Bombero(models.Model):
