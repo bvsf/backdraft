@@ -170,6 +170,12 @@ class Bombero(models.Model):
         Localidad,
         verbose_name=_("Lugar de Nacimiento"))
 
+    def get_ultimo_ascenso(self):
+        return self.bombero_ascendido.order_by('-acta_ascenso__fecha_efectiva').first()
+
+    def get_grado_ultimo_ascenso(self):
+        return self.get_ultimo_ascenso().grado_ascenso
+
     def __str__(self):
         return self.persona.nombre_completo
 
