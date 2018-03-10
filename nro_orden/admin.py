@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from django.utils import timezone
+from daterange_filter.filter import DateRangeFilter
 from django.contrib.admin.filters import DateFieldListFilter
 from nro_orden.models import NumeroOrden
 
@@ -83,6 +84,7 @@ class NumeroOrdenAdmin(admin.ModelAdmin):
         'bombero',
         'vigencia_desde',
         ('vigencia_hasta', DateFieldListFilterOrNull),
+        ('vigencia_hasta', DateRangeFilter),
     )
     date_hierarchy = 'vigencia_hasta'
     search_fields = (
