@@ -12,6 +12,7 @@ from personas.models import (
     Empleo,
     Institucion,
     CalificacionAnual,
+    Cuartelero,
 )
 
 
@@ -175,6 +176,38 @@ class PersonaAdmin(admin.ModelAdmin):
         'factor_sanguineo',
         'fecha_desceso',)
     date_hierarchy = 'fecha_nacimiento'
+
+
+@admin.register(Cuartelero)
+class CuarteleroAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+    fieldsets = (
+        (None, {
+            'fields': (
+                'persona',),
+        }),
+    )
+    list_display = (
+        '__str__',
+        'dni',
+        'fecha_nacimiento',
+        'sangre',
+    )
+    search_fields = (
+        'persona__apellido',
+        'persona__nombre',
+        'persona__documento',
+        'persona__nro_cuit',
+    )
+    list_filter = (
+        'persona__apellido',
+        'persona__fecha_nacimiento',
+        'persona__tipo_documento',
+        'persona__genero',
+        'persona__grupo_sanguineo',
+        'persona__factor_sanguineo',
+        'persona__fecha_desceso',
+    )
 
 
 @admin.register(Bombero)

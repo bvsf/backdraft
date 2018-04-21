@@ -2,7 +2,7 @@
 from datetime import date
 from decimal import *
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import models
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
@@ -133,23 +133,99 @@ class Persona(Entidad):
             return int(delta.days / 365.2425)
 
     def __str__(self):
-        return self.nombre_completo
+        return "{0} ({1})".format(
+            self.nombre_completo,
+            self.dni)
 
     class Meta:
         ordering = ['apellido', 'nombre']
         verbose_name = _('Persona')
         verbose_name_plural = _('Personas')
 
+    def save(self, *args, **kwargs):
+        usuario_id = None
+        if hasattr(self, 'cuarteleros'):
+            cuartelero = Cuartelero.objects.get(persona__id=self.pk)
+            usuario_id = cuartelero.usuario.id
+        elif hasattr(self, 'bomberos'):
+            bombero = Bombero.objects.get(persona__id=self.pk)
+            usuario_id = bombero.usuario.id
+
+        if usuario_id:
+            usuario = User.objects.get(pk=usuario_id)
+            usuario.last_name = self.apellido
+            usuario.first_name = self.nombre
+            usuario.save()
+
+        super(Persona, self).save(*args, **kwargs)
+
+
+class Cuartelero(models.Model):
+    usuario = models.OneToOneField(
+        User,
+        on_delete=models.PROTECT,
+        related_name="cuarteleros")
+    persona = models.OneToOneField(
+        Persona,
+        verbose_name=_("Persona"),
+        related_name="cuarteleros")
+
+    def __str__(self):
+        return self.persona.nombre_completo
+
+    def sangre(self):
+        return self.persona.sangre
+
+    def dni(self):
+        return self.persona.dni
+
+    def fecha_nacimiento(self):
+        return self.persona.fecha_nacimiento
+
+    def save(self, *args, **kwargs):
+        # No podemos crear un signal en el model User que viene con django,
+        #   por ende hacemos esto acá
+        # Como se crea el usuario únicamente cuando creamos el objeto no nos
+        #   tenemos que preocupar que se modifique el usuario cuando se modifi-
+        #   que el objeto. Para inhabilitar el usuario tendra que hacerlo el
+        #   administrador.
+        if not self.pk:
+            dic = {
+                'email': '',
+                'password': self.persona.documento,
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.nombre
+            }
+
+            # Si la persona es un bombero uso su mismo usuario
+            # El primer parametro de update_or_create es lo que se usa para bus-
+            #   -car si el registro existe, en defaults se pone los valores a
+            #   rellenar si es que lo tiene que crear.
+            try:
+                bombero = Bombero.objects.get(persona__id=self.persona.pk)
+                dic['username'] = bombero.usuario.username
+                usuario_id = bombero.usuario.id
+            except ObjectDoesNotExist:
+                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                                 self.persona.apellido.lower()
+                usuario_id = None
+            self.usuario, created = User.objects.update_or_create(
+                pk=usuario_id,
+                defaults=dic
+            )
+
+            super(Cuartelero, self).save(*args, **kwargs)
+
 
 class Bombero(models.Model):
     usuario = models.OneToOneField(
         User,
         on_delete=models.PROTECT,
-        related_name="usuario")
+        related_name="bomberos")
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
-        related_name="bombero")
+        related_name="bomberos")
     foto = models.ImageField(
         upload_to="avatars/",
         null=True,
@@ -180,14 +256,30 @@ class Bombero(models.Model):
         return self.persona.nombre_completo
 
     def save(self, *args, **kwargs):
-        # No podemos crear un signal en el model User que viene con django, por ende hacemos esto acá
         if not self.pk:
-            self.usuario = User.objects.create_user(
-                self.persona.nombre.split()[0].lower() + self.persona.apellido.lower(),
-                '',
-                self.persona.documento,
-                last_name = self.persona.apellido,
-                first_name = self.persona.nombre)
+            dic = {
+                'email': '',
+                'password': self.persona.documento,
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.nombre
+            }
+
+            # Si la persona es un bombero uso su mismo usuario
+            # El primer parametro de update_or_create es lo que se usa para bus-
+            #   -car si el registro existe, en defaults se pone los valores a
+            #   rellenar si es que lo tiene que crear.
+            try:
+                cuartelero = Cuartelero.objects.get(persona__id=self.persona.pk)
+                dic['username'] = cuartelero.usuario.username
+                usuario_id = cuartelero.usuario.id
+            except ObjectDoesNotExist:
+                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                                 self.persona.apellido.lower()
+                usuario_id = None
+            self.usuario, created = User.objects.update_or_create(
+                pk=usuario_id,
+                defaults=dic
+            )
         super(Bombero, self).save(*args, **kwargs)
 
 
