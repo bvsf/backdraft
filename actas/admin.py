@@ -156,10 +156,6 @@ class LicenciaAdmin(admin.ModelAdmin):
     periodo_licencia.short_description = _('Licencia')
 
 
-class AscensoTabular(admin.TabularInline):
-    model = Ascenso
-
-
 @admin.register(BajaBombero)
 class BajaBomberoAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -181,6 +177,10 @@ class BajaBomberoAdmin(admin.ModelAdmin):
     search_fields = (
         'fecha_solicitud',
     )
+
+
+class AscensoTabular(admin.TabularInline):
+    model = Ascenso
 
 
 @admin.register(ActaAscenso)
