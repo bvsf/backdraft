@@ -65,7 +65,8 @@ class Acta(models.Model):
             self.numero_libro,
             self.numero_folio,
             self.numero_acta,
-            self.fecha_acta)
+            self.fecha_acta,
+        )
 
     @property
     def nombre_corto(self):
@@ -93,19 +94,19 @@ class Acta(models.Model):
 
 class Licencia(Acta):
     fecha_desde = models.DateField(
-        verbose_name=_("Fecha desde")
+        verbose_name=_("Fecha desde"),
     )
     fecha_hasta = models.DateField(
-        verbose_name=_("Fecha hasta")
+        verbose_name=_("Fecha hasta"),
     )
     motivo = models.CharField(
         max_length=500,
-        verbose_name=_("Motivo de la Licencia")
+        verbose_name=_("Motivo de la Licencia"),
     )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_licenciado',
-        verbose_name=_("Bombero")
+        verbose_name=_("Bombero"),
     )
 
     @property
@@ -129,7 +130,7 @@ class Licencia(Acta):
 
 class ActaAscenso(Acta):
     fecha_efectiva = models.DateField(
-        verbose_name=_("Fecha efectiva de Ascenso")
+        verbose_name=_("Fecha efectiva de Ascenso"),
     )
 
     class Meta:
@@ -194,8 +195,8 @@ class BajaBombero(Acta):
         verbose_name=_("Fecha de solicitud de baja"),
     )
     fecha_efectiva = models.DateField(
-    default=timezone.now,
-    verbose_name=_("Fecha efectiva de baja"),
+        default=timezone.now,
+        verbose_name=_("Fecha efectiva de baja"),
     )
 
     class Meta:
