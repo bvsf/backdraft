@@ -142,6 +142,23 @@ class Persona(Entidad):
         verbose_name = _('Persona')
         verbose_name_plural = _('Personas')
 
+    def save(self, *args, **kwargs):
+        usuario_id = None
+        if hasattr(self, 'cuarteleros'):
+            cuartelero = Cuartelero.objects.get(persona__id=self.pk)
+            usuario_id = cuartelero.usuario.id
+        elif hasattr(self, 'bomberos'):
+            bombero = Bombero.objects.get(persona__id=self.pk)
+            usuario_id = bombero.usuario.id
+
+        if usuario_id:
+            usuario = User.objects.get(pk=usuario_id)
+            usuario.last_name = self.apellido
+            usuario.first_name = self.nombre
+            usuario.save()
+
+        super(Persona, self).save(*args, **kwargs)
+
 
 class Cuartelero(models.Model):
     usuario = models.OneToOneField(
@@ -156,12 +173,16 @@ class Cuartelero(models.Model):
     def __str__(self):
         return self.persona.nombre_completo
 
-    def save(self, *args, **kwargs):
-        # todo: ver como corregir el siguiente bug.
-        # Bug: Si 1ro cargamos al Bombero, cambiamos el apellido o primer nombre
-        #   de la persona y luego lo cargamos como Cuartelero se generan dos
-        #   usuarios
+    def sangre(self):
+        return self.persona.sangre
 
+    def dni(self):
+        return self.persona.dni
+
+    def fecha_nacimiento(self):
+        return self.persona.fecha_nacimiento
+
+    def save(self, *args, **kwargs):
         # No podemos crear un signal en el model User que viene con django,
         #   por ende hacemos esto acá
         # Como se crea el usuario únicamente cuando creamos el objeto no nos
@@ -169,30 +190,32 @@ class Cuartelero(models.Model):
         #   que el objeto. Para inhabilitar el usuario tendra que hacerlo el
         #   administrador.
         if not self.pk:
-            # el primer parametro de get_or_create es lo que se usa para buscar
-            #   si el registro existe, en defaults se pone los valores a relle-
-            #   -nar si es que lo tiene que crear.
+            dic = {
+                'email': '',
+                'password': self.persona.documento,
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.nombre
+            }
+
+            # Si la persona es un bombero uso su mismo usuario
+            # El primer parametro de update_or_create es lo que se usa para bus-
+            #   -car si el registro existe, en defaults se pone los valores a
+            #   rellenar si es que lo tiene que crear.
             try:
                 bombero = Bombero.objects.get(persona__id=self.persona.pk)
+                dic['username'] = bombero.usuario.username
+                usuario_id = bombero.usuario.id
             except ObjectDoesNotExist:
-                try:
-                    # Si la persona es un bombero uso su mismo usuario
-                    self.usuario = User.objects.get(pk=bombero.usuario.pk)
-                except ObjectDoesNotExist:
-                    # Si la persona no es un bombero lo creo como usuario
-                    self.usuario, created = User.objects.get_or_create(
-                        username=self.persona.nombre.split()[0].lower() +
-                                    self.persona.apellido.lower(),
-                        defaults={
-                            'username': self.persona.nombre.split()[0].lower() +
-                                            self.persona.apellido.lower(),
-                            'email': '',
-                            'password': self.persona.documento,
-                            'last_name': self.persona.apellido,
-                            'first_name': self.persona.nombre,
-                        }
-                    )
+                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                                 self.persona.apellido.lower()
+                usuario_id = None
+            self.usuario, created = User.objects.update_or_create(
+                pk=usuario_id,
+                defaults=dic
+            )
+
             super(Cuartelero, self).save(*args, **kwargs)
+
 
 class Bombero(models.Model):
     usuario = models.OneToOneField(
@@ -228,17 +251,28 @@ class Bombero(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.usuario, created = User.objects.get_or_create(
-                username = self.persona.nombre.split()[0].lower() +
-                           self.persona.apellido.lower(),
-                defaults={
-                    'username': self.persona.nombre.split()[0].lower() +
-                        self.persona.apellido.lower(),
-                    'email': '',
-                    'password': self.persona.documento,
-                    'last_name': self.persona.apellido,
-                    'first_name': self.persona.nombre,
-                }
+            dic = {
+                'email': '',
+                'password': self.persona.documento,
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.nombre
+            }
+
+            # Si la persona es un bombero uso su mismo usuario
+            # El primer parametro de update_or_create es lo que se usa para bus-
+            #   -car si el registro existe, en defaults se pone los valores a
+            #   rellenar si es que lo tiene que crear.
+            try:
+                cuartelero = Cuartelero.objects.get(persona__id=self.persona.pk)
+                dic['username'] = cuartelero.usuario.username
+                usuario_id = cuartelero.usuario.id
+            except ObjectDoesNotExist:
+                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                                 self.persona.apellido.lower()
+                usuario_id = None
+            self.usuario, created = User.objects.update_or_create(
+                pk=usuario_id,
+                defaults=dic
             )
         super(Bombero, self).save(*args, **kwargs)
 
