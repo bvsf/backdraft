@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 from personas.models import (
@@ -164,6 +165,19 @@ class Ascenso(models.Model):
             self.grado_ascenso,
             self.acta_ascenso.fecha_efectiva,
         )
+
+    def clean(self):
+        ascenso = Ascenso.objects.filter(
+            bombero=self.bombero,
+            grado_ascenso=self.grado_ascenso)[0]
+        if ascenso and self.id is None:
+            raise ValidationError(
+                {'grado_ascenso':
+                 _("Ya existe un ascenso para este bombero "
+                   "para el mismo grado ({})".format(
+                     ascenso.acta_ascenso.nombre_completo
+                 ))}
+            )
 
     # TODO: obtener el ultimo grado del bombero.
 
