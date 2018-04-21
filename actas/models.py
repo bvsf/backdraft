@@ -170,7 +170,7 @@ class Ascenso(models.Model):
     def clean(self):
         ascenso = Ascenso.objects.filter(
             bombero=self.bombero,
-            grado_ascenso=self.grado_ascenso)[0]
+            grado_ascenso=self.grado_ascenso).first()
         if ascenso and self.id is None:
             raise ValidationError(
                 {'grado_ascenso':
@@ -179,8 +179,6 @@ class Ascenso(models.Model):
                      ascenso.acta_ascenso.nombre_completo
                  ))}
             )
-
-    # TODO: obtener el ultimo grado del bombero.
 
 
 class BajaBombero(Acta):
