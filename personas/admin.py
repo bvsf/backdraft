@@ -248,7 +248,10 @@ class BomberoAdmin(admin.ModelAdmin):
     dni.short_description = _('Documento')
 
     def get_grado_ultimo_ascenso(self, obj):
-        return obj.get_grado_ultimo_ascenso.nombre
+        try:
+            return obj.get_grado_ultimo_ascenso.nombre
+        except:
+            return None
     get_grado_ultimo_ascenso.short_description = _("Grado")
 
     def antiguedad_bombero(self, obj):

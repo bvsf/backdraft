@@ -252,7 +252,10 @@ class Bombero(models.Model):
 
     @property
     def get_grado_ultimo_ascenso(self):
-        return self.get_ultimo_ascenso().grado_ascenso
+        try:
+            return self.get_ultimo_ascenso().grado_ascenso
+        except:
+            return None
 
     @property
     def antiguedad_bombero(self):
