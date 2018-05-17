@@ -320,6 +320,24 @@ class Pase(Acta):
         related_name='bombero_solicitante',
         verbose_name=_("Bombero solicitante")
     )
+    grado_origen = models.ForeignKey(
+        Grado,
+        related_name='grado_solicitante',
+        verbose_name=_("Grado del solicitante")
+    )
+    fecha_ult_ascenso = models.DateField(
+        verbose_name=_("Fecha último ascenso")
+    )
+    fecha_bombero = models.DateField(
+        verbose_name=_("Fecha ascenso a Bombero"),
+        blank=True,
+        null=True,
+    )
+    grado_final = models.ForeignKey(
+        Grado,
+        related_name='grado_tomado_solicitante',
+        verbose_name=_("Grado asignado al solicitante")
+    )
     institucion_origen = models.ForeignKey(
         Institucion,
         related_name='institucion_origen',

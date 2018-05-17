@@ -178,5 +178,25 @@
             "escalafon":6, 
             "excepcion":true 
         } 
-    } 
-] 
+    },
+    {
+        "model":"grados.grado",
+        "pk":19,
+        "fields":{
+            "nombre":"Aspirante Mayor",
+            "grado_superior":18,
+            "escalafon":7,
+            "excepcion":false
+        }
+    },
+    {
+        "model":"grados.grado",
+        "pk":20,
+        "fields":{
+            "nombre":"Aspirante Menor",
+            "grado_superior":19,
+            "escalafon":7,
+            "excepcion":false
+        }
+    }
+]

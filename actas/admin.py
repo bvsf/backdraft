@@ -73,6 +73,10 @@ class PaseAdmin(admin.ModelAdmin):
                 'institucion_origen',
                 'institucion_destino',
                 'bombero',
+                'grado_origen',
+                'grado_final',
+                'fecha_ult_ascenso',
+                'fecha_bombero'
                 )
         }),
     )
