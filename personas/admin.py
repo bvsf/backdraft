@@ -250,7 +250,7 @@ class BomberoAdmin(admin.ModelAdmin):
     def get_grado_ultimo_ascenso(self, obj):
         try:
             return obj.get_grado_ultimo_ascenso.nombre
-        except:
+        except AttributeError:
             return None
     get_grado_ultimo_ascenso.short_description = _("Grado")
 
