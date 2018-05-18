@@ -247,10 +247,22 @@ class Bombero(models.Model):
         verbose_name=_("Lugar de Nacimiento"))
 
     def get_ultimo_ascenso(self):
-        return self.bombero_ascendido.order_by('-acta_ascenso__fecha_efectiva').first()
+        return self.bombero_ascendido.order_by(
+            '-acta_ascenso__fecha_efectiva').first()
 
+    @property
     def get_grado_ultimo_ascenso(self):
-        return self.get_ultimo_ascenso().grado_ascenso
+        try:
+            return self.get_ultimo_ascenso().grado_ascenso
+        except:
+            return None
+
+    @property
+    def antiguedad_bombero(self):
+        fecha_bombero = self.bombero_ascendido.get(
+            grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
+        delta = (date.today() - fecha_bombero)
+        return int(delta.days / 365.2425)
 
     def __str__(self):
         return self.persona.nombre_completo

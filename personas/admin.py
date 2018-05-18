@@ -231,6 +231,8 @@ class BomberoAdmin(admin.ModelAdmin):
         'nombre_completo',
         'dni',
         'sangre',
+        'get_grado_ultimo_ascenso',
+        'antiguedad_bombero',
     )
 
     def nombre_completo(self, obj):
@@ -245,11 +247,33 @@ class BomberoAdmin(admin.ModelAdmin):
         return obj.persona.dni
     dni.short_description = _('Documento')
 
+    def get_grado_ultimo_ascenso(self, obj):
+        try:
+            return obj.get_grado_ultimo_ascenso.nombre
+        except:
+            return None
+    get_grado_ultimo_ascenso.short_description = _("Grado")
+
+    def antiguedad_bombero(self, obj):
+        return _("{} años").format(
+            obj.antiguedad_bombero,
+        )
+    antiguedad_bombero.short_description = _("Antigüedad como Bombero")
+
     search_fields = (
         'persona__apellido',
         'persona__nombre',
         'persona__documento',
         'persona__nro_cuit',
+    )
+    list_filter = (
+        'persona__apellido',
+        'persona__fecha_nacimiento',
+        'persona__tipo_documento',
+        'persona__genero',
+        'persona__grupo_sanguineo',
+        'persona__factor_sanguineo',
+        'persona__fecha_desceso',
     )
 
 

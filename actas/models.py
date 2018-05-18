@@ -170,7 +170,7 @@ class Ascenso(models.Model):
     def clean(self):
         ascenso = Ascenso.objects.filter(
             bombero=self.bombero,
-            grado_ascenso=self.grado_ascenso)[0]
+            grado_ascenso=self.grado_ascenso).first()
         if ascenso and self.id is None:
             raise ValidationError(
                 {'grado_ascenso':
@@ -179,8 +179,6 @@ class Ascenso(models.Model):
                      ascenso.acta_ascenso.nombre_completo
                  ))}
             )
-
-    # TODO: obtener el ultimo grado del bombero.
 
 
 class BajaBombero(Acta):
@@ -321,6 +319,24 @@ class Pase(Acta):
         Bombero,
         related_name='bombero_solicitante',
         verbose_name=_("Bombero solicitante")
+    )
+    grado_origen = models.ForeignKey(
+        Grado,
+        related_name='grado_solicitante',
+        verbose_name=_("Grado del solicitante")
+    )
+    fecha_ult_ascenso = models.DateField(
+        verbose_name=_("Fecha último ascenso")
+    )
+    fecha_bombero = models.DateField(
+        verbose_name=_("Fecha ascenso a Bombero"),
+        blank=True,
+        null=True,
+    )
+    grado_final = models.ForeignKey(
+        Grado,
+        related_name='grado_tomado_solicitante',
+        verbose_name=_("Grado asignado al solicitante")
     )
     institucion_origen = models.ForeignKey(
         Institucion,

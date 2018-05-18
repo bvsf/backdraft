@@ -46,5 +46,13 @@
             "nombre":"Bomberos", 
             "rango":3 
         } 
-    } 
+    },
+    {
+        "model":"grados.escalafon",
+        "pk":7,
+        "fields":{
+            "nombre":"Aspirantes",
+            "rango":4
+        }
+    }
 ]
