@@ -23,7 +23,7 @@ class NumeroOrden(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="numero_orden_bombero")
+        related_name="numeros_orden_bombero")
     vigencia_desde = models.DateField(
         default=timezone.now)
     vigencia_hasta = models.DateField(
@@ -55,13 +55,6 @@ class NumeroOrden(models.Model):
             NumeroOrden.objects.create(
                 bombero=kwargs.get('instance'),
                 numero_orden=numero)
-
-    @property
-    def get_numero_orden_vigente(self):
-        return NumeroOrden.objects.filter(
-            bombero=self,
-            vigencia_hasta__isnull=True,
-        ).first()
 
     @property
     def vigencia(self):

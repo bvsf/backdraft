@@ -247,11 +247,11 @@ class Bombero(models.Model):
         verbose_name=_("Lugar de Nacimiento"))
 
     def get_ultimo_ascenso(self):
-        try:
-            return self.bombero_ascendido.order_by(
-                '-acta_ascenso__fecha_efectiva').first()
-        except ObjectDoesNotExist:
-            return None
+        return self.bombero_ascendido.order_by(
+            '-acta_ascenso__fecha_efectiva').first()
+
+    # def get_orden_actual(self):
+    #    return self.numero_orden_bombero.get_numero_orden_vigente()
 
     @property
     def get_grado_ultimo_ascenso(self):
@@ -268,7 +268,10 @@ class Bombero(models.Model):
         return int(delta.days / 365.2425)
 
     def __str__(self):
-        return self.persona.nombre_completo
+        return "0{} - {}".format(
+            self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
+            self.persona.nombre_completo,
+        )
 
     def save(self, *args, **kwargs):
         if not self.pk:
