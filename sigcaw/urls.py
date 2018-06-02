@@ -21,6 +21,7 @@ from rest_framework.schemas import get_schema_view
 schema_view = get_schema_view(title='Pastebin API')
 
 urlpatterns = [
+    url('grappelli/', include('grappelli.urls')),  # grappelli URLS
     url(r'^admin/', admin.site.urls),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^schema/$', schema_view),
