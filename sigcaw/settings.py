@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'grappelli',  # Para hacer más lindo el admin de django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
