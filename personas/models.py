@@ -24,6 +24,9 @@ from .choices import (
 
 
 class Entidad(models.Model):
+    """
+        El PK es el Número de Legajo del Bombero
+    """
     tipo_cuit = models.CharField(
         max_length=4,
         verbose_name=_("CUIT/CUIL"),
@@ -72,25 +75,39 @@ class Persona(Entidad):
     nombre = models.CharField(
         max_length=255,
         verbose_name=_('Nombre'))
+    # Algunos registros históricos no tienen el tipo de documento,
+    #   le ponemos a todos DNI
     tipo_documento = models.CharField(
         max_length=10,
         choices=TIPO_DOCUMENTO,
         default=TIPO_DOCUMENTO[0][0],
         verbose_name=_("Tipo de Documento"))
+    # Algunos registros históricos, y otros actuales no está el DNI
+    #   pero no podemos sacarle el unique True, hay que corregir el archivo de migracion
     documento = models.CharField(
         max_length=11,
         verbose_name=_('Número de documento'),
-        unique=True)
+        unique=True,
+    )
+    # No está el grupo sanguíneo de los registros históricos
     grupo_sanguineo = models.CharField(
         max_length=255,
         choices=GRUPO_SANGUINEO,
         default=GRUPO_SANGUINEO[0][0],
-        verbose_name=_("Grupo Sanguíneo"))
+        verbose_name=_("Grupo Sanguíneo"),
+        null=True,
+        blank=True,
+    )
+    # Al igual que el grupo sanguíneo, el factor tampoco está en los históricos
     factor_sanguineo = models.CharField(
         max_length=255,
         choices=FACTOR_SANGUINEO,
         default=FACTOR_SANGUINEO[0][0],
-        verbose_name=_("Factor Sanguíneo"))
+        verbose_name=_("Factor Sanguíneo"),
+        null=True,
+        blank=True,
+    )
+    # Algunos registros históricos con tienen la fecha de nacimiento indicada
     fecha_nacimiento = models.DateField(
         verbose_name=_('Fecha de Nacimiento'))
     fecha_desceso = models.DateField(
@@ -218,6 +235,9 @@ class Cuartelero(models.Model):
 
 
 class Bombero(models.Model):
+    """
+        El numero de legajo del bombero es el mismo ENTIDAD.PK
+    """
     usuario = models.OneToOneField(
         User,
         on_delete=models.PROTECT,
