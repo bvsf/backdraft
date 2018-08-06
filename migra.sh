@@ -22,16 +22,16 @@ python manage.py migrate
 python manage.py loaddata grados/dumps/rango.json
 python manage.py loaddata grados/dumps/escalafon.json
 python manage.py loaddata grados/dumps/grado.json
-python manage.py loaddata localidades/dumps/pais.json
-python manage.py loaddata localidades/dumps/provincia.json
-python manage.py loaddata localidades/dumps/localidad.json
+python manage.py loaddata localidades/dumps/pais.json  # Terminado
+python manage.py loaddata localidades/dumps/provincia.json  # Terminado
+python manage.py loaddata localidades/dumps/localidad.json  # Terminado
 python manage.py loaddata personas/dumps/entidad.json
-python manage.py loaddata personas/dumps/persona.json
+python manage.py loaddata personas/dumps/persona.json  # Terminado
 python manage.py loaddata personas/dumps/user.json
 #usuario: admin, clave: administrador
 python manage.py loaddata personas/dumps/bombero.json
 python manage.py loaddata personas/dumps/parentesco.json
 
 #creamos super usuario y corremos en desarrollo
-python manage.py createsuperuser
+# python manage.py createsuperuser
 python manage.py runserver

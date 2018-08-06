@@ -228,6 +228,7 @@ class BomberoAdmin(admin.ModelAdmin):
         }),
     )
     list_display = (
+        'nro_legajo',
         'numero_credencial',
         'fecha_vencimiento',
         'nombre_completo',
@@ -236,6 +237,10 @@ class BomberoAdmin(admin.ModelAdmin):
         'get_grado_ultimo_ascenso',
         'antiguedad_bombero',
     )
+
+    def nro_legajo(self, obj):
+        return obj.pk
+    nro_legajo.short_description = _('Legajo')
 
     def nombre_completo(self, obj):
         return obj.persona.nombre_completo
