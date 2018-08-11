@@ -14,7 +14,7 @@ class SimpleTest(TestCase):
     def setUp(self):
         Persona.objects.create(
             apellido='Apellido',
-            nombre='Nombre',
+            primer_nombre='Nombre',
             documento='12345678',
             genero='M',
             grupo_sanguineo='O',
