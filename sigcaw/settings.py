@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_auth',
     'colorfield',
-    'daterange_filter', # Para poder poner fecha de filtrado en número de orden
+    'daterange_filter',  # Para poder poner fecha de filtrado en número de orden
     'localidades',
     'personas',
     'salud',

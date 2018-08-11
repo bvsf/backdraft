@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
@@ -65,7 +67,8 @@ class Acta(models.Model):
             self.numero_libro,
             self.numero_folio,
             self.numero_acta,
-            self.fecha_acta)
+            self.fecha_acta,
+        )
 
     @property
     def nombre_corto(self):
@@ -93,19 +96,19 @@ class Acta(models.Model):
 
 class Licencia(Acta):
     fecha_desde = models.DateField(
-        verbose_name=_("Fecha desde")
+        verbose_name=_("Fecha desde"),
     )
     fecha_hasta = models.DateField(
-        verbose_name=_("Fecha hasta")
+        verbose_name=_("Fecha hasta"),
     )
     motivo = models.CharField(
         max_length=500,
-        verbose_name=_("Motivo de la Licencia")
+        verbose_name=_("Motivo de la Licencia"),
     )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_licenciado',
-        verbose_name=_("Bombero")
+        verbose_name=_("Bombero"),
     )
 
     @property
@@ -129,7 +132,7 @@ class Licencia(Acta):
 
 class ActaAscenso(Acta):
     fecha_efectiva = models.DateField(
-        verbose_name=_("Fecha efectiva de Ascenso")
+        verbose_name=_("Fecha efectiva de Ascenso"),
     )
 
     class Meta:
@@ -169,7 +172,7 @@ class Ascenso(models.Model):
     def clean(self):
         ascenso = Ascenso.objects.filter(
             bombero=self.bombero,
-            grado_ascenso=self.grado_ascenso)[0]
+            grado_ascenso=self.grado_ascenso).first()
         if ascenso and self.id is None:
             raise ValidationError(
                 {'grado_ascenso':
@@ -178,8 +181,6 @@ class Ascenso(models.Model):
                      ascenso.acta_ascenso.nombre_completo
                  ))}
             )
-
-    # TODO: obtener el ultimo grado del bombero.
 
 
 class BajaBombero(Acta):
@@ -194,8 +195,8 @@ class BajaBombero(Acta):
         verbose_name=_("Fecha de solicitud de baja"),
     )
     fecha_efectiva = models.DateField(
-    default=timezone.now,
-    verbose_name=_("Fecha efectiva de baja"),
+        default=timezone.now,
+        verbose_name=_("Fecha efectiva de baja"),
     )
 
     class Meta:
@@ -320,6 +321,24 @@ class Pase(Acta):
         Bombero,
         related_name='bombero_solicitante',
         verbose_name=_("Bombero solicitante")
+    )
+    grado_origen = models.ForeignKey(
+        Grado,
+        related_name='grado_solicitante',
+        verbose_name=_("Grado del solicitante")
+    )
+    fecha_ult_ascenso = models.DateField(
+        verbose_name=_("Fecha último ascenso")
+    )
+    fecha_bombero = models.DateField(
+        verbose_name=_("Fecha ascenso a Bombero"),
+        blank=True,
+        null=True,
+    )
+    grado_final = models.ForeignKey(
+        Grado,
+        related_name='grado_tomado_solicitante',
+        verbose_name=_("Grado asignado al solicitante")
     )
     institucion_origen = models.ForeignKey(
         Institucion,

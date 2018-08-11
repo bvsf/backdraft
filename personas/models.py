@@ -28,12 +28,14 @@ class Entidad(models.Model):
         max_length=4,
         verbose_name=_("CUIT/CUIL"),
         choices=CUIT_CUIL,
-        default=CUIT_CUIL[0][0])
+        default=CUIT_CUIL[0][0],
+    )
     nro_cuit = models.CharField(
         max_length=13,
         blank=True,
         null=True,
-        verbose_name=_('Numero de CUIT/CUIL'))
+        verbose_name=_('Numero de CUIT/CUIL'),
+    )
 
     def __str__(self):
         try:
@@ -48,7 +50,8 @@ class Entidad(models.Model):
 class Institucion(Entidad):
     razon_social = models.CharField(
         max_length=255,
-        verbose_name=_("Razón Social"))
+        verbose_name=_("Razón Social"),
+    )
 
     def __str__(self):
         return self.razon_social
@@ -68,40 +71,74 @@ class Institucion(Entidad):
 class Persona(Entidad):
     apellido = models.CharField(
         max_length=255,
-        verbose_name=_('Apellido'))
-    nombre = models.CharField(
+        verbose_name=_('Apellido'),
+    )
+    primer_nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre'))
+        verbose_name=_('Nombre'),
+    )
+    segundo_nombre = models.CharField(
+        max_length=255,
+        verbose_name=_('Nombre'),
+        null=True,
+        blank=True,
+    )
+    tercer_nombre = models.CharField(
+        max_length=255,
+        verbose_name=_('Nombre'),
+        null=True,
+        blank=True,
+    )
+    # Algunos registros históricos no tienen el tipo de documento,
+    #   le ponemos a todos DNI
     tipo_documento = models.CharField(
         max_length=10,
         choices=TIPO_DOCUMENTO,
         default=TIPO_DOCUMENTO[0][0],
-        verbose_name=_("Tipo de Documento"))
+        verbose_name=_("Tipo de Documento"),
+    )
+    # Algunos registros históricos, y otros actuales no está el DNI
+    #   pero no podemos sacarle el unique True, hay que corregir el archivo de migracion
     documento = models.CharField(
         max_length=11,
         verbose_name=_('Número de documento'),
-        unique=True)
+        unique=True,
+    )
+    # No está el grupo sanguíneo de los registros históricos
     grupo_sanguineo = models.CharField(
         max_length=255,
         choices=GRUPO_SANGUINEO,
         default=GRUPO_SANGUINEO[0][0],
-        verbose_name=_("Grupo Sanguíneo"))
+        verbose_name=_("Grupo Sanguíneo"),
+        null=True,
+        blank=True,
+    )
+    # Al igual que el grupo sanguíneo, el factor tampoco está en los históricos
     factor_sanguineo = models.CharField(
         max_length=255,
         choices=FACTOR_SANGUINEO,
         default=FACTOR_SANGUINEO[0][0],
-        verbose_name=_("Factor Sanguíneo"))
+        verbose_name=_("Factor Sanguíneo"),
+        null=True,
+        blank=True,
+    )
+    # Algunos registros históricos con tienen la fecha de nacimiento indicada
     fecha_nacimiento = models.DateField(
-        verbose_name=_('Fecha de Nacimiento'))
+        verbose_name=_('Fecha de Nacimiento'),
+        null=True,
+        blank=True,
+    )
     fecha_desceso = models.DateField(
         verbose_name=_("Fecha de Fallecimiento"),
         null=True,
-        blank=True)
+        blank=True,
+    )
     genero = models.CharField(
         max_length=255,
         choices=GENERO,
         default=GENERO[0][0],
-        verbose_name=_("Genero"))
+        verbose_name=_("Genero"),
+    )
 
     @property
     def nombre_completo(self):
@@ -218,9 +255,14 @@ class Cuartelero(models.Model):
 
 
 class Bombero(models.Model):
+    """
+        El numero de legajo del bombero es el PK
+    """
     usuario = models.OneToOneField(
         User,
         on_delete=models.PROTECT,
+        null=True,
+        blank=True,
         related_name="bomberos")
     persona = models.OneToOneField(
         Persona,
@@ -234,26 +276,52 @@ class Bombero(models.Model):
     numero_credencial = models.CharField(
         max_length=255,
         verbose_name=_("Número de Credencial"),
+        null=True,
+        blank=True,
         unique=True)
     fecha_vencimiento = models.DateField(
-        verbose_name=_('Fecha de Vencimiento'))
+        verbose_name=_('Fecha de Vencimiento'),
+        blank=True,
+        null=True,)
     estado_civil = models.CharField(
         max_length=255,
         choices=ESTADO_CIVIL,
         default=ESTADO_CIVIL[0][0],
+        null=True,
+        blank=True,
         verbose_name=_("Estado Civil"))
     lugar_nacimiento = models.ForeignKey(
         Localidad,
+        null=True,
+        blank=True,
         verbose_name=_("Lugar de Nacimiento"))
 
     def get_ultimo_ascenso(self):
-        return self.bombero_ascendido.order_by('-acta_ascenso__fecha_efectiva').first()
+        return self.bombero_ascendido.order_by(
+            '-acta_ascenso__fecha_efectiva').first()
 
+    # def get_orden_actual(self):
+    #    return self.numero_orden_bombero.get_numero_orden_vigente()
+
+    @property
     def get_grado_ultimo_ascenso(self):
-        return self.get_ultimo_ascenso().grado_ascenso
+        try:
+            return self.get_ultimo_ascenso().grado_ascenso
+        except AttributeError:
+            return None
+
+    @property
+    def antiguedad_bombero(self):
+        fecha_bombero = self.bombero_ascendido.get(
+            grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
+        delta = (date.today() - fecha_bombero)
+        return int(delta.days / 365.2425)
 
     def __str__(self):
-        return self.persona.nombre_completo
+        return "0{} - {}".format(
+            self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
+            self.persona.nombre_completo,
+        )
 
     def save(self, *args, **kwargs):
         if not self.pk:

@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^schema/$', schema_view),
     url(r'^personas/', include("personas.api.urls", namespace='bomberos-api')),
     url(r'^localidades/', include("localidades.api.urls", namespace='localidades-api')),
+
     # url(r'^api/personas/', include("personas.api.urls", namespace='personas-api')),
 ]

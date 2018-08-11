@@ -73,6 +73,10 @@ class PaseAdmin(admin.ModelAdmin):
                 'institucion_origen',
                 'institucion_destino',
                 'bombero',
+                'grado_origen',
+                'grado_final',
+                'fecha_ult_ascenso',
+                'fecha_bombero'
                 )
         }),
     )
@@ -156,10 +160,6 @@ class LicenciaAdmin(admin.ModelAdmin):
     periodo_licencia.short_description = _('Licencia')
 
 
-class AscensoTabular(admin.TabularInline):
-    model = Ascenso
-
-
 @admin.register(BajaBombero)
 class BajaBomberoAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -181,6 +181,10 @@ class BajaBomberoAdmin(admin.ModelAdmin):
     search_fields = (
         'fecha_solicitud',
     )
+
+
+class AscensoTabular(admin.TabularInline):
+    model = Ascenso
 
 
 @admin.register(ActaAscenso)

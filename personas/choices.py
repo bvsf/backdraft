@@ -20,10 +20,11 @@ FACTOR_SANGUINEO = (
 
 ESTADO_CIVIL = (
     ('Casado', _('Casado/a')),
-    ('Soltero', _('Soltero/a')),
-    ('Divorciado', _('Divorciado/a')),
-    ('Viudo', _('Viudo/a')),
     ('Concubino', _('Concubino/a')),
+    ('Divorciado', _('Divorciado/a')),
+    ('Separado', _('Separado/a')),
+    ('Soltero', _('Soltero/a')),
+    ('Viudo', _('Viudo/a')),
 )
 
 RELACION_PARENTESCO = (

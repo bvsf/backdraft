@@ -22,5 +22,13 @@
             "nombre":"Bomberos", 
             "color":"#FFFB00" 
         } 
-    } 
+    },
+    {
+        "model":"grados.rango",
+        "pk":4,
+        "fields":{
+            "nombre":"Aspirantes",
+            "color":"#FFFB00"
+        }
+    }
 ]
