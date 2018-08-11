@@ -4,6 +4,7 @@ from decimal import *
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import models
+from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
@@ -75,17 +76,17 @@ class Persona(Entidad):
     )
     primer_nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre'),
+        verbose_name=_('Primer Nombre'),
     )
     segundo_nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre'),
+        verbose_name=_('Segundo Nombre'),
         null=True,
         blank=True,
     )
     tercer_nombre = models.CharField(
         max_length=255,
-        verbose_name=_('Nombre'),
+        verbose_name=_('Tercer Nombre'),
         null=True,
         blank=True,
     )
@@ -142,9 +143,15 @@ class Persona(Entidad):
 
     @property
     def nombre_completo(self):
-        return "{0}, {1}".format(
+        nombre = "{0}, {1}".format(
             self.apellido.upper(),
-            self.nombre)
+            self.primer_nombre.capitalize()
+        )
+        if self.segundo_nombre:
+            nombre += " {0}".format(self.segundo_nombre.capitalize())
+        if self.tercer_nombre:
+            nombre += " {0}".format(self.tercer_nombre.capitalize())
+        return nombre
 
     @property
     def edad(self):
@@ -175,7 +182,7 @@ class Persona(Entidad):
             self.dni)
 
     class Meta:
-        ordering = ['apellido', 'nombre']
+        ordering = ['apellido', 'primer_nombre']
         verbose_name = _('Persona')
         verbose_name_plural = _('Personas')
 
@@ -191,7 +198,7 @@ class Persona(Entidad):
         if usuario_id:
             usuario = User.objects.get(pk=usuario_id)
             usuario.last_name = self.apellido
-            usuario.first_name = self.nombre
+            usuario.first_name = self.primer_nombre
             usuario.save()
 
         super(Persona, self).save(*args, **kwargs)
@@ -229,9 +236,8 @@ class Cuartelero(models.Model):
         if not self.pk:
             dic = {
                 'email': '',
-                'password': self.persona.documento,
                 'last_name': self.persona.apellido,
-                'first_name': self.persona.nombre
+                'first_name': self.persona.primer_nombre
             }
 
             # Si la persona es un bombero uso su mismo usuario
@@ -243,13 +249,16 @@ class Cuartelero(models.Model):
                 dic['username'] = bombero.usuario.username
                 usuario_id = bombero.usuario.id
             except ObjectDoesNotExist:
-                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                dic['username'] = self.persona.primer_nombre.split()[0].lower() + \
                                  self.persona.apellido.lower()
                 usuario_id = None
             self.usuario, created = User.objects.update_or_create(
                 pk=usuario_id,
                 defaults=dic
             )
+            if created:
+                self.usuario.set_password(self.persona.documento)
+                self.usuario.save()
 
             super(Cuartelero, self).save(*args, **kwargs)
 
@@ -326,10 +335,9 @@ class Bombero(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             dic = {
-                'email': '',
-                'password': self.persona.documento,
-                'last_name': self.persona.apellido,
-                'first_name': self.persona.nombre
+               'email': '',
+               'last_name': self.persona.apellido,
+               'first_name': self.persona.primer_nombre
             }
 
             # Si la persona es un bombero uso su mismo usuario
@@ -341,13 +349,17 @@ class Bombero(models.Model):
                 dic['username'] = cuartelero.usuario.username
                 usuario_id = cuartelero.usuario.id
             except ObjectDoesNotExist:
-                dic['username'] = self.persona.nombre.split()[0].lower() + \
+                dic['username'] = self.persona.primer_nombre.split()[0].lower() + \
                                  self.persona.apellido.lower()
                 usuario_id = None
             self.usuario, created = User.objects.update_or_create(
                 pk=usuario_id,
                 defaults=dic
             )
+            if created:
+                self.usuario.set_password(self.persona.documento)
+                self.usuario.save()
+
         super(Bombero, self).save(*args, **kwargs)
 
 
@@ -424,11 +436,12 @@ class DireccionPostal(Medio):
             self.localidad)
 
     def __str__(self):
-        return "{0} {1} {2} {3}".format(
+        return '{0} {1} {2} {3}'.format(
             self.calle,
             self.numero,
             self.piso,
-            self.departamento)
+            self.departamento,
+        )
 
     class Meta:
         verbose_name = _("Dirección Postal")

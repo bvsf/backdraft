@@ -143,7 +143,9 @@ class PersonaAdmin(admin.ModelAdmin):
                 'tipo_cuit',
                 'nro_cuit',
                 'apellido',
-                'nombre',
+                'primer_nombre',
+                'segundo_nombre',
+                'tercer_nombre',
                 'tipo_documento',
                 'documento',
                 'grupo_sanguineo',
@@ -165,7 +167,9 @@ class PersonaAdmin(admin.ModelAdmin):
         'fecha_desceso',)
     search_fields = (
         'apellido',
-        'nombre',
+        'primer_nombre',
+        'segundo_nombre',
+        'tercer_nombre',
         'documento',
         'nro_cuit',
     )
@@ -197,7 +201,9 @@ class CuarteleroAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'persona__apellido',
-        'persona__nombre',
+        'persona__primer_nombre',
+        'persona__segundo_nombre',
+        'persona__tercer_nombre',
         'persona__documento',
         'persona__nro_cuit',
     )
@@ -269,7 +275,9 @@ class BomberoAdmin(admin.ModelAdmin):
 
     search_fields = (
         'persona__apellido',
-        'persona__nombre',
+        'persona__primer_nombre',
+        'persona__segundo_nombre',
+        'persona__tercer_nombre',
         'persona__documento',
         'persona__nro_cuit',
     )
