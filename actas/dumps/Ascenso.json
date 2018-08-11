@@ -1,1 +1,0 @@
-[{"model": "actas.ascenso", "pk": 1, "fields": {"acta_ascenso": 1, "bombero": 1, "grado_ascenso": 19}}, {"model": "actas.ascenso", "pk": 2, "fields": {"acta_ascenso": 2, "bombero": 1, "grado_ascenso": 18}}, {"model": "actas.ascenso", "pk": 3, "fields": {"acta_ascenso": 3, "bombero": 1, "grado_ascenso": 16}}]
