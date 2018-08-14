@@ -268,9 +268,12 @@ class BomberoAdmin(admin.ModelAdmin):
     get_grado_ultimo_ascenso.short_description = _("Grado")
 
     def antiguedad_bombero(self, obj):
-        return _("{} años").format(
-            obj.antiguedad_bombero,
-        )
+        if obj.antiguedad_bombero:
+            return _("{} años").format(
+                obj.antiguedad_bombero,
+            )
+        else:
+            return None
     antiguedad_bombero.short_description = _("Antigüedad como Bombero")
 
     search_fields = (

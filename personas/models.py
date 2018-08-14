@@ -4,7 +4,6 @@ from decimal import *
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.db import models
-from django.db.utils import IntegrityError
 from django.utils.translation import ugettext as _
 from localidades.models import Localidad
 from phonenumber_field.modelfields import PhoneNumberField
@@ -321,10 +320,16 @@ class Bombero(models.Model):
 
     @property
     def antiguedad_bombero(self):
-        fecha_bombero = self.bombero_ascendido.get(
-            grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
-        delta = (date.today() - fecha_bombero)
-        return int(delta.days / 365.2425)
+        try:
+            fecha_bombero = self.bombero_ascendido.get(
+                grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
+        except ObjectDoesNotExist:
+            fecha_bombero = self.bombero_solicitante.get().fecha_bombero
+        if fecha_bombero:
+            delta = (date.today() - fecha_bombero)
+            return int(delta.days / 365.2425)
+        else:
+            return None
 
     def __str__(self):
         return "0{} - {}".format(
