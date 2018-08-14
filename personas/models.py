@@ -325,8 +325,11 @@ class Bombero(models.Model):
                 grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
         except ObjectDoesNotExist:
             fecha_bombero = self.bombero_solicitante.get().fecha_bombero
-        delta = (date.today() - fecha_bombero)
-        return int(delta.days / 365.2425)
+        if fecha_bombero:
+            delta = (date.today() - fecha_bombero)
+            return int(delta.days / 365.2425)
+        else:
+            return None
 
     def __str__(self):
         return "0{} - {}".format(
