@@ -316,7 +316,8 @@ class Bombero(models.Model):
         try:
             return self.get_ultimo_ascenso().grado_ascenso
         except AttributeError:
-            return None
+            return self.bombero_solicitante.get().grado_final
+
 
     @property
     def antiguedad_bombero(self):
