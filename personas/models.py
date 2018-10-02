@@ -308,16 +308,12 @@ class Bombero(models.Model):
         return self.bombero_ascendido.order_by(
             '-acta_ascenso__fecha_efectiva').first()
 
-    # def get_orden_actual(self):
-    #    return self.numero_orden_bombero.get_numero_orden_vigente()
-
     @property
     def get_grado_ultimo_ascenso(self):
         try:
             return self.get_ultimo_ascenso().grado_ascenso
         except AttributeError:
             return self.bombero_solicitante.get().grado_final
-
 
     @property
     def antiguedad_bombero(self):
@@ -332,11 +328,28 @@ class Bombero(models.Model):
         else:
             return None
 
+    @property
+    def antiguedad_cuartel(self):
+        try:
+            fecha_cuartel = self.bombero_ascendido.all()[0].fecha_acta
+        except ObjectDoesNotExist:
+            fecha_cuartel = self.bombero_solicitante.all()[0].fecha_acta
+        if fecha_cuartel:
+            delta = (date.today() - fecha_cuartel)
+            return int(delta.days / 365.2425)
+        else:
+            return None
+
     def __str__(self):
-        return "0{} - {}".format(
-            self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
-            self.persona.nombre_completo,
-        )
+        try:
+            return "0{} - {}".format(
+                self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
+                self.persona.nombre_completo,
+            )
+        except AttributeError:
+            return "{}".format(
+                self.persona.nombre_completo,
+            )
 
     def save(self, *args, **kwargs):
         if not self.pk:

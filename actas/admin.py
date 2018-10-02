@@ -167,6 +167,7 @@ class BajaBomberoAdmin(admin.ModelAdmin):
             'fields': (
                 'bombero',
                 'fecha_solicitud',
+                'fecha_efectiva',
             )
         }),
     )
@@ -176,10 +177,21 @@ class BajaBomberoAdmin(admin.ModelAdmin):
         'fecha_efectiva',
     )
     list_filter = (
+        'bombero',
         'fecha_solicitud',
+        'fecha_efectiva',
     )
     search_fields = (
+        'bombero',
         'fecha_solicitud',
+        'fecha_efectiva',
+        'numero_libro',
+        'numero_folio',
+        'numero_acta',
+        'fecha_acta',
+        'descripcion_acta',
+        'fecha_desde',
+        'fecha_hasta',
     )
 
 
