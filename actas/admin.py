@@ -1,9 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
-from actas.models import (
-    Acta,
-
-)
+from actas.models import Acta
 
 
 @admin.register(Acta)
