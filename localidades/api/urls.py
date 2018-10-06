@@ -9,7 +9,7 @@ from localidades.api.views import (
     )
 
 urlpatterns = [
-    #url(r'^$', ZonaSerializer.as_view(), name='zona-view'),
+    # url(r'^$', ZonaSerializer.as_view(), name='zona-view'),
     url(r'^$', LocalidadListAPIView.as_view(), name='localidad-view'),
     url(r'^provincias/$', ProvinciaListAPIView.as_view(), name='provincia-view'),
     url(r'^(?P<pk>[\w-]+)$', LocalidadDetailAPIView.as_view(), name='localidad-detail'),

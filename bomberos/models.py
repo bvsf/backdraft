@@ -95,9 +95,9 @@ class Bombero(models.Model):
     def antiguedad_cuartel(self):
         # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
         try:
-            fecha_cuartel = self.bombero_ascendido.all()[0].fecha_acta
+            fecha_cuartel = self.bombero_ascendido.all()[0].acta.fecha_acta
         except:
-            fecha_cuartel = self.bombero_solicitante.all()[0].fecha_acta
+            fecha_cuartel = self.bombero_solicitante.all()[0].acta.fecha_acta
         if fecha_cuartel:
             delta = (date.today() - fecha_cuartel)
             return int(delta.days / 365.2425)
