@@ -2,6 +2,7 @@
 
 #Borrramos todas las migraciones
 rm -r personas/migrations
+rm -r bomberos/migrations
 rm -r localidades/migrations
 rm -r actas/migrations
 rm -r grados/migrations
@@ -10,12 +11,12 @@ rm -r nro_orden/migrations
 rm ./db.sqlite3
 
 #Creamos todas las tablas
-python manage.py makemigrations personas
 python manage.py makemigrations localidades
+python manage.py makemigrations personas
+python manage.py makemigrations bomberos
 python manage.py makemigrations actas
 python manage.py makemigrations grados
 python manage.py makemigrations salud
-python manage.py makemigrations nro_orden
 python manage.py migrate
 
 #insertamos datos iniciales

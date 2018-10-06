@@ -1,7 +1,8 @@
 # -*- coding: UTF-8 -*-
 from django.db import models
 from django.utils.translation import ugettext as _
-from personas.models import Bombero, Institucion, Entidad, Persona
+from personas.models import Institucion, Entidad, Persona
+from bomberos.models import Bombero
 
 
 class Alergenos(models.Model):

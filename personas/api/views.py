@@ -3,14 +3,13 @@ from rest_framework.generics import (
     RetrieveAPIView,
     UpdateAPIView,
     )
-
+from bomberos.models import Bombero
 from personas.models import (
-    Bombero,
     Persona,
     DireccionWeb,
     )
 
-from nro_orden.models import (
+from bomberos.models import (
     NumeroOrden,
     )
 

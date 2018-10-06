@@ -4,16 +4,11 @@ from django.contrib import admin
 from django.utils.translation import ugettext as _
 from personas.models import (
     Persona,
-    Bombero,
     DireccionPostal,
     DireccionWeb,
     Telefono,
     DireccionElectronica,
-    Parentesco,
-    Estudio,
-    Empleo,
     Institucion,
-    CalificacionAnual,
     Cuartelero,
 )
 
@@ -39,99 +34,6 @@ class InstitucionAdmin(admin.ModelAdmin):
         'nro_cuit',
         'razon_social',
     )
-
-
-@admin.register(Estudio)
-class EstudioAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    fieldsets = (
-        (None, {
-            'fields': (
-                'bombero',
-                'establecimiento',
-                'nivel',
-                'titulo',
-                'estado',
-                'periodo_desde',
-                'periodo_hasta',
-                )
-        }),
-        (_('Descripcion'), {
-            'classes': ('collapse',),
-            'fields': ('descripcion',),
-        }),
-    )
-    list_display = (
-        'periodo',
-        'establecimiento',
-        'bombero',
-    )
-    search_fields = (
-        'bombero__persona__apellido',
-        'bombero__persona__nombre',
-        'bombero__persona__documento',
-        'bombero__persona__nro_cuit',
-        'establecimiento__razon_social',
-        'establecimiento__nro_cuit',
-        'nivel',
-        'estado',
-        'titulo',
-    )
-    list_filter = (
-        'bombero',
-        'establecimiento',
-        'nivel',
-        'estado',
-        'titulo',
-    )
-    date_hierarchy = 'periodo_desde'
-
-    def periodo(self, obj):
-        return obj.periodo
-    periodo.short_description = _('Periodo')
-
-
-@admin.register(Empleo)
-class EmpleoAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    fieldsets = (
-        (None, {
-            'fields': (
-                'bombero',
-                'empresa',
-                'titulo',
-                'periodo_desde',
-                'periodo_hasta',
-                )
-        }),
-        (_('Descripcion'), {
-            'classes': ('collapse',),
-            'fields': ('descripcion',),
-        }),
-    )
-    list_display = (
-        'periodo',
-        'empresa',
-        'bombero',
-    )
-    search_fields = (
-        'bombero__persona__apellido',
-        'bombero__persona__nombre',
-        'bombero__persona__documento',
-        'bombero__persona__nro_cuit',
-        'empresa__razon_social',
-        'empresa__nro_cuit',
-        'titulo',
-    )
-    list_filter = (
-        'bombero',
-        'empresa',
-    )
-    date_hierarchy = 'periodo_desde'
-
-    def periodo(self, obj):
-        return obj.periodo
-    periodo.short_description = _('Periodo')
 
 
 @admin.register(Persona)
@@ -216,107 +118,6 @@ class CuarteleroAdmin(admin.ModelAdmin):
         'persona__factor_sanguineo',
         'persona__fecha_desceso',
     )
-
-
-@admin.register(Bombero)
-class BomberoAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    fieldsets = (
-        (None, {
-            'fields': (
-                'persona',
-                'numero_credencial',
-                'fecha_vencimiento',
-                'foto',
-                'estado_civil',
-                'lugar_nacimiento',
-                )
-        }),
-    )
-    list_display = (
-        'nro_legajo',
-        'numero_credencial',
-        'fecha_vencimiento',
-        'nombre_completo',
-        'dni',
-        'sangre',
-        'get_grado_ultimo_ascenso',
-        'antiguedad_bombero',
-        'antiguedad_cuartel',
-    )
-
-    def nro_legajo(self, obj):
-        return obj.pk
-    nro_legajo.short_description = _('Legajo')
-
-    def nombre_completo(self, obj):
-        return obj.persona.nombre_completo
-    nombre_completo.short_description = _('Apellido y Nombre')
-
-    def sangre(self, obj):
-        return obj.persona.sangre
-    sangre.short_description = _('Grupo Sanguíneo')
-
-    def dni(self, obj):
-        return obj.persona.dni
-    dni.short_description = _('Documento')
-
-    def get_grado_ultimo_ascenso(self, obj):
-        try:
-            return obj.get_grado_ultimo_ascenso.nombre
-        except AttributeError:
-            return None
-    get_grado_ultimo_ascenso.short_description = _("Grado")
-
-    def antiguedad_bombero(self, obj):
-        if obj.antiguedad_bombero:
-            return _("{} años").format(
-                obj.antiguedad_bombero,
-            )
-        else:
-            return None
-    antiguedad_bombero.short_description = _("Antigüedad como Bombero")
-
-    def antiguedad_cuartel(self, obj):
-        if obj.antiguedad_cuartel:
-            return _("{} años").format(
-                obj.antiguedad_cuartel,
-            )
-        else:
-            return None
-    antiguedad_cuartel.short_description = _("Antigüedad al Cuartel")
-
-    search_fields = (
-        'persona__apellido',
-        'persona__primer_nombre',
-        'persona__segundo_nombre',
-        'persona__tercer_nombre',
-        'persona__documento',
-        'persona__nro_cuit',
-    )
-    list_filter = (
-        'persona__apellido',
-        'persona__fecha_nacimiento',
-        'persona__tipo_documento',
-        'persona__genero',
-        'persona__grupo_sanguineo',
-        'persona__factor_sanguineo',
-        'persona__fecha_desceso',
-    )
-
-
-@admin.register(Parentesco)
-class ParentescoAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    list_display = (
-        'bombero',
-        'familiar',
-        'parentesco',)
-    search_fields = (
-        'bombero.persona.apellido',
-        'bombero.persona.nombre',
-        'familiar.apellido',
-        'familiar.nombre',)
 
 
 @admin.register(DireccionPostal)
@@ -423,23 +224,3 @@ class DireccionElectronicaAdmin(admin.ModelAdmin):
         'mail',)
     list_filter = (
         'entidad',)
-
-
-@admin.register(CalificacionAnual)
-class CalificacionAnualAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    list_display = (
-        'bombero',
-        'periodo',
-        'puntaje_en_numero',)
-    list_filter = (
-        'bombero',
-        'periodo',)
-    fieldsets = (
-        (None, {
-            'fields': (
-                'bombero',
-                'periodo',
-                'puntaje_en_numero',)
-        }),
-    )

@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'salud',
     'actas',
     'grados',
-    'nro_orden',
+    'bomberos',
 ]
 
 MIDDLEWARE_CLASSES = [
