@@ -9,7 +9,7 @@ from personas.models import (
     DireccionWeb,
 )
 
-from nro_orden.models import (
+from bomberos.models import (
     NumeroOrden,
     )
 
