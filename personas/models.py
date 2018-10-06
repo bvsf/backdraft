@@ -264,7 +264,7 @@ class Cuartelero(models.Model):
 
 class Bombero(models.Model):
     """
-        El numero de legajo del bombero es el PK
+        El numero de legajo del bombero es el PK pero Django no lo permite editar. OJO
     """
     usuario = models.OneToOneField(
         User,
@@ -308,9 +308,6 @@ class Bombero(models.Model):
         return self.bombero_ascendido.order_by(
             '-acta_ascenso__fecha_efectiva').first()
 
-    # def get_orden_actual(self):
-    #    return self.numero_orden_bombero.get_numero_orden_vigente()
-
     @property
     def get_grado_ultimo_ascenso(self):
         try:
@@ -318,9 +315,10 @@ class Bombero(models.Model):
         except AttributeError:
             return self.bombero_solicitante.get().grado_final
 
-
     @property
     def antiguedad_bombero(self):
+        # TODO: Así como está si tiene una reincorporación con el grado BV te trae esa fecha y en realidad puede ser
+        #   anterior. Hay que tomar la más vieja o bien crear un campo.
         try:
             fecha_bombero = self.bombero_ascendido.get(
                 grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
@@ -332,11 +330,29 @@ class Bombero(models.Model):
         else:
             return None
 
+    @property
+    def antiguedad_cuartel(self):
+        # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
+        try:
+            fecha_cuartel = self.bombero_ascendido.all()[0].fecha_acta
+        except:
+            fecha_cuartel = self.bombero_solicitante.all()[0].fecha_acta
+        if fecha_cuartel:
+            delta = (date.today() - fecha_cuartel)
+            return int(delta.days / 365.2425)
+        else:
+            return None
+
     def __str__(self):
-        return "0{} - {}".format(
-            self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
-            self.persona.nombre_completo,
-        )
+        try:
+            return "0{} - {}".format(
+                self.numeros_orden_bombero.filter(vigencia_hasta__isnull=True).first().numero_orden,
+                self.persona.nombre_completo,
+            )
+        except AttributeError:
+            return "{}".format(
+                self.persona.nombre_completo,
+            )
 
     def save(self, *args, **kwargs):
         if not self.pk:

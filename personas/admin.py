@@ -242,6 +242,7 @@ class BomberoAdmin(admin.ModelAdmin):
         'sangre',
         'get_grado_ultimo_ascenso',
         'antiguedad_bombero',
+        'antiguedad_cuartel',
     )
 
     def nro_legajo(self, obj):
@@ -275,6 +276,15 @@ class BomberoAdmin(admin.ModelAdmin):
         else:
             return None
     antiguedad_bombero.short_description = _("Antigüedad como Bombero")
+
+    def antiguedad_cuartel(self, obj):
+        if obj.antiguedad_cuartel:
+            return _("{} años").format(
+                obj.antiguedad_cuartel,
+            )
+        else:
+            return None
+    antiguedad_cuartel.short_description = _("Antigüedad al Cuartel")
 
     search_fields = (
         'persona__apellido',
