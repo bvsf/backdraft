@@ -49,6 +49,8 @@ class Acta(models.Model):
         default=timezone.now)
     descripcion_acta = models.TextField(
         verbose_name=_("Descripción del Acta"),
+        blank=True,
+        null=True,
         max_length=1000)
 
     @property

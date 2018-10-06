@@ -17,7 +17,6 @@ python manage.py makemigrations bomberos
 python manage.py makemigrations actas
 python manage.py makemigrations grados
 python manage.py makemigrations salud
-python manage.py makemigrations nro_orden
 python manage.py migrate
 
 #insertamos datos iniciales
