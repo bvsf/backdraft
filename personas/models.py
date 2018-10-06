@@ -264,7 +264,7 @@ class Cuartelero(models.Model):
 
 class Bombero(models.Model):
     """
-        El numero de legajo del bombero es el PK
+        El numero de legajo del bombero es el PK pero Django no lo permite editar. OJO
     """
     usuario = models.OneToOneField(
         User,
@@ -317,6 +317,8 @@ class Bombero(models.Model):
 
     @property
     def antiguedad_bombero(self):
+        # TODO: Así como está si tiene una reincorporación con el grado BV te trae esa fecha y en realidad puede ser
+        #   anterior. Hay que tomar la más vieja o bien crear un campo.
         try:
             fecha_bombero = self.bombero_ascendido.get(
                 grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
@@ -330,9 +332,10 @@ class Bombero(models.Model):
 
     @property
     def antiguedad_cuartel(self):
+        # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
         try:
             fecha_cuartel = self.bombero_ascendido.all()[0].fecha_acta
-        except ObjectDoesNotExist:
+        except:
             fecha_cuartel = self.bombero_solicitante.all()[0].fecha_acta
         if fecha_cuartel:
             delta = (date.today() - fecha_cuartel)

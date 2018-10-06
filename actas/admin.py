@@ -165,6 +165,11 @@ class BajaBomberoAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
+                'numero_libro',
+                'numero_folio',
+                'numero_acta',
+                'fecha_acta',
+                'descripcion_acta',
                 'bombero',
                 'fecha_solicitud',
                 'fecha_efectiva',
