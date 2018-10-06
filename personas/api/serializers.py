@@ -1,8 +1,8 @@
 from rest_framework import serializers
+from bomberos.models import Bombero
 
 from personas.models import (
     Entidad,
-    Bombero,
     Persona,
     Medio,
     DireccionPostal,

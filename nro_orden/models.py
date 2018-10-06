@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 from django.utils import timezone
-from personas.models import Bombero
+from bomberos.models import Bombero
 
 
 class NumeroOrden(models.Model):

@@ -4,10 +4,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 from django.utils import timezone
-from personas.models import (
-    Bombero,
-    Institucion,
-)
+from personas.models import Institucion
+from bomberos.models import Bombero
 from nro_orden.models import NumeroOrden
 from grados.models import Grado
 from .choices import (

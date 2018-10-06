@@ -2,18 +2,20 @@
 
 from django.contrib import admin
 from django.utils.translation import ugettext as _
+from bomberos.models import (
+    Bombero,
+    Parentesco,
+    Estudio,
+    Empleo,
+    CalificacionAnual,
+)
 from personas.models import (
     Persona,
-    Bombero,
     DireccionPostal,
     DireccionWeb,
     Telefono,
     DireccionElectronica,
-    Parentesco,
-    Estudio,
-    Empleo,
     Institucion,
-    CalificacionAnual,
     Cuartelero,
 )
 
