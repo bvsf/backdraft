@@ -4,7 +4,7 @@ from actas.models import (
     Licencia,
     ActaAscenso,
     Ascenso,
-    BajaBombero,
+    Renuncia,
     ActaSancion,
     Sancion,
     Premio,
@@ -18,17 +18,14 @@ class PremioAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'numero_libro',
-                'numero_folio',
-                'numero_acta',
-                'fecha_acta',
-                'descripcion_acta',
+                'acta',
                 'fecha_premiacion',
                 'premio_otorgado',
                 'bombero',
                 )
         }),
     )
+    '''
     list_display = (
             'acta',
             'fecha_acta',
@@ -56,6 +53,7 @@ class PremioAdmin(admin.ModelAdmin):
     def acta(self, obj):
         return obj.nombre_corto
     acta.short_description = _('Acta')
+    '''
 
 
 @admin.register(Pase)
@@ -64,11 +62,7 @@ class PaseAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'numero_libro',
-                'numero_folio',
-                'numero_acta',
-                'fecha_acta',
-                'descripcion_acta',
+                'acta',
                 'fecha_efectiva',
                 'institucion_origen',
                 'institucion_destino',
@@ -80,6 +74,7 @@ class PaseAdmin(admin.ModelAdmin):
                 )
         }),
     )
+    '''
     list_display = (
             'acta',
             'fecha_acta',
@@ -110,6 +105,7 @@ class PaseAdmin(admin.ModelAdmin):
     def acta(self, obj):
         return obj.nombre_corto
     acta.short_description = _('Acta')
+    '''
 
 
 @admin.register(Licencia)
@@ -118,17 +114,14 @@ class LicenciaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'numero_libro',
-                'numero_folio',
-                'numero_acta',
-                'fecha_acta',
-                'descripcion_acta',
+                'acta',
                 'fecha_desde',
                 'fecha_hasta',
                 'bombero',
                 )
         }),
     )
+    '''
     list_display = (
             'acta',
             'fecha_acta',
@@ -158,24 +151,22 @@ class LicenciaAdmin(admin.ModelAdmin):
     def periodo_licencia(self, obj):
         return obj.periodo_licencia
     periodo_licencia.short_description = _('Licencia')
+    '''
 
 
-@admin.register(BajaBombero)
-class BajaBomberoAdmin(admin.ModelAdmin):
+@admin.register(Renuncia)
+class RenunciaAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                'numero_libro',
-                'numero_folio',
-                'numero_acta',
-                'fecha_acta',
-                'descripcion_acta',
+                'acta',
                 'bombero',
                 'fecha_solicitud',
                 'fecha_efectiva',
             )
         }),
     )
+    '''
     list_display = (
         'bombero',
         'fecha_solicitud',
@@ -198,6 +189,7 @@ class BajaBomberoAdmin(admin.ModelAdmin):
         'fecha_desde',
         'fecha_hasta',
     )
+    '''
 
 
 class AscensoTabular(admin.TabularInline):
@@ -209,27 +201,29 @@ class ActaAscensoAdmin(admin.ModelAdmin):
     inlines = [
         AscensoTabular,
     ]
+    '''
     list_display = (
-            'acta',
-            'fecha_acta',
+            'acta__nombre_corto',
+            'acta__fecha_acta',
             'fecha_efectiva',
     )
     list_filter = (
-            'fecha_acta',
+            'acta__fecha_acta',
             'fecha_efectiva',
     )
     search_fields = (
-            'numero_libro',
-            'numero_folio',
-            'numero_acta',
-            'fecha_acta',
-            'descripcion_acta',
+            'acta__numero_libro',
+            'acta__numero_folio',
+            'acta__numero_acta',
+            'acta__fecha_acta',
+            'acta__descripcion_acta',
             'fecha_efectiva',
     )
 
     def acta(self, obj):
         return obj.nombre_corto
     acta.short_description = _('Acta')
+    '''
 
 
 class SancionTabular(admin.TabularInline):
@@ -241,6 +235,7 @@ class ActaSancionAdmin(admin.ModelAdmin):
     inlines = [
         SancionTabular,
     ]
+    '''
     list_display = (
             'acta',
             'fecha_acta',
@@ -262,3 +257,4 @@ class ActaSancionAdmin(admin.ModelAdmin):
     def acta(self, obj):
         return obj.nombre_corto
     acta.short_description = _('Acta')
+    '''

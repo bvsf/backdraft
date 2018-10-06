@@ -94,7 +94,12 @@ class Acta(models.Model):
         return "{0}".format(self.nombre_completo)
 
 
-class Licencia(Acta):
+class Licencia(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_licencia',
+        verbose_name=_("Acta"),
+    )
     fecha_desde = models.DateField(
         verbose_name=_("Fecha desde"),
     )
@@ -119,25 +124,30 @@ class Licencia(Acta):
         )
 
     class Meta:
-        verbose_name = _("Acta de Licencia")
-        verbose_name_plural = _("Actas de Licencias")
+        verbose_name = _("Licencia")
+        verbose_name_plural = _("Licencias")
 
     def __str__(self):
         return _("({0}) - Licencia desde {1} hasta {2}").format(
-            self.nombre_corto,
-            self.fecha_acta,
+            self.acta.nombre_corto,
+            self.fecha_desde,
             self.fecha_hasta,
         )
 
 
-class ActaAscenso(Acta):
+class ActaAscenso(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_ascenso',
+        verbose_name=_("Acta"),
+    )
     fecha_efectiva = models.DateField(
         verbose_name=_("Fecha efectiva de Ascenso"),
     )
 
     class Meta:
-        verbose_name = _("Acta de Ascenso")
-        verbose_name_plural = _("Actas de Ascensos")
+        verbose_name = _("Ascenso")
+        verbose_name_plural = _("Ascensos")
 
     # TODO: obtener todos los ascensos del acta.
 
@@ -145,8 +155,8 @@ class ActaAscenso(Acta):
 class Ascenso(models.Model):
     acta_ascenso = models.ForeignKey(
         ActaAscenso,
-        related_name='acta_ascenso',
-        verbose_name=_("Acta de Ascenso"),
+        related_name='ascenso',
+        verbose_name=_("Acta Ascenso"),
     )
     bombero = models.ForeignKey(
         Bombero,
@@ -183,7 +193,12 @@ class Ascenso(models.Model):
             )
 
 
-class BajaBombero(Acta):
+class Renuncia(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_renuncia',
+        verbose_name=_("Acta"),
+    )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_baja',
@@ -200,8 +215,8 @@ class BajaBombero(Acta):
     )
 
     class Meta:
-        verbose_name = _("Baja de Bombero")
-        verbose_name_plural = _("Bajas de Bomberos")
+        verbose_name = _("Renuncia")
+        verbose_name_plural = _("Renuncia")
 
     def __str__(self):
         return _("{0} dado de baja el {1}").format(
@@ -216,7 +231,12 @@ class BajaBombero(Acta):
         super(BajaBombero, self).save(*args, **kwargs)
 
 
-class ActaSancion(Acta):
+class ActaSancion(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='actasancion',
+        verbose_name=_("Acta"),
+    )
     fecha_incidente = models.DateField(
         verbose_name=_("Fecha del Incidente"),
     )
@@ -226,11 +246,11 @@ class ActaSancion(Acta):
     )
 
     def get_sanciones(self):
-        return Sancion.objects.filter(acta_sancion=self)
+        return Sancion.objects.filter(actasancion=self)
 
     class Meta:
-        verbose_name = _("Acta de Sanción")
-        verbose_name_plural = _("Actas de Sanciones")
+        verbose_name = _("Sanción")
+        verbose_name_plural = _("Sanciones")
 
 
 class Sancion(models.Model):
@@ -275,7 +295,7 @@ class Sancion(models.Model):
 
     def __str__(self):
         linea = "{0} {1} {2}".format(
-            self.acta_sancion.nombre_corto,
+            self.acta_sancion.acta.nombre_corto,
             self.bombero,
             self.tipo_sancion)
 
@@ -285,7 +305,12 @@ class Sancion(models.Model):
         return linea
 
 
-class Premio(Acta):
+class Premio(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_premio',
+        verbose_name=_("Acta"),
+    )
     fecha_premiacion = models.DateField(
         verbose_name=_("Fecha de la premiación"),
     )
@@ -300,19 +325,24 @@ class Premio(Acta):
     )
 
     class Meta:
-        verbose_name = _("Acta de Premio")
-        verbose_name_plural = _("Actas de Premios")
+        verbose_name = _("Premio")
+        verbose_name_plural = _("Premios")
 
     def __str__(self):
         return _("{0}: {1} premiado el {2} con {3}").format(
-            self.nombre_corto,
+            self.acta.nombre_corto,
             self.bombero,
             self.fecha_premiacion,
             self.premio_otorgado,
         )
 
 
-class Pase(Acta):
+class Pase(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_pase',
+        verbose_name=_("Acta"),
+    )
     fecha_efectiva = models.DateField(
         default=timezone.now,
         verbose_name=_("Fecha efectiva del pase"),
@@ -352,12 +382,12 @@ class Pase(Acta):
     )
 
     class Meta:
-        verbose_name = _("Acta de Pase")
-        verbose_name_plural = _("Actas de Pases")
+        verbose_name = _("Pase")
+        verbose_name_plural = _("Pases")
 
     def __str__(self):
         return _("{0}: {1} pasó de {2} a {3} desde el {4}").format(
-            self.nombre_corto,
+            self.acta.nombre_corto,
             self.bombero,
             self.institucion_origen,
             self.institucion_destino,
