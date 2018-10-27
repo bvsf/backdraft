@@ -206,12 +206,15 @@ class Persona(Entidad):
 class Cuartelero(models.Model):
     usuario = models.OneToOneField(
         User,
+        related_name="cuarteleros",
         on_delete=models.PROTECT,
-        related_name="cuarteleros")
+    )
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
-        related_name="cuarteleros")
+        related_name="cuarteleros",
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return self.persona.nombre_completo
@@ -265,7 +268,9 @@ class Cuartelero(models.Model):
 class Medio(models.Model):
     entidad = models.ForeignKey(
         Entidad,
-        related_name="entidad_%(class)s")
+        related_name="entidad_%(class)s",
+        on_delete=models.PROTECT,
+    )
     uso = models.CharField(
         verbose_name=_("Uso"),
         max_length=255,
@@ -275,7 +280,8 @@ class Medio(models.Model):
         max_length=1000,
         verbose_name=_("Obervaciones"),
         blank=True,
-        null=True)
+        null=True,
+    )
 
     class Meta:
         abstract = True
@@ -285,7 +291,9 @@ class DireccionPostal(Medio):
     localidad = models.ForeignKey(
         Localidad,
         verbose_name=_("Localidad"),
-        related_name="localidad")
+        related_name="localidad",
+        on_delete=models.PROTECT,
+    )
     calle = models.CharField(
         max_length=255,
         verbose_name=_("Calle"))

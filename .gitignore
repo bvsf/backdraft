@@ -15,6 +15,7 @@ __pycache__
 .Python
 envdir/
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -71,7 +72,11 @@ target/
 avatars/
 
 #Migrations
-*personas/migrations/
-*salud/migrations/
+*actas/migrations
+*bomberos/migrations
+*grados/migrations
+*localidades/migrations
+*personas/migrations
+*salud/migrations
 
-*personas/dumps/local/
+*personas/dumps

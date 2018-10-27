@@ -22,11 +22,14 @@ class Alergenos(models.Model):
 class Alergicos(models.Model):
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero"))
+        verbose_name=_("Bombero"),
+        on_delete=models.PROTECT,
+    )
     alergeno = models.ForeignKey(
         Alergenos,
-        verbose_name=_("Alérgeno"))
-
+        verbose_name=_("Alérgeno"),
+        on_delete=models.PROTECT,
+    )
     observaciones = models.TextField(
         max_length=1000,
         verbose_name=_("Observaciones"),
@@ -47,7 +50,9 @@ class Alergicos(models.Model):
 class ObraSocial(models.Model):
     institucion = models.OneToOneField(
         Institucion,
-        verbose_name=_("Institución"))
+        verbose_name=_("Institución"),
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return "{0}".format(
@@ -66,7 +71,9 @@ class PlanMedico(models.Model):
     obraSocial = models.ForeignKey(
         ObraSocial,
         verbose_name=_("Obra Social"),
-        related_name="obraSocial")
+        related_name="obraSocial",
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return "{0} ({1})".format(
@@ -82,7 +89,9 @@ class Clinica(models.Model):
     # TODO: Ver qué se le puede agregar a esta clase
     institucion = models.OneToOneField(
         Institucion,
-        verbose_name=_("Institución"))
+        verbose_name=_("Institución"),
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return "{0}".format(
@@ -125,16 +134,24 @@ class MedicoCabecera(models.Model):
 class CoberturaMedica(models.Model):
     planMedico = models.ForeignKey(
         PlanMedico,
-        verbose_name=_("Plan Médico"))
+        verbose_name=_("Plan Médico"),
+        on_delete=models.PROTECT,
+    )
     medicoCabecera = models.ForeignKey(
         MedicoCabecera,
-        verbose_name=_("Médico de Cabecera"))
+        verbose_name=_("Médico de Cabecera"),
+        on_delete=models.PROTECT,
+    )
     clinica = models.ForeignKey(
         Clinica,
-        verbose_name=_("Clínica"))
+        verbose_name=_("Clínica"),
+        on_delete=models.PROTECT,
+    )
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero"))
+        verbose_name=_("Bombero"),
+        on_delete=models.PROTECT,
+    )
     nroAfiliado = models.CharField(
         max_length=11,
         verbose_name=_('Número de Afiliado'),
