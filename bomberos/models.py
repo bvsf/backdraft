@@ -42,7 +42,9 @@ class Bombero(models.Model):
     persona = models.OneToOneField(
         Persona,
         verbose_name=_("Persona"),
-        related_name="bomberos")
+        related_name="bomberos",
+        on_delete=models.PROTECT,
+    )
     foto = models.ImageField(
         upload_to="avatars/",
         null=True,
@@ -69,7 +71,9 @@ class Bombero(models.Model):
         Localidad,
         null=True,
         blank=True,
-        verbose_name=_("Lugar de Nacimiento"))
+        verbose_name=_("Lugar de Nacimiento"),
+        on_delete=models.PROTECT,
+    )
 
     def get_ultimo_ascenso(self):
         return self.bombero_ascendido.order_by(
@@ -166,7 +170,9 @@ class NumeroOrden(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="numeros_orden_bombero")
+        related_name="numeros_orden_bombero",
+        on_delete=models.PROTECT,
+    )
     vigencia_desde = models.DateField(
         default=timezone.now)
     vigencia_hasta = models.DateField(
@@ -241,11 +247,15 @@ class Parentesco(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="bombero")
+        related_name="bombero",
+        on_delete=models.PROTECT,
+    )
     familiar = models.ForeignKey(
         Persona,
         verbose_name=_("Familiar"),
-        related_name="familiar")
+        related_name="familiar",
+        on_delete=models.PROTECT,
+    )
     parentesco = models.CharField(
         max_length=255,
         choices=RELACION_PARENTESCO,
@@ -256,10 +266,14 @@ class Parentesco(models.Model):
 class Empleo(models.Model):
     empresa = models.ForeignKey(
         Institucion,
-        verbose_name=_("Empresa"))
+        verbose_name=_("Empresa"),
+        on_delete=models.PROTECT,
+    )
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero"))
+        verbose_name=_("Bombero"),
+        on_delete=models.PROTECT,
+    )
     titulo = models.CharField(
         max_length=255,
         verbose_name=_("Título o cargo"))
@@ -307,10 +321,14 @@ class Empleo(models.Model):
 class Estudio(models.Model):
     establecimiento = models.ForeignKey(
         Institucion,
-        verbose_name=_("Establecimiento"))
+        verbose_name=_("Establecimiento"),
+        on_delete=models.PROTECT,
+    )
     bombero = models.ForeignKey(
         Bombero,
-        verbose_name=_("Bombero"))
+        verbose_name=_("Bombero"),
+        on_delete=models.PROTECT,
+    )
     nivel = models.CharField(
         max_length=5,
         choices=NIVEL_ESTUDIO,
@@ -376,7 +394,9 @@ class CalificacionAnual(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         verbose_name=_("Bombero"),
-        related_name="bombero_calificacion")
+        related_name="bombero_calificacion",
+        on_delete=models.PROTECT,
+    )
     periodo = models.IntegerField(
         unique=True,
         null=False,
@@ -419,6 +439,7 @@ class Licencia(models.Model):
         Acta,
         related_name='acta_licencia',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     fecha_desde = models.DateField(
         verbose_name=_("Fecha desde"),
@@ -434,6 +455,7 @@ class Licencia(models.Model):
         Bombero,
         related_name='bombero_licenciado',
         verbose_name=_("Bombero"),
+        on_delete=models.PROTECT,
     )
 
     @property
@@ -460,6 +482,7 @@ class ActaAscenso(models.Model):
         Acta,
         related_name='acta_ascenso',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     fecha_efectiva = models.DateField(
         verbose_name=_("Fecha efectiva de Ascenso"),
@@ -477,16 +500,19 @@ class Ascenso(models.Model):
         ActaAscenso,
         related_name='ascenso',
         verbose_name=_("Acta Ascenso"),
+        on_delete=models.PROTECT,
     )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_ascendido',
         verbose_name=_("Bombero Ascendido"),
+        on_delete=models.PROTECT,
     )
     grado_ascenso = models.ForeignKey(
         Grado,
         related_name='grado_ascendido',
         verbose_name=_("Grado Ascendido"),
+        on_delete=models.PROTECT,
     )
 
     class Meta:
@@ -517,11 +543,13 @@ class Renuncia(models.Model):
         Acta,
         related_name='acta_renuncia',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_baja',
         verbose_name=_("Bombero dado de baja"),
+        on_delete=models.PROTECT,
     )
     fecha_solicitud = models.DateField(
         blank=True,
@@ -555,6 +583,7 @@ class ActaSancion(models.Model):
         Acta,
         related_name='actasancion',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     fecha_incidente = models.DateField(
         verbose_name=_("Fecha del Incidente"),
@@ -577,11 +606,13 @@ class Sancion(models.Model):
         ActaSancion,
         related_name='acta_sancion',
         verbose_name=_("Acta de Sanción"),
+        on_delete=models.PROTECT,
     )
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_interviniente',
         verbose_name=_("Bombero interviniente"),
+        on_delete=models.PROTECT,
     )
     rol_incidente = models.CharField(
         max_length=1000,
@@ -629,6 +660,7 @@ class Premio(models.Model):
         Acta,
         related_name='acta_premio',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     fecha_premiacion = models.DateField(
         verbose_name=_("Fecha de la premiación"),
@@ -637,6 +669,7 @@ class Premio(models.Model):
         Bombero,
         related_name='bombero_premiado',
         verbose_name=_("Bombero premiado"),
+        on_delete=models.PROTECT,
     )
     premio_otorgado = models.CharField(
         max_length=500,
@@ -661,6 +694,7 @@ class Pase(models.Model):
         Acta,
         related_name='acta_pase',
         verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
     )
     fecha_efectiva = models.DateField(
         default=timezone.now,
@@ -669,12 +703,14 @@ class Pase(models.Model):
     bombero = models.ForeignKey(
         Bombero,
         related_name='bombero_solicitante',
-        verbose_name=_("Bombero solicitante")
+        verbose_name=_("Bombero solicitante"),
+        on_delete = models.PROTECT,
     )
     grado_origen = models.ForeignKey(
         Grado,
         related_name='grado_solicitante',
-        verbose_name=_("Grado del solicitante")
+        verbose_name=_("Grado del solicitante"),
+        on_delete=models.PROTECT,
     )
     fecha_ult_ascenso = models.DateField(
         verbose_name=_("Fecha último ascenso")
@@ -687,17 +723,20 @@ class Pase(models.Model):
     grado_final = models.ForeignKey(
         Grado,
         related_name='grado_tomado_solicitante',
-        verbose_name=_("Grado asignado al solicitante")
+        verbose_name=_("Grado asignado al solicitante"),
+        on_delete=models.PROTECT,
     )
     institucion_origen = models.ForeignKey(
         Institucion,
         related_name='institucion_origen',
         verbose_name=_("Institución Origen"),
+        on_delete=models.PROTECT,
     )
     institucion_destino = models.ForeignKey(
         Institucion,
         related_name='institucion_destino',
-        verbose_name=_("Institución Destino")
+        verbose_name=_("Institución Destino"),
+        on_delete = models.PROTECT,
     )
 
     class Meta:

@@ -22,10 +22,9 @@ schema_view = get_schema_view(title='Pastebin API')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^rest-auth/', include('rest_auth.urls')),
+    # url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^schema/$', schema_view),
-    url(r'^personas/', include("personas.api.urls", namespace='bomberos-api')),
-    url(r'^localidades/', include("localidades.api.urls", namespace='localidades-api')),
-
+    # url(r'^personas/', include("personas.api.urls", namespace='bomberos-api')),
+    # url(r'^localidades/', include("localidades.api.urls", namespace='localidades-api')),
     # url(r'^api/personas/', include("personas.api.urls", namespace='personas-api')),
 ]

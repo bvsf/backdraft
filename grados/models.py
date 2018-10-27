@@ -25,7 +25,9 @@ class Escalafon(models.Model):
         verbose_name=_('Nombre'))
     rango = models.ForeignKey(
         Rango,
-        verbose_name=_('Rango'))
+        verbose_name=_('Rango'),
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return "{0} ({1})".format(
@@ -46,15 +48,20 @@ class Grado(models.Model):
         'self',
         blank=True,
         null=True,
-        verbose_name=_('Grado Superior'))
+        verbose_name=_('Grado Superior'),
+        on_delete=models.PROTECT,
+    )
     escalafon = models.ForeignKey(
         Escalafon,
-        verbose_name=_('Escalafón'))
+        verbose_name=_('Escalafón'),
+        on_delete=models.PROTECT,
+    )
     excepcion = models.BooleanField(
         verbose_name=_('Posee más de un grado superior'),
         default=False,
         null=False,
-        blank=False)
+        blank=False,
+    )
 
     def __str__(self):
         return "{0} - {1}".format(

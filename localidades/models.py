@@ -31,7 +31,9 @@ class Provincia(Zona):
     pais = models.ForeignKey(
         Pais,
         verbose_name=_("Pais"),
-        related_name='pais')
+        related_name='pais',
+        on_delete=models.PROTECT,
+    )
 
     def __str__(self):
         return "{0} ({1})".format(
@@ -48,7 +50,9 @@ class Localidad(Zona):
     provincia = models.ForeignKey(
         Provincia,
         verbose_name=_("Provincia"),
-        related_name='provincia')
+        related_name='provincia',
+        on_delete=models.PROTECT,
+    )
     codigo_postal = models.CharField(
         max_length=255,
         verbose_name=_("Codigo Postal"))
