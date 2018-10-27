@@ -203,6 +203,7 @@ class Persona(Entidad):
         super(Persona, self).save(*args, **kwargs)
     '''
 
+
 class Cuartelero(models.Model):
     usuario = models.OneToOneField(
         User,

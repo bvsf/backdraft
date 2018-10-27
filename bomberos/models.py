@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import date
+from datetime import date, datetime
 from decimal import *
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -106,7 +106,7 @@ class Bombero(models.Model):
         # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
         try:
             fecha_cuartel = self.bombero_ascendido.all()[0].acta.fecha_acta
-        except:
+        except IndexError:
             fecha_cuartel = self.bombero_solicitante.all()[0].acta.fecha_acta
         if fecha_cuartel:
             delta = (date.today() - fecha_cuartel)
@@ -575,7 +575,7 @@ class Renuncia(models.Model):
         # Cerrar vigencia del número de orden del bombero
         numero_orden = NumeroOrden.objects.filter(bombero=self.bombero).last()
         numero_orden.cerrar_vigencia()
-        super(BajaBombero, self).save(*args, **kwargs)
+        super(Renuncia, self).save(*args, **kwargs)
 
 
 class ActaSancion(models.Model):
