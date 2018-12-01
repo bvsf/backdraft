@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from bomberos.models import Bombero
+from bomberos.models import Bombero, NumeroOrden
 from grados.models import Grado
 from localidades.models import Localidad
 from personas.models import Persona, Cuartelero, Institucion
@@ -145,6 +145,54 @@ class ActaPase(models.Model):
         verbose_name_plural = _("Pases")
 
 
+class ActaPremio(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_premio',
+        verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
+    )
+    fecha_efectiva = models.DateField(
+        verbose_name=_("Fecha efectiva del Premio"),
+    )
+
+    class Meta:
+        verbose_name = _("Premio")
+        verbose_name_plural = _("Premios")
+
+
+class ActaReincorporacion(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_reincorporacion',
+        verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
+    )
+    fecha_efectiva = models.DateField(
+        verbose_name=_("Fecha efectiva de la Reincorporación"),
+    )
+
+    class Meta:
+        verbose_name = _("Reincorporación")
+        verbose_name_plural = _("Reincorporaciones")
+
+
+class ActaRenuncia(models.Model):
+    acta = models.ForeignKey(
+        Acta,
+        related_name='acta_renuncia',
+        verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
+    )
+    fecha_efectiva = models.DateField(
+        verbose_name=_("Fecha efectiva de la Renuncia"),
+    )
+
+    class Meta:
+        verbose_name = _("Renuncia")
+        verbose_name_plural = _("Renuncias")
+
+
 class ActaSancion(models.Model):
     acta = models.ForeignKey(
         Acta,
@@ -257,14 +305,14 @@ class Licencia(models.Model):
 
     def __str__(self):
         return _("({0}) - Licencia desde {1} hasta {2}").format(
-            self.acta.nombre_corto,
+            self.acta_licencia.acta.nombre_corto,
             self.fecha_desde,
             self.fecha_hasta,
         )
 
 
 class Pase(models.Model):
-    acta = models.ForeignKey(
+    acta_pase = models.ForeignKey(
         ActaPase,
         related_name='pase',
         verbose_name=_("Pase"),
@@ -315,23 +363,20 @@ class Pase(models.Model):
 
     def __str__(self):
         return _("{0}: {1} pasó de {2} a {3} desde el {4}").format(
-            self.actapase.acta.nombre_corto,
+            self.acta_pase.acta.nombre_corto,
             self.bombero,
             self.institucion_origen,
             self.institucion_destino,
-            self.actapase.fecha_efectiva,
+            self.acta_pase.fecha_efectiva,
         )
 
 
 class Premio(models.Model):
-    acta = models.ForeignKey(
-        Acta,
-        related_name='acta_premio',
+    acta_premio = models.ForeignKey(
+        ActaPremio,
+        related_name='premio',
         verbose_name=_("Acta"),
         on_delete=models.PROTECT,
-    )
-    fecha_premiacion = models.DateField(
-        verbose_name=_("Fecha de la premiación"),
     )
     bombero = models.ForeignKey(
         Bombero,
@@ -350,21 +395,46 @@ class Premio(models.Model):
 
     def __str__(self):
         return _("{0}: {1} premiado el {2} con {3}").format(
-            self.acta.nombre_corto,
+            self.acta_premio.acta.nombre_corto,
             self.bombero,
-            self.fecha_premiacion,
+            self.acta_premio.fecha_efectiva,
             self.premio_otorgado,
         )
 
 
 class Reincorporacion(models.Model):
-    pass
+    acta_reincorporacion = models.ForeignKey(
+        ActaReincorporacion,
+        related_name='reincorporacion',
+        verbose_name=_("Acta"),
+        on_delete=models.PROTECT,
+    )
+    bombero = models.ForeignKey(
+        Bombero,
+        related_name='bombero_reincorporacion',
+        verbose_name=_("Bombero Reincorporado"),
+        on_delete=models.PROTECT,
+    )
+    fecha_solicitud = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name=_("Fecha de solicitud de reincorporacion"),
+    )
+
+    class Meta:
+        ordering = ['acta_reincorporacion', 'fecha_solicitud']
+
+    def __str__(self):
+        return _("{0} reincorporado el {1}").format(
+            self.bombero,
+            self.acta_reincorporacion.fecha_efectiva,
+        )
 
 
 class Renuncia(models.Model):
-    acta = models.ForeignKey(
-        Acta,
-        related_name='acta_renuncia',
+    acta_renuncia = models.ForeignKey(
+        ActaRenuncia,
+        related_name='renuncia',
         verbose_name=_("Acta"),
         on_delete=models.PROTECT,
     )
@@ -379,10 +449,6 @@ class Renuncia(models.Model):
         null=True,
         verbose_name=_("Fecha de solicitud de baja"),
     )
-    fecha_efectiva = models.DateField(
-        default=timezone.now,
-        verbose_name=_("Fecha efectiva de baja"),
-    )
 
     class Meta:
         verbose_name = _("Renuncia")
@@ -391,7 +457,7 @@ class Renuncia(models.Model):
     def __str__(self):
         return _("{0} dado de baja el {1}").format(
             self.bombero,
-            self.fecha_efectiva,
+            self.acta_renuncia.fecha_efectiva,
         )
 
     def save(self, *args, **kwargs):

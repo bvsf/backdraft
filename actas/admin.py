@@ -7,15 +7,19 @@ from actas.models import (
     ActaAscenso,
     ActaLicencia,
     ActaPase,
+    ActaPremio,
+    ActaReincorporacion,
+    ActaRenuncia,
 
     Ascenso,
     Licencia,
-
+    Pase,
+    Premio,
+    Reincorporacion,
     Renuncia,
+
     ActaSancion,
     Sancion,
-    Premio,
-    Pase,
 )
 
 
@@ -157,40 +161,30 @@ class ActaPaseAdmin(admin.ModelAdmin):
     get_acta.short_description = _('Acta')
 
 
-@admin.register(Premio)
+class PremioTabular(admin.TabularInline):
+    model = Premio
+
+
+@admin.register(ActaPremio)
 class PremioAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    fieldsets = (
-        (None, {
-            'fields': (
-                'acta',
-                'fecha_premiacion',
-                'premio_otorgado',
-                'bombero',
-                )
-        }),
-    )
+    inlines = [
+        PremioTabular,
+    ]
     list_display = (
-            'get_acta',
-            'fecha_premiacion',
-            'premio_otorgado',
-            'bombero',
+        'get_acta',
+        'fecha_efectiva',
     )
     list_filter = (
-            'acta__fecha_acta',
-            'fecha_premiacion',
-            'premio_otorgado',
-            'bombero',
+        'acta__fecha_acta',
+        'fecha_efectiva',
     )
     search_fields = (
-            'acta__numero_libro',
-            'acta__numero_folio',
-            'acta__numero_acta',
-            'acta__fecha_acta',
-            'acta__descripcion_acta',
-            'fecha_premiacion',
-            'premio_otorgado',
-            'bombero',
+        'acta__numero_libro',
+        'acta__numero_folio',
+        'acta__numero_acta',
+        'acta__fecha_acta',
+        'acta__descripcion_acta',
+        'fecha_efectiva',
     )
 
     def get_acta(self, obj):
@@ -198,42 +192,66 @@ class PremioAdmin(admin.ModelAdmin):
     get_acta.short_description = _('Acta')
 
 
-@admin.register(Renuncia)
-class RenunciaAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (None, {
-            'fields': (
-                'acta',
-                'bombero',
-                'fecha_solicitud',
-                'fecha_efectiva',
-            )
-        }),
-    )
-    '''
+class ReincorporacionTabular(admin.TabularInline):
+    model = Reincorporacion
+
+
+@admin.register(ActaReincorporacion)
+class ActaReincorporacionAdmin(admin.ModelAdmin):
+    inlines = [
+        ReincorporacionTabular,
+    ]
     list_display = (
-        'bombero',
-        'fecha_solicitud',
+        'get_acta',
         'fecha_efectiva',
     )
     list_filter = (
-        'bombero',
-        'fecha_solicitud',
+        'acta__fecha_acta',
         'fecha_efectiva',
     )
     search_fields = (
-        'bombero',
-        'fecha_solicitud',
+        'acta__numero_libro',
+        'acta__numero_folio',
+        'acta__numero_acta',
+        'acta__fecha_acta',
+        'acta__descripcion_acta',
         'fecha_efectiva',
-        'numero_libro',
-        'numero_folio',
-        'numero_acta',
-        'fecha_acta',
-        'descripcion_acta',
-        'fecha_desde',
-        'fecha_hasta',
     )
-    '''
+
+    def get_acta(self, obj):
+        return obj.acta.nombre_corto
+    get_acta.short_description = _('Acta')
+
+
+class RenunciaTabular(admin.TabularInline):
+    model = Renuncia
+
+
+@admin.register(ActaRenuncia)
+class ActaRenunciaAdmin(admin.ModelAdmin):
+    inlines = [
+        RenunciaTabular,
+    ]
+    list_display = (
+        'get_acta',
+        'fecha_efectiva',
+    )
+    list_filter = (
+        'acta__fecha_acta',
+        'fecha_efectiva',
+    )
+    search_fields = (
+        'acta__numero_libro',
+        'acta__numero_folio',
+        'acta__numero_acta',
+        'acta__fecha_acta',
+        'acta__descripcion_acta',
+        'fecha_efectiva',
+    )
+
+    def get_acta(self, obj):
+        return obj.acta.nombre_corto
+    get_acta.short_description = _('Acta')
 
 
 class SancionTabular(admin.TabularInline):
