@@ -196,7 +196,7 @@ class ActaRenuncia(models.Model):
 class ActaSancion(models.Model):
     acta = models.ForeignKey(
         Acta,
-        related_name='actasancion',
+        related_name='acta_sancion',
         verbose_name=_("Acta"),
         on_delete=models.PROTECT,
     )

@@ -263,26 +263,24 @@ class ActaSancionAdmin(admin.ModelAdmin):
     inlines = [
         SancionTabular,
     ]
-    '''
     list_display = (
-            'acta',
-            'fecha_acta',
-            'fecha_incidente',
+        'get_acta',
+        'fecha_incidente',
     )
     list_filter = (
-            'fecha_acta',
-            'fecha_incidente',
+        'acta__fecha_acta',
+        'fecha_incidente',
     )
     search_fields = (
-            'numero_libro',
-            'numero_folio',
-            'numero_acta',
-            'fecha_acta',
-            'descripcion_acta',
-            'fecha_incidente',
+        'acta__numero_libro',
+        'acta__numero_folio',
+        'acta__numero_acta',
+        'acta__fecha_acta',
+        'acta__descripcion_acta',
+        'fecha_efectiva',
+        'fecha_incidente',
     )
 
-    def acta(self, obj):
-        return obj.nombre_corto
-    acta.short_description = _('Acta')
-    '''
+    def get_acta(self, obj):
+        return obj.acta.nombre_corto
+    get_acta.short_description = _('Acta')
