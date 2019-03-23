@@ -64,15 +64,19 @@ class ObraSocial(models.Model):
 
 
 class PlanMedico(models.Model):
-    descripcion = models.TextField(
-        max_length=255,
-        verbose_name=_('Descripción'))
-
     obraSocial = models.ForeignKey(
         ObraSocial,
         verbose_name=_("Obra Social"),
         related_name="obraSocial",
         on_delete=models.PROTECT,
+    )
+    plan = models.TextField(
+        max_length=255,
+        verbose_name=_('Plan')
+    )
+    descripcion = models.TextField(
+        max_length=1000,
+        verbose_name=_('Descripción')
     )
 
     def __str__(self):
