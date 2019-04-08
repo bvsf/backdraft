@@ -89,10 +89,10 @@ class Bombero(models.Model):
         # TODO: Así como está si tiene una reincorporación con el grado BV te trae esa fecha y en realidad puede ser
         #   anterior. Hay que tomar la más vieja o bien crear un campo.
         try:
+            fecha_bombero = self.bombero_solicitante.get().fecha_bombero
+        except ObjectDoesNotExist:
             fecha_bombero = self.bombero_ascendido.get(
                 grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
-        except ObjectDoesNotExist:
-            fecha_bombero = self.bombero_solicitante.get().fecha_bombero
         if fecha_bombero:
             delta = (date.today() - fecha_bombero)
             return int(delta.days / 365.2425)
@@ -103,9 +103,9 @@ class Bombero(models.Model):
     def antiguedad_cuartel(self):
         # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
         try:
-            fecha_cuartel = self.bombero_ascendido.all()[0].acta_ascenso.acta.fecha_acta
-        except IndexError:
             fecha_cuartel = self.bombero_solicitante.all()[0].acta_pase.acta.fecha_acta
+        except IndexError:
+            fecha_cuartel = self.bombero_ascendido.all()[0].acta_ascenso.acta.fecha_acta
         if fecha_cuartel:
             delta = (date.today() - fecha_cuartel)
             return int(delta.days / 365.2425)
@@ -126,9 +126,9 @@ class Bombero(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             dic = {
-               'email': '',
-               'last_name': self.persona.apellido,
-               'first_name': self.persona.primer_nombre
+                'email': '',
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.primer_nombre,
             }
 
             # Si la persona es un bombero uso su mismo usuario
