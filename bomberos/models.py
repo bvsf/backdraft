@@ -106,11 +106,31 @@ class Bombero(models.Model):
             fecha_cuartel = self.bombero_solicitante.all()[0].acta_pase.acta.fecha_acta
         except IndexError:
             fecha_cuartel = self.bombero_ascendido.all()[0].acta_ascenso.acta.fecha_acta
-        if fecha_cuartel:
+
+        try:
+            fecha_renuncia = self.bombero_baja.all()[0].acta_renuncia.acta.fecha_acta
+        except IndexError:
+            fecha_renuncia = None
+
+        if fecha_renuncia:
+            if fecha_renuncia > fecha_cuartel:
+                delta = (fecha_renuncia - fecha_cuartel)
+                s = int(delta.days / 365.2425)
+
+        try:
+            fecha_reincorporacion = self.bombero_reincorporacion.all()[0].acta_reincorporacion.acta.fecha_acta
+        except IndexError:
+            fecha_reincorporacion = None
+
+        if fecha_reincorporacion and fecha_renuncia:
+            delta = (date.today() - fecha_reincorporacion)
+            s = s + int(delta.days / 365.2425)
+
+        if fecha_cuartel and not fecha_renuncia:
             delta = (date.today() - fecha_cuartel)
             return int(delta.days / 365.2425)
         else:
-            return None
+            return s
 
     def __str__(self):
         try:
