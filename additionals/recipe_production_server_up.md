@@ -25,3 +25,13 @@ docker-compose --version
 ```
 http://pawamoy.github.io/2018/02/01/docker-compose-django-postgres-nginx.html
 ```
+
+# To run everything
+```
+sudo docker-compose build
+sudo docker-compose run --rm backdraft /bin/bash -c "./manage.py makemigrations"
+sudo docker-compose run --rm backdraft /bin/bash -c "./manage.py migrate"
+sudo docker-compose run backdraft ./manage.py collectstatic --no-input
+sudo docker-compose up
+```
+
