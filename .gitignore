@@ -16,6 +16,8 @@ __pycache__
 envdir/
 env/
 venv/
+static/
+media/
 build/
 develop-eggs/
 dist/

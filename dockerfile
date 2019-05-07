@@ -15,4 +15,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # define the default command to run when starting the container
-CMD ["gunicorn", "--bind", ":8000", "sigcaw.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "sigcaw.wsgi:application"]

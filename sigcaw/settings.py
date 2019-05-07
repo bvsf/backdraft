@@ -160,8 +160,8 @@ REST_FRAMEWORK = {
 }
 
 # as declared in NginX conf, it must match /opt/services/backdraft/static/
-STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # do the same for media files, it must match /opt/services/backdraft/media/
-MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
