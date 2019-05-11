@@ -4,6 +4,8 @@ services:
 
   backdraft:
     build: .
+    env_file:
+      - config/django/django_env
     volumes:
       - .:/opt/services/backdraft
       - static_volume:/opt/services/backdraft/static  # <-- bind the static volume
@@ -46,4 +48,3 @@ volumes:
   database1_volume:
   static_volume:  # <-- declare the static volume
   media_volume:  # <-- declare the media volume
-
