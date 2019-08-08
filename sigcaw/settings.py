@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_jenkins',
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -176,3 +177,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # do the same for media files, it must match /opt/services/backdraft/media/
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_pyflakes',
+    # 'django_jenkins.tasks.run_jslint',
+    # 'django_jenkins.tasks.run_csslint',
+    # 'django_jenkins.tasks.run_sloccount'
+)

@@ -35,3 +35,6 @@ sudo docker-compose run backdraft ./manage.py collectstatic --no-input
 sudo docker-compose up
 ```
 
+https://medium.com/nonstopio/jenkins-django-8faddc26ab32
+https://medium.com/ordergroove-engineering/continuous-deployment-of-django-applications-part-1-e3bc332bcbaf
+

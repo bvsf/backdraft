@@ -8,8 +8,9 @@ services:
       - config/django/django_env
     volumes:
       - .:/opt/services/backdraft
-      - static_volume:/opt/services/backdraft/static  # <-- bind the static volume
-      - media_volume:/opt/services/backdraft/media  # <-- bind the media volume
+      - static_volume:/opt/services/backdraft/static
+      - media_volume:/opt/services/backdraft/media
+      - jenkins_data:/var/jenkins_home
     networks:
       - nginx_network
       - database1_network
@@ -22,8 +23,8 @@ services:
       - 8000:80
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
-      - static_volume:/opt/services/backdraft/static  # <-- bind the static volume
-      - media_volume:/opt/services/backdraft/media  # <-- bind the media volume
+      - static_volume:/opt/services/backdraft/static
+      - media_volume:/opt/services/backdraft/media
     depends_on:
       - backdraft
     networks:
@@ -38,6 +39,15 @@ services:
     volumes:
       - database1_volume:/var/lib/postgresql/data
 
+  jenkins:
+    image: jenkins/jenkins:lts
+    restart: always
+    ports:
+        - "8080:8080"
+        - "50000:50000"
+    volumes:
+        - jenkins_data:/var/jenkins_home
+
 networks:
   nginx_network:
     driver: bridge
@@ -46,5 +56,6 @@ networks:
 
 volumes:
   database1_volume:
-  static_volume:  # <-- declare the static volume
-  media_volume:  # <-- declare the media volume
+  static_volume:
+  media_volume:
+  jenkins_data:

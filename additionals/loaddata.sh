@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ../manage.py loaddata grados/dumps/rango.json  # Terminado
 ../manage.py loaddata grados/dumps/escalafon.json  # Terminado
 ../manage.py loaddata grados/dumps/grado.json  # Terminado
