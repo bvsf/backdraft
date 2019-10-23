@@ -24,6 +24,7 @@ from .choices import (
     NIVEL_ESTUDIO,
     ESTADO_ESTUDIO,
     GENERO,
+    SITUACION_REVISTA,
 )
 
 
@@ -72,6 +73,23 @@ class Bombero(models.Model):
         verbose_name=_("Lugar de Nacimiento"),
         on_delete=models.PROTECT,
     )
+    reg_int_federacion = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Registro Interno de Federación"),
+    )
+    estatura_en_cm = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Estatura en centímetros"),
+    )
+    situacion_revista = models.CharField(
+        max_length=255,
+        choices=SITUACION_REVISTA,
+        null=True,
+        blank=True,
+        verbose_name=_("Situación de Revista"),
+    )
 
     def get_ultimo_ascenso(self):
         return self.bombero_ascendido.order_by(
@@ -89,10 +107,10 @@ class Bombero(models.Model):
         # TODO: Así como está si tiene una reincorporación con el grado BV te trae esa fecha y en realidad puede ser
         #   anterior. Hay que tomar la más vieja o bien crear un campo.
         try:
+            fecha_bombero = self.bombero_solicitante.get().fecha_bombero
+        except ObjectDoesNotExist:
             fecha_bombero = self.bombero_ascendido.get(
                 grado_ascenso__nombre='Bombero').acta_ascenso.fecha_efectiva
-        except ObjectDoesNotExist:
-            fecha_bombero = self.bombero_solicitante.get().fecha_bombero
         if fecha_bombero:
             delta = (date.today() - fecha_bombero)
             return int(delta.days / 365.2425)
@@ -103,14 +121,34 @@ class Bombero(models.Model):
     def antiguedad_cuartel(self):
         # TODO: Acá falta hacer el cálculo del tiempo que pudo haber estado dado de baja y de sus reincorporaciones
         try:
-            fecha_cuartel = self.bombero_ascendido.all()[0].acta_ascenso.acta.fecha_acta
-        except IndexError:
             fecha_cuartel = self.bombero_solicitante.all()[0].acta_pase.acta.fecha_acta
-        if fecha_cuartel:
+        except IndexError:
+            fecha_cuartel = self.bombero_ascendido.all()[0].acta_ascenso.acta.fecha_acta
+
+        try:
+            fecha_renuncia = self.bombero_baja.all()[0].acta_renuncia.acta.fecha_acta
+        except IndexError:
+            fecha_renuncia = None
+
+        if fecha_renuncia:
+            if fecha_renuncia > fecha_cuartel:
+                delta = (fecha_renuncia - fecha_cuartel)
+                s = int(delta.days / 365.2425)
+
+        try:
+            fecha_reincorporacion = self.bombero_reincorporacion.all()[0].acta_reincorporacion.acta.fecha_acta
+        except IndexError:
+            fecha_reincorporacion = None
+
+        if fecha_reincorporacion and fecha_renuncia:
+            delta = (date.today() - fecha_reincorporacion)
+            s = s + int(delta.days / 365.2425)
+
+        if fecha_cuartel and not fecha_renuncia:
             delta = (date.today() - fecha_cuartel)
             return int(delta.days / 365.2425)
         else:
-            return None
+            return s
 
     def __str__(self):
         try:
@@ -126,9 +164,9 @@ class Bombero(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             dic = {
-               'email': '',
-               'last_name': self.persona.apellido,
-               'first_name': self.persona.primer_nombre
+                'email': '',
+                'last_name': self.persona.apellido,
+                'first_name': self.persona.primer_nombre,
             }
 
             # Si la persona es un bombero uso su mismo usuario

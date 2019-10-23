@@ -13,9 +13,13 @@ __pycache__
 # Distribution / packaging
 .idea
 .Python
+reports/
+config/
 envdir/
 env/
 venv/
+static/
+media/
 build/
 develop-eggs/
 dist/
@@ -80,3 +84,4 @@ avatars/
 *salud/migrations
 
 *personas/dumps
+migraciones/

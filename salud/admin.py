@@ -68,15 +68,18 @@ class PlanMedicoAdmin(admin.ModelAdmin):
         (None, {
             'fields': (
                 'obraSocial',
+                'plan',
                 'descripcion'
                 )
         }),
     )
     list_display = (
         'obraSocial',
+        'plan',
         'descripcion')
     search_fields = (
         'obraSocial__institucion__razon_social',
+        'plan',
         'descripcion')
 
 

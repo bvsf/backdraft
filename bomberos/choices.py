@@ -78,3 +78,10 @@ NIVEL_ESTUDIO = (
     ('T', _("Terciario")),
     ('U', _("Universitario")),
     )
+
+SITUACION_REVISTA = (
+    ('AS', _("Cuerpo de Aspirantes")),
+    ('AC', _("Cuerpo Activo")),
+    ('AU', _("Cuerpo Auxiliar")),
+    ('RE', _("Retiro Efectivo")),
+)
