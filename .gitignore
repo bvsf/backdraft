@@ -1,5 +1,9 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*~
+*.pyc
+*#
+*.sqlite3
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -7,8 +11,15 @@ __pycache__/
 *.so
 
 # Distribution / packaging
+.idea
 .Python
+reports/
+config/
+envdir/
 env/
+venv/
+static/
+media/
 build/
 develop-eggs/
 dist/
@@ -60,3 +71,17 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# temporal develop images
+avatars/
+
+#Migrations
+*actas/migrations
+*bomberos/migrations
+*grados/migrations
+*localidades/migrations
+*personas/migrations
+*salud/migrations
+
+*personas/dumps
+migraciones/

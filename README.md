@@ -10,4 +10,7 @@ Información adicional:
 * http://danielkummer.github.io/git-flow-cheatsheet/
 * http://rogerdudler.github.io/git-guide/index.es.html
 
+Para los dumps
+http://www.convertcsv.com/json-to-csv.htm
+
 

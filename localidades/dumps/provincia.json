@@ -1,0 +1,218 @@
+[
+ {
+   "model": "localidades.provincia",
+   "pk": 1,
+   "fields": {
+      "nombre": "Ciudad Autónoma de Buenos Aires",
+      "abreviatura": "CABA",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 2,
+   "fields": {
+      "nombre": "Buenos Aires",
+      "abreviatura": "PBA",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 3,
+   "fields": {
+      "nombre": "Catamarca",
+      "abreviatura": "CT",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 4,
+   "fields": {
+      "nombre": "Córdoba",
+      "abreviatura": "CD",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 5,
+   "fields": {
+      "nombre": "Corrientes",
+      "abreviatura": "CR",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 6,
+   "fields": {
+      "nombre": "Chaco",
+      "abreviatura": "CHC",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 7,
+   "fields": {
+      "nombre": "Chubut",
+      "abreviatura": "CH",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 8,
+   "fields": {
+      "nombre": "Entre Ríos",
+      "abreviatura": "ER",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 9,
+   "fields": {
+      "nombre": "Formosa",
+      "abreviatura": "FM",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 10,
+   "fields": {
+      "nombre": "Jujuy",
+      "abreviatura": "JJ",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 11,
+   "fields": {
+      "nombre": "La Pampa",
+      "abreviatura": "LP",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 12,
+   "fields": {
+      "nombre": "La Rioja",
+      "abreviatura": "LR",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 13,
+   "fields": {
+      "nombre": "Mendoza",
+      "abreviatura": "MZ",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 14,
+   "fields": {
+      "nombre": "Misiones",
+      "abreviatura": "MS",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 15,
+   "fields": {
+      "nombre": "Neuquén",
+      "abreviatura": "NQ",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 16,
+   "fields": {
+      "nombre": "Río Negro",
+      "abreviatura": "RN",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 17,
+   "fields": {
+      "nombre": "Salta",
+      "abreviatura": "ST",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 18,
+   "fields": {
+      "nombre": "San Juan",
+      "abreviatura": "SJ",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 19,
+   "fields": {
+      "nombre": "San Luis",
+      "abreviatura": "SL",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 20,
+   "fields": {
+      "nombre": "Santa Cruz",
+      "abreviatura": "SC",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 21,
+   "fields": {
+      "nombre": "Santa Fe",
+      "abreviatura": "SF",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 22,
+   "fields": {
+      "nombre": "Santiago del Estero",
+      "abreviatura": "SE",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 23,
+   "fields": {
+      "nombre": "Tierra del Fuego",
+      "abreviatura": "TF",
+      "pais": 1
+   }
+},
+ {
+   "model": "localidades.provincia",
+   "pk": 24,
+   "fields": {
+      "nombre": "Tucumán",
+      "abreviatura": "TC",
+      "pais": 1
+   }
+}
+]
