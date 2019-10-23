@@ -229,7 +229,7 @@ class Cuartelero(models.Model):
     def fecha_nacimiento(self):
         return self.persona.fecha_nacimiento
 
-    '''
+
     def save(self, *args, **kwargs):
         # No podemos crear un signal en el model User que viene con django,
         #   por ende hacemos esto acá
@@ -241,19 +241,17 @@ class Cuartelero(models.Model):
             dic = {
                 'email': '',
                 'last_name': self.persona.apellido,
-                'first_name': self.persona.primer_nombre
+                'first_name': self.persona.primer_nombre,
+                'username': self.persona.primer_nombre.split()[0].lower() + self.persona.apellido.lower()
             }
             # Si la persona es un bombero uso su mismo usuario
             # El primer parametro de update_or_create es lo que se usa para bus-
             #   -car si el registro existe, en defaults se pone los valores a
             #   rellenar si es que lo tiene que crear.
             try:
-                bombero = Bombero.objects.get(persona__id=self.persona.pk)
-                dic['username'] = bombero.usuario.username
-                usuario_id = bombero.usuario.id
+                usuario = User.objects.get(username=dic['username'])
+                usuario_id = usuario.pk
             except ObjectDoesNotExist:
-                dic['username'] = self.persona.primer_nombre.split()[0].lower() + \
-                                 self.persona.apellido.lower()
                 usuario_id = None
             self.usuario, created = User.objects.update_or_create(
                 pk=usuario_id,
@@ -264,7 +262,7 @@ class Cuartelero(models.Model):
                 self.usuario.save()
 
             super(Cuartelero, self).save(*args, **kwargs)
-    '''
+
 
 class Medio(models.Model):
     entidad = models.ForeignKey(

@@ -121,6 +121,13 @@ class BomberoAdmin(admin.ModelAdmin):
                 'lugar_nacimiento',
                 )
         }),
+        (_('Federación'), {
+            'classes': ('collapse',),
+            'fields': ('reg_int_federacion',
+                       'estatura_en_cm',
+                       'situacion_revista',
+                       ),
+        }),
     )
     list_display = (
         'nro_legajo',

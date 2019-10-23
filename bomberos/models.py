@@ -24,6 +24,7 @@ from .choices import (
     NIVEL_ESTUDIO,
     ESTADO_ESTUDIO,
     GENERO,
+    SITUACION_REVISTA,
 )
 
 
@@ -71,6 +72,23 @@ class Bombero(models.Model):
         blank=True,
         verbose_name=_("Lugar de Nacimiento"),
         on_delete=models.PROTECT,
+    )
+    reg_int_federacion = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Registro Interno de Federación"),
+    )
+    estatura_en_cm = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Estatura en centímetros"),
+    )
+    situacion_revista = models.CharField(
+        max_length=255,
+        choices=SITUACION_REVISTA,
+        null=True,
+        blank=True,
+        verbose_name=_("Situación de Revista"),
     )
 
     def get_ultimo_ascenso(self):
