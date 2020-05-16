@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-#Borrramos todas las migraciones
+# Borrramos todas las migraciones
 rm -r personas/migrations
 rm -r bomberos/migrations
 rm -r localidades/migrations
 rm -r actas/migrations
 rm -r grados/migrations
 rm -r salud/migrations
-rm -r nro_orden/migrations
+# rm -r nro_orden/migrations
 rm ./db.sqlite3
 
 #Creamos todas las tablas
