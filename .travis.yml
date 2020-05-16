@@ -1,8 +1,8 @@
 language: python
 python:
     # Las versiones de Python menores a 3.4 no estan soportadas por Django1.9
-    - "3.4"
-    - "3.5"
+    - "3.6"
+    - "3.7"
 
 install: "pip install -r requirements.txt"
 
