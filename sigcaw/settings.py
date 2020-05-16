@@ -27,7 +27,6 @@ DEBUG = os.environ.get('DEBUG', False)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,10 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_jenkins',
-    'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
-    'rest_auth',
     'colorfield',
     'daterange_filter',  # Para poder poner fecha de filtrado en número de orden
     'localidades',
@@ -142,15 +138,6 @@ STATIC_URL = '/static/'
 # 3RD PARTY SETTINGS
 # django-phonenumber-field
 PHONENUMBER_DB_FORMAT = 'INTERNATIONAL'
-
-# http://django-rest-auth.readthedocs.io/en/latest/installation.html#jwt-support-optional
-REST_USE_JWT = True
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
 
 # as declared in NginX conf, it must match /opt/services/backdraft/static/
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')

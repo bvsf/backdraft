@@ -10,9 +10,6 @@ django-cors-headers
 django-daterange-filter
 django-jenkins
 django-phonenumber-field
-django-rest-auth
-djangorestframework
-djangorestframework-jwt
 envdir
 gunicorn
 idna
@@ -24,7 +21,6 @@ pep8
 phonenumbers
 phonenumberslite
 Pillow
-psycopg2-binary
 pyflakes
 PyJWT
 pytz
