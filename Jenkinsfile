@@ -14,7 +14,7 @@ node {
 
         stage 'Test'
             sh 'virtualenv venv -p python3.7'
-            sh 'source ./venv/bin/activate'
+            sh 'source venv/bin/activate'
             sh 'pip install -r requirements.txt'
             sh 'python manage.py jenkins --enable-coverage'
 
