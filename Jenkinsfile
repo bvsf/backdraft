@@ -13,8 +13,8 @@ node {
             slackSend color: "warning", message: "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
 
         stage 'Test'
-            sh 'virtualenv env -p python3.7'
-            sh 'source env/bin/activate'
+            sh 'virtualenv venv -p python3.7'
+            sh 'source ./venv/bin/activate'
             sh 'pip install -r requirements.txt'
             sh 'python manage.py jenkins --enable-coverage'
 
