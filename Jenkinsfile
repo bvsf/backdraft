@@ -1,6 +1,7 @@
 #!groovy
 
 // https://rahmonov.me/posts/continuous-integration-and-continous-deployment-for-django-app-with-jenkins/
+// https://www.ionutgavrilut.com/2019/jenkins-pipelines-sh-source-not-found/
 
 node {
 
@@ -13,7 +14,7 @@ node {
             slackSend color: "warning", message: "Started `${env.JOB_NAME}#${env.BUILD_NUMBER}`\n\n_The changes:_\n${lastChanges}"
 
         stage 'Test'
-            sh 'virtualenv -p python3.8 --no-site-packages venv'
+            sh 'python3.8 -m venv ./venv'
             sh 'source venv/bin/activate'
             sh 'pip install -r requirements.txt'
             sh 'python manage.py jenkins --enable-coverage'
