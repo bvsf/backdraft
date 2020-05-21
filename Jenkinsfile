@@ -18,6 +18,7 @@ node {
             sh 'pip install -r requirements.txt'
             sh 'python manage.py jenkins --enable-coverage'
 
+
         stage 'Deploy'
             sh './deployment/deploy_prod.sh'
 
@@ -32,3 +33,4 @@ node {
     }
 
 }
+
