@@ -15,7 +15,7 @@ node {
         stage 'Test'
             sh 'virtualenv -p python3.8 venv'
             sh 'source venv/bin/activate'
-            sh 'pip install -r requirements.txt'
+            sh 'pip3 install -r requirements.txt'
             sh 'python manage.py jenkins --enable-coverage'
 
 
