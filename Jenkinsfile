@@ -1,6 +1,6 @@
 #!groovy
 
-# https://rahmonov.me/posts/continuous-integration-and-continous-deployment-for-django-app-with-jenkins/
+// https://rahmonov.me/posts/continuous-integration-and-continous-deployment-for-django-app-with-jenkins/
 
 node {
 
