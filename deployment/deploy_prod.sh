@@ -4,8 +4,8 @@
 
   cd backdraft
   git pull .
-  source /backdraft/venv/bin/activate
+  source venv/bin/activate
   pip install -r requirements.txt
   ./manage.py migrate
-  sudo supervisorctl restart backdraft
+  # sudo supervisorctl restart backdraft
   exit
