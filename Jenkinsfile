@@ -24,6 +24,7 @@ node {
 
 
         stage 'Deploy'
+            sh 'chmod +x -R ${env.WORKSPACE}'
             sh './deployment/deploy_prod.sh'
 
         stage 'Publish results'
