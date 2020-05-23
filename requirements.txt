@@ -17,6 +17,7 @@ itypes
 Jinja2
 jslint
 MarkupSafe
+mysqlclient
 pep8
 phonenumbers
 phonenumberslite
