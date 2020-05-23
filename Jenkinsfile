@@ -17,7 +17,10 @@ node {
             sh 'python3.8 -m venv ./venv'
             sh 'source venv/bin/activate'
             sh 'pip3 install -r requirements.txt'
-            sh 'python3.8 manage.py jenkins --enable-coverage'
+            sh 'python3.8 manage.py jenkins'
+            // sh 'python3.8 manage.py jenkins --enable-coverage'
+            //  Coverage changes to get_data an for now crash
+            //  https://github.com/kmmbvnr/django-jenkins/pull/375
 
 
         stage 'Deploy'
