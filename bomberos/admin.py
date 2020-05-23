@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-from daterange_filter.filter import DateRangeFilter
 from django.contrib import admin
+from rangefilter.filter import DateRangeFilter
 from django.contrib.admin.filters import DateFieldListFilter
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _

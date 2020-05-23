@@ -16,8 +16,8 @@ node {
         stage 'Test'
             sh 'python3.8 -m venv ./venv'
             sh 'source venv/bin/activate'
-            sh 'pip install -r requirements.txt'
-            sh 'python manage.py jenkins --enable-coverage'
+            sh 'pip3 install -r requirements.txt'
+            sh 'python3.8 manage.py jenkins --enable-coverage'
 
 
         stage 'Deploy'
@@ -34,4 +34,3 @@ node {
     }
 
 }
-
