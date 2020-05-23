@@ -7,7 +7,7 @@ coverage
 Django
 django-colorfield
 django-cors-headers
-django-daterange-filter
+django-admin-rangefilter
 django-jenkins
 django-phonenumber-field
 envdir
