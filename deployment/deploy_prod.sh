@@ -6,6 +6,7 @@
   git pull .
   source venv/bin/activate
   pip install -r requirements.txt
-  ./manage.py migrate
+  python manage.py migrate
+  python manage.py runserver
   # sudo supervisorctl restart backdraft
   exit
