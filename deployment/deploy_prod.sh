@@ -4,7 +4,7 @@
 
 ssh root@srv-backdraft <<EOF
   cd backdraft
-  git pull
+  git pull .
   source /backdraft/venv/bin/activate
   pip install -r requirements.txt
   ./manage.py migrate
